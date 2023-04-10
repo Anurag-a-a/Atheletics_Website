@@ -3,6 +3,8 @@
   _id: '641f83110b3a1eb1911a2ead',
   firstName: 'Harry',
   lastName: 'Potter',
+  sex: 'Male',
+  dob: 07/31/1996,
   email: 'harrypotter@gmail.com',
   phoneNumber: '551-221-5876',
   address: {
@@ -39,7 +41,8 @@ import {isValidname,
         isValidRole,
         isValidId,
         isValidAction
-        
+        isValidSex,
+        isValidDOB
 } from '../validateData.js';
 
 //get a user provided the id.
@@ -56,6 +59,8 @@ export const getUserbyId = async (id) => {
 export const createUser = async (
     firstName,
     lastName,
+    sex,
+    dob,
     email,
     phoneNumber,
     address,
@@ -67,6 +72,8 @@ export const createUser = async (
 ) => {
     firstName = isValidname(firstName, 'firstName');
     lastName = isValidname(lastName, 'lastName');
+    sex = isValidSex(sex);
+    dob = isValidDOB(dob);
     email = isValidemail(email);
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
@@ -82,6 +89,8 @@ export const createUser = async (
         newUser = {
             firstName: firstName,
             lastName: lastName,
+            sex: sex,
+            dob: dob,
             email: email,
             phoneNumber: phoneNumber,
             address: address,
@@ -94,6 +103,8 @@ export const createUser = async (
         newUser = {
             firstName: firstName,
             lastName: lastName,
+            sex: sex,
+            dob: dob,
             email: email,
             phoneNumber: phoneNumber,
             address: address,
@@ -151,6 +162,8 @@ export const update = async (
     id,
     firstName,
     lastName,
+    sex,
+    dob,
     email,
     phoneNumber,
     address,
@@ -163,6 +176,8 @@ export const update = async (
     id = isValidId(id);
     firstName = isValidname(firstName, 'firstName');
     lastName = isValidname(lastName, 'lastName');
+    sex = isValidSex(sex);
+    dob = isValidDOB(dob);
     email = isValidemail(email);
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
@@ -179,6 +194,8 @@ export const update = async (
     const updateUser = {
         firstName: firstName,
         lastName: lastName,
+        sex: sex,
+        dob: dob,
         email: email,
         phoneNumber: phoneNumber,
         address: address,
