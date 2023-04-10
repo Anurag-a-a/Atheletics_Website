@@ -140,7 +140,7 @@ export const isValidRole = (role) => {
 export const isValidAction = (action) => {
     if(!action){throw "Error: no action provided";};
     if(!(typeof action == 'string')){throw "Error: action must be a string";};
-    action = action.trim().toLocaleLowerCase();
+    action = action.trim().toLowerCase();
     if(action.length === 0){throw "Error: action cannot be an empty string or string with just spaces";};
     if((action != 'delete') || (action != 'add')) {throw "Error: Invalid action"};
     return action;      
