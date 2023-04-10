@@ -25,7 +25,7 @@ export const isValidname = (name, variable) => {
 export const isValidemail = (email) => {
     if(!email){throw "Error: no email provided";};
     if(!(typeof email == 'string')){throw "Error: email must be a string";};
-    email = email.trim();
+    email = email.trim().toLowerCase();
     if(email.length === 0){throw "Error: Email cannot be an empty string or string with just spaces";};
     if(!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
         {throw "Error: Invalid Email";};
@@ -147,3 +147,31 @@ export const isValidAction = (action) => {
 };
 
 
+//validate sex
+export const isValidSex = (sex) => {
+    if(!sex){throw "Error: no sex provided";};
+    if(!(typeof sex == 'string')){throw "Error: sex must be a string";};
+    sex = sex.trim().toLowerCase();
+    if(sex.length === 0){throw "Error: sex cannot be an empty string or string with just spaces";};
+    if((sex != 'male') || (sex != 'female') || (sex != 'non-binary') || (sex != 'prefer not to say')) {throw "Error: Invalid sex"};
+    return sex;
+
+};
+
+//validate dob
+//not implemented to validate the date ie. days and month relation and also leap years.
+export const isValidDOB = (dob) => {
+    if(!dob){throw "Error: no date of birth provided";};
+    if(!(typeof dob == 'string')){throw "Error: date of birth must be a string";};
+    dob = dob.trim();
+    if(dob.length != 10) {throw "Error: Invalid date of birth";};
+    let format = /^(0?[1-9]|1[0-2])[\/](0?[1-9]|[1-2][0-9]|3[01])[\/]\d{4}$/;
+    if(!format.test(dob)){throw "Error: Invalid date of birth";};
+    let month = Number(dob.slice(0,2));
+    let day = Number(dob.slice(3,5));
+    let year = Number(dob.slice(6));
+    if((day<1) || (day>31) || (month<1) ||(month>12) || (year<0) || (year>2010)) {throw "Error: Invalid date";};
+    if(year>2010){throw "Error: User needs to be age 13 and above to sign up";};
+    
+    return dob;
+};

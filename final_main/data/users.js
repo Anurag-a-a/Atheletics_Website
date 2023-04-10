@@ -40,7 +40,7 @@ import {isValidname,
         isValidmembershipPlanDetails,
         isValidRole,
         isValidId,
-        isValidAction
+        isValidAction,
         isValidSex,
         isValidDOB
 } from '../validateData.js';
@@ -73,7 +73,7 @@ export const createUser = async (
     firstName = isValidname(firstName, 'firstName');
     lastName = isValidname(lastName, 'lastName');
     sex = isValidSex(sex);
-    dob = isValidDOB(dob);
+    dob = isValidDOB(dob); //Format: MM/DD/YYYY
     email = isValidemail(email);
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);

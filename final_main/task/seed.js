@@ -7,6 +7,8 @@ async function main() {
 
     let firstName = "Harry";
     let lastName = "Potter";
+	let sex = 'Male';
+	let dob = '07/31/1996';
     let email = "harrypotter@gmail.com";
     let phoneNumber = "1231231234";
     let address = {
@@ -31,6 +33,8 @@ async function main() {
      try {
      	firstName = "Ron";
     	lastName = "Weasly";
+		sex = "Male";
+		dob = "04/19/1996";
     	email = "ronweasly@gmail.com";
     	phoneNumber = "1231231234";
     	address = {
@@ -54,6 +58,8 @@ async function main() {
      try {
      	firstName = "Hermoine";
     	lastName = "Granger";
+		sex = "Female";
+		dob = "07/25/1996";
     	email = "hermoinegranger@gmail.com";
     	phoneNumber = "1231231234";
     	address = {
@@ -77,6 +83,8 @@ async function main() {
     try {
      	firstName = "Minerva";
     	lastName = "Mcgonagall";
+		sex = "Female";
+		dob = "01/20/1980";
     	email = "minerva@gmail.com";
     	phoneNumber = "1231231234";
     	address = {
