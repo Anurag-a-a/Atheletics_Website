@@ -218,7 +218,7 @@ export const updateAppointment = async (
     let CurrentAppointmentList = theUser.MyAppointments;
     if(!CurrentAppointmentList.includes(MyAppointmentsId)) {throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`};
     let newAppointmentList = [];
-    if(action == 'Delete'){
+    if(action == 'delete'){
         for (let i=0; i<CurrentAppointmentList.length; i++){
             if(CurrentAppointmentList[i] != MyAppointmentsId){ newAppointmentList.push(CurrentAppointmentList[i]);};
         };
@@ -260,7 +260,7 @@ export const updateReview = async (
     let CurrentReviewList = theUser.MyReviews;
     if(!CurrentReviewList.includes(MyReviewId)) {throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`};
     let newReviewList = [];
-    if(action == 'Delete'){
+    if(action == 'delete'){
         for (let i=0; i<CurrentReviewList.length; i++){
             if(CurrentReviewList[i] != MyReviewId){ newReviewList.push(CurrentReviewList[i]);};
         };
