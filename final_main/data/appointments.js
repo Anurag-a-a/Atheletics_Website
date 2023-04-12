@@ -4,3 +4,84 @@
 //   selectedTimeSlot: { Date: '26 May 2023', timing: '10:00 - 12:00' },
 //   cancelledOrNot: false
 // }
+
+import {appointments} from "../config/mongoCollections.js";
+import {ObjectId} from 'mongodb';
+import {isValidId, isValidCancelledOrNot, isValidTimeSlot} from "../validateData.js";
+
+const getAllAppointments = async () => {
+  const appointmentCollection = await appointments();
+  let allAppointments = await appointmentCollection.find({}).toArray();
+  if (allAppointments.length === 0) return [];
+  if (!allAppointments) throw 'Could not get all appointments';
+  for (let i in allAppointments) {
+    allAppointments[i]._id = allAppointments[i]._id.toString();
+  }
+  return allAppointments;
+}
+
+const getAppointmentById = async (appointmentId) => {
+  appointmentId = isValidId(appointmentId);
+  const appointmentCollection = await appointments();
+  const appointment = await appointmentCollection.findOne({_id: new ObjectId(id)});
+  if (!appointment) throw 'Error: appointment not found';
+  appointment._id = appointment._id.toString();
+  return appointment;
+}
+
+const addAppointment = async (classId, selectedTimeSlot, cancelledOrNot) => {
+  classId = isValidId(classId);
+  selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
+  cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
+
+  let newAppointment = {
+    classId: classId,
+    selectedTimeSlot: selectedTimeSlot,
+    cancelledOrNot: cancelledOrNot
+  }
+  const appointmentCollection = await appointments();
+  const newInsertInfo = await appointmentCollection.insertOne(newAppointment);
+  if (!newInsertInfo.insertedID) throw 'Insert failed!';
+  const newId = newInsertInfo.insertedID.toString();
+  const addedAppointment = await getAppointmentById(newId);
+  addedAppointment._id = addedAppointment._id.toString();
+  return addedAppointment;
+}
+
+const removeAppointment = async (appointmentId) => {
+  appointmentId = isValidId(appointmentId);
+  const deletionInfo = await appointmentCollection.findOneAndDelete({_id: new ObjectId(appointmentId)});
+  if (deletionInfo.lastErrorObject.n === 0) {
+    throw `Could not delete appointment with id of ${appointmentId}`;
+  }
+  return {...deletionInfo.value, deleted: true};
+}
+
+const updateAppointmentPut = async (appointmentId, classId, selectedTimeSlot, cancelledOrNot) => {
+  appointmentId = isValidId(appointmentId);
+  classId = isValidId(classId);
+  selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
+  cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
+
+  const appointmentUpdateInfo = {
+    classId: classId,
+    selectedTimeSlot: selectedTimeSlot,
+    cancelledOrNot: cancelledOrNot
+  }
+  const appointmentCollection = await appointments();
+  const updatedInfo = await appointmentCollection.findOneAndUpdate(
+    {_id: new ObjectId(appointmentId)},
+    {$set: appointmentUpdateInfo},
+    {returnDocument: 'after'}
+  )
+  if (updatedInfo.lastErrorObject.n === 0) throw [404, `Error: Update failed, could not find a appointment with id of ${appointmentId}`];
+  return await updatedInfo.value;
+}
+
+export {
+  getAppointmentById,
+  getAllAppointments,
+  addAppointment,
+  removeAppointment,
+  updateAppointmentPut
+}

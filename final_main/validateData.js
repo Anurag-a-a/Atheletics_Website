@@ -175,3 +175,74 @@ export const isValidDOB = (dob) => {
     
     return dob;
 };
+
+
+// validate reviewText
+export const isValidreviewText = (reviewText) => {
+    if (!reviewText) throw 'You must provide review information';
+    if (typeof reviewText !== 'string') throw 'reviewText must be a string';
+    if (reviewText.trim().length === 0) throw 'reviewText cannot be an empty string or string with just spaces';
+    reviewText = reviewText.trim();
+    return reviewText;
+}
+
+// validate Rating
+export const isValidRating = (rating) => {
+    if (!rating) throw 'You must provide a rating';
+    if (typeof rating !== 'number') throw 'yrating must be a number'
+    if (rating < 0 || rating > 5 || (!Number.isInteger(rating * 10) && !Number.isInteger(rating))) {
+      throw 'rating must between 0-5 and rating must be integer or one decimal place float';
+    }
+    return rating;
+}
+
+// validate TimeSlot
+export const isValidTimeSlot = (selectedTimeSlot) => {
+    if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
+    if (typeof selectedTimeSlot !== 'object') throw 'selectedTimeSlot must be an object';
+    const { Date, timing } = selectedTimeSlot;
+  
+    // Check date format
+    const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
+    Date = Date.trim();
+    if (!dateFormat.test(Date.trim())) throw 'Date must be in the format MM/DD/YYYY';
+  
+    // Check timing format and constraints
+    const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
+    const match = timing.trim().match(timeFormat);
+    timing = timing.trim();
+    if (!match) throw 'timing must be in the format HH:mm - HH:mm (24-hour format)'; 
+    const startTime = match[1];
+    const endTime = match[2]; 
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number); 
+    if (startHour < 0 || startHour > 23 || startMinute < 0 || startMinute > 59) {
+        throw 'Invalid start time';
+    } 
+    if (endHour < 0 || endHour > 23 || endMinute < 0 || endMinute > 59) {
+        throw 'Invalid end time';
+    } 
+    if (startHour > endHour || (startHour === endHour && startMinute >= endMinute)) {
+        throw 'End time must be greater than start time';
+    } 
+        return selectedTimeSlot;
+    }
+
+  // validate CancelledOrNot
+export const isValidCancelledOrNot = (cancelledOrNot) => {
+    if (cancelledOrNot === undefined || cancelledOrNot === null) {
+        throw 'You must provide a value for cancelledOrNot';
+    }
+    if (typeof cancelledOrNot === 'boolean') {
+        return cancelledOrNot;
+    }
+    if (typeof cancelledOrNot === 'string') {
+        const lowerCaseValue = cancelledOrNot.trim().toLowerCase();
+        if (lowerCaseValue === 'true') {
+            return true;
+        } else if (lowerCaseValue === 'false') {
+            return false;
+        }
+    }
+    throw 'cancelledOrNot must be a boolean value, either true or false';
+}
