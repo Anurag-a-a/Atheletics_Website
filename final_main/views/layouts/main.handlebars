@@ -4,9 +4,18 @@
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/public/css/main-styles.css">
+    <link rel="stylesheet" href="/public/css/commonStyles.css">
+    <link rel="stylesheet" href='/public/css/landingPage.css'> {{!how to pass the style sheet url to main template}}  
+    <link rel="stylesheet" href='/public/css/location.css'>
+    <link rel="stylesheet" href='/public/css/amenities.css'>
 </head>
-    
+<body>
+    <header>
+        <img id="header_image" alt="Gym brat" src="/public/images/headerImage.jpg">
+        <div id="header_name">Gym Brat</div>
+    </header>
     {{{body}}}
+    <footer>@gymBrat....</footer>
+</body>
  
 </html>
