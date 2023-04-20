@@ -246,3 +246,13 @@ export const isValidCancelledOrNot = (cancelledOrNot) => {
     }
     throw 'cancelledOrNot must be a boolean value, either true or false';
 }
+
+//validate username
+export const isValidUsername = (username) => {
+    if(!username){throw `Error: username not given`;};
+    if(!(typeof username == 'string')){throw `Error: username must be a string`;};
+    username = username.trim();
+    if(username.length === 0){throw `Error: username cannot be an empty string or string with just spaces`;};
+    return username.toLowerCase();
+
+}

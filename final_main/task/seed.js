@@ -17,6 +17,7 @@ async function main() {
         state: 'New Jersey',
         zipCode: '07305'
 	};
+	let username = "harryPotter"
 	let hashedPassword = "Harry@12345";
     let emergencyContactName = "James Potter";
     let emergencyContactPhoneNumber = "1231231234";
@@ -24,7 +25,7 @@ async function main() {
     let membershipPlanDetails = "Alpha";
     
     try {
-        let user1 = await userData.createUser(firstName,lastName,email,phoneNumber,address,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user1 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user1)
     }catch(e){
         console.log(e);
@@ -43,13 +44,14 @@ async function main() {
         	state: 'New Jersey',
         	zipCode: '07305'
 		};
+		username = "ron",
 		hashedPassword = "Ron@12345";
     	emergencyContactName = "Arthur Weasly";
     	emergencyContactPhoneNumber = "1231231234";
     	role = "User";
     	membershipPlanDetails = "Beta";
     
-        let user2 = await userData.createUser(firstName,lastName,email,phoneNumber,address,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user2 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user2)
     }catch(e){
         console.log(e);
@@ -68,13 +70,14 @@ async function main() {
         	state: 'New Jersey',
         	zipCode: '07305'
 		};
+		username = "hermoine",
 		hashedPassword = "Hermoine@12345";
     	emergencyContactName = "Peter Granger";
     	emergencyContactPhoneNumber = "1231231234";
     	role = "User";
     	membershipPlanDetails = "Omega";
     
-        let user3 = await userData.createUser(firstName,lastName,email,phoneNumber,address,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user3 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user3)
     }catch(e){
         console.log(e);
@@ -93,13 +96,14 @@ async function main() {
         	state: 'New Jersey',
         	zipCode: '07305'
 		};
+		username = "mc",
 		hashedPassword = "Minerva@12345";
     	emergencyContactName = "John Mcgonagall";
     	emergencyContactPhoneNumber = "1231231234";
     	role = "Management";
     	membershipPlanDetails = "N/A";
     
-        let user4 = await userData.createUser(firstName,lastName,email,phoneNumber,address,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user4 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user4)
     }catch(e){
         console.log(e);

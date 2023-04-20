@@ -36,6 +36,7 @@ import {isValidname,
         isValidemail,
         isValidphoneNumber,
         isValidaddress,
+        isValidUsername,
         isValidpassword,
         isValidmembershipPlanDetails,
         isValidRole,
@@ -64,6 +65,7 @@ export const createUser = async (
     email,
     phoneNumber,
     address,
+    username,
     hashedPassword,
     emergencyContactName,
     emergencyContactPhoneNumber,
@@ -77,6 +79,7 @@ export const createUser = async (
     email = isValidemail(email);
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
+    username = isValidUsername(username);
     hashedPassword = isValidpassword(hashedPassword);
     emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
@@ -85,6 +88,14 @@ export const createUser = async (
     let MyAppointments = [];
     let MyReviews = [];
     let newUser = {};
+
+    const userCollection = await users();
+    const existingUsers = await getAllUser();
+    /*check for existing similar usernames */
+    for (let i=0; i<existingUsers.length; i++){
+      if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
+    };
+
     if (role == 'management') { 
         newUser = {
             firstName: firstName,
@@ -94,6 +105,7 @@ export const createUser = async (
             email: email,
             phoneNumber: phoneNumber,
             address: address,
+            username: username,
             hashedPassword: hashedPassword,
             emergencyContactName: emergencyContactName,
             emergencyContactPhoneNumber: emergencyContactPhoneNumber,
@@ -108,6 +120,7 @@ export const createUser = async (
             email: email,
             phoneNumber: phoneNumber,
             address: address,
+            username: username,
             hashedPassword: hashedPassword,
             emergencyContactName: emergencyContactName,
             emergencyContactPhoneNumber: emergencyContactPhoneNumber,
@@ -119,7 +132,7 @@ export const createUser = async (
     };
     
   
-      const userCollection = await users();
+      
       const insertInfo = await userCollection.insertOne(newUser);
       if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create user';};
       const newId = insertInfo.insertedId.toString();
@@ -167,6 +180,7 @@ export const update = async (
     email,
     phoneNumber,
     address,
+    username,
     hashedPassword,
     emergencyContactName,
     emergencyContactPhoneNumber,
@@ -181,6 +195,7 @@ export const update = async (
     email = isValidemail(email);
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
+    username = isValidUsername(username);
     hashedPassword = isValidpassword(hashedPassword);
     emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
@@ -199,6 +214,7 @@ export const update = async (
         email: email,
         phoneNumber: phoneNumber,
         address: address,
+        username: username,
         hashedPassword: hashedPassword,
         emergencyContactName: emergencyContactName,
         emergencyContactPhoneNumber: emergencyContactPhoneNumber,
