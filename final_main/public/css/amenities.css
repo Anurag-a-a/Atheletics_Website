@@ -10,8 +10,12 @@
 .amenities_list{
     text-align: center;
 }
-.amenities_main{
-    position: relative;
-    top: 50px;
-    
+
+
+#amenities_h1{
+    text-align: center;
+    color: rebeccapurple;
+    font-style: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }

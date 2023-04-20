@@ -50,3 +50,9 @@
     top: 50px;
 }
 
+marquee {
+    width: "60%"; 
+    direction: "left"; 
+    height: "100px"
+}
+
