@@ -32,6 +32,9 @@
 */
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
+import bcrypt from 'bcrypt';
+const saltRounds = 16;
+
 import {isValidname,
         isValidemail,
         isValidphoneNumber,
@@ -51,7 +54,7 @@ export const getUserbyId = async (id) => {
     id = isValidId(id);
     const userCollection = await users();
     const theUser = await userCollection.findOne({_id: new ObjectId(id)});
-    if (theUser === null){throw "No band with that id";};
+    if (theUser === null){throw "No user with that id";};
     theUser._id = theUser._id.toString();
     return theUser;  
 };
@@ -66,7 +69,7 @@ export const createUser = async (
     phoneNumber,
     address,
     username,
-    hashedPassword,
+    password,
     emergencyContactName,
     emergencyContactPhoneNumber,
     role,
@@ -80,7 +83,7 @@ export const createUser = async (
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
     username = isValidUsername(username);
-    hashedPassword = isValidpassword(hashedPassword);
+    password = isValidpassword(password);
     emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
     role = isValidRole(role);
@@ -95,6 +98,8 @@ export const createUser = async (
     for (let i=0; i<existingUsers.length; i++){
       if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
     };
+    
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     if (role == 'management') { 
         newUser = {
@@ -147,7 +152,7 @@ export const getAllUser = async () => {
     const userCollection = await users();
     let userList = await userCollection.find({}).toArray();
     if(userList.length == 0){return userList;};
-    if (!userList){throw "Could not get all dogs";};
+    if (!userList){throw "Could not get all users";};
     userList = userList.map((element) => {
       element._id = element._id.toString();
       return element;
@@ -164,7 +169,7 @@ export const deleteUser = async (id) => {
     });
   
     if (deletionInfo.lastErrorObject.n === 0) {
-      throw `Could not delete band with id of ${id}`;
+      throw `Could not delete user with id of ${id}`;
     }
     return `${deletionInfo.value.firstName} ${deletionInfo.value.lastName} has been successfully deleted!`;
 };
@@ -196,7 +201,8 @@ export const update = async (
     phoneNumber = isValidphoneNumber(phoneNumber);
     address = isValidaddress(address);
     username = isValidUsername(username);
-    hashedPassword = isValidpassword(hashedPassword);
+//     hashedPassword = isValidpassword(hashedPassword);
+/* check how to validate password here, if password is not updated then the db will have hashed password so how to validate it*/
     emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
     role = isValidRole(role);

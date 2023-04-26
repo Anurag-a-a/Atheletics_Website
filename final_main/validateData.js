@@ -27,7 +27,7 @@ export const isValidemail = (email) => {
     if(!(typeof email == 'string')){throw "Error: email must be a string";};
     email = email.trim().toLowerCase();
     if(email.length === 0){throw "Error: Email cannot be an empty string or string with just spaces";};
-    if(!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){
+    if(!email.match(/^[^\s\d@]+@[^\s\d@]+\.[^\s\d@]+$/)){
         {throw "Error: Invalid Email";};
     };
     return email;
