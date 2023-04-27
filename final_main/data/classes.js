@@ -19,3 +19,218 @@
 //   ],
 //   classCapacity: 20
 // }
+
+import { classes } from '../config/mongoCollections/js';
+import { ObjectId } from 'mongodb';
+import {
+    isValidAction,
+    isValidClassCapacity,
+    isValidClassName,
+    isValidDescription,
+    isValidId,
+    isValidTimeSlot,
+    isValidname,
+} from '../validateData.js';
+
+//get a class provided the id
+export const getClassbyId = async (id) => {
+    id = isValidId(id);
+    const classCollection = await classes();
+    const theClass = await classCollection.findOne({ _id: new ObjectId(id) });
+    if (theClass === null) { throw "No Class"; };
+    theClass._id = theClass._id.toString();
+    return theClass;
+}
+
+export const createClass = async (
+    className,
+    slots,
+    instructor,
+    description,
+    classCapacity
+) => {
+    className = isValidClassName(className);
+    slots = isValidTimeSlot(slots);
+    instructor = isValidname(instructor);
+    description = isValidDescription(description);
+    classCapacity = isValidClassCapacity(classCapacity);
+    let registeredUsers = [];
+    let reviews = [];
+
+    const classCollection = await classes();
+    const existingClass = await getAllClass();
+
+    // for (let i = 0; i < existingClass.length; i++) {
+
+    // }
+
+    newUser = {
+        className: className,
+        slots: slots,
+        instructor: instructor,
+        description: description,
+        classCapacity: classCapacity
+    }
+
+    const insertInfo = await classCollection.insertOne(newUser);
+    if (!insertInfo.acknowledged || !insertInfo.insertInfo) { throw 'Error: Could not create user'; };
+    const newId = insertInfo.insertId.toString();
+    const newClass = await getClassbyId(newId);
+    return newClass;
+}
+
+//get all the classes in the database
+export const getAllClass = async () => {
+    const classCollection = await classes();
+    let classList = await classCollection.find({}).toArray();
+    if (classList.length == 0) { return classList; };
+    if (!classList) { throw "Could not get all classes"; };
+    classList = classList.map((element) => {
+        element._id = element._id.toString();
+        return element;
+    });
+    return classList;
+}
+
+//delete a class
+export const deleteUser = async (id) => {
+    id = isValidId(id);
+    const classCollection = await classes();
+    const deletionInfo = await classCollection.findOneAndDelete({
+        _id: new ObjectId(id)
+    });
+
+    if (deletionInfo.lastErrorObject.n === 0) {
+        throw `Could not delete band with id of ${id}`;
+    }
+    return `${deletionInfo.value.firstName} ${deletionInfo.value.lastName} has been successfully deleted!`;
+};
+
+
+export const update = async (
+    id,
+    className,
+    slots,
+    instructor,
+    description,
+    classCapacity
+) => {
+    id = isValidId(id);
+    className = isValidClassName(className);
+    slots = isValidTimeSlot(slots);
+    instructor = isValidname(instructor);
+    description = isValidDescription(description);
+    classCapacity = isValidClassCapacity(classCapacity);
+
+    const classCollection = await classes();
+    const existingClass = await getClassbyId(id);
+
+    const updateClass = {
+        className: className,
+        slots: slots,
+        instructor: instructor,
+        description: description,
+        registeredUsers: existingClass.registeredUsers,
+        reviews: existingClass.reviews,
+    }
+
+    const updatedInfo = await classCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: updateClass },
+        { returnDocument: 'after' }
+    )
+
+    if (updatedInfo.lastErrorObject.n === 0) {
+        throw 'Failed to update class';
+    }
+
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+}
+
+export const updateRegisteredUsers = async (
+    id,
+    RegisteredUsersId,
+    action
+) => {
+    id = isValidId(id);
+    RegisteredUsersId = isValidId(RegisteredUsersId);
+    action = isValidAction(action);
+
+    const classCollection = await classes();
+    const theClass = await getClassbyId(id);
+
+    let CurrentRegisteredList = theClass.RegisteredUsersId;
+    if (!CurrentRegisteredList.includes(RegisteredUsersId)) { throw `Error: No such registered for ${theClass.className} ` };
+    let newRegisterList = [];
+    if (action == 'delete') {
+        for (let i = 0; i < CurrentRegisteredList.length; i++) {
+            if (CurrentRegisteredList[i] != RegisteredUsersId) {
+                newRegisterList.push(CurrentRegisteredList[i]);
+            };
+        };
+    } else {
+        newRegisterList = CurrentRegisteredList;
+        newRegisterList.push(RegisteredUsersId);
+    };
+    let registrations = newRegisterList;
+    let updateClass = {
+        registrations: registrations
+    };
+
+    const updatedInfo = await classCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: updateClass },
+        { returnDocument: 'after' }
+    );
+
+    if (updatedInfo.lastErrorObject.n === 0) {
+        throw 'Failed to update registrations';
+    };
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+};
+
+export const updateReview = async (
+    id,
+    reviewId,
+    action
+) => {
+    id = isValidId(id);
+    reviewId = isValidId(reviewId);
+    action = isValidAction(action);
+
+    const classCollection = await classes();
+    const theClass = await getClassbyId(id);
+
+    let CurrentReviewList = theClass.reviewId;
+    if (!CurrentReviewList.includes(reviewId)) { throw `Error: No such appointment for ${theClass.className} ` };
+    let newReviewList = [];
+    if (action == 'delete') {
+        for (let i = 0; i < CurrentReviewList.length; i++) {
+            if (CurrentReviewList[i] != reviewId) {
+                newReviewList.push(CurrentReviewList[i]);
+            };
+        }
+    } else {
+        newReviewList = CurrentReviewList;
+        newReviewList.push(reviewId);
+    };
+
+    let reviews = newReviewList;
+    let updateUser = {
+        reviews: reviews,
+    };
+
+    const updatedInfo = await classCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: updateUser },
+        { returnDocument: 'after' }
+    );
+
+    if (updatedInfo.lastErrorObject.n === 0) {
+        throw 'Failed to update reviews';
+    }
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+};
