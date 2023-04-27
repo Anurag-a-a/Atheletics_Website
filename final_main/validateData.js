@@ -27,7 +27,7 @@ export const isValidemail = (email) => {
     if(!(typeof email == 'string')){throw "Error: email must be a string";};
     email = email.trim().toLowerCase();
     if(email.length === 0){throw "Error: Email cannot be an empty string or string with just spaces";};
-    if(!email.match(/^[^\s\d@]+@[^\s\d@]+\.[^\s\d@]+$/)){
+    if(!(/^(?!.*\.\.)+([^.]+[A-Za-z0-9_.! @\\#"()$%&'*+/=?^`{|}~-])+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,3})*$/.test(email))){
         {throw "Error: Invalid Email";};
     };
     return email;
@@ -251,8 +251,13 @@ export const isValidCancelledOrNot = (cancelledOrNot) => {
 export const isValidUsername = (username) => {
     if(!username){throw `Error: username not given`;};
     if(!(typeof username == 'string')){throw `Error: username must be a string`;};
-    username = username.trim();
+    username = username.trim().toLowerCase();
     if(username.length === 0){throw `Error: username cannot be an empty string or string with just spaces`;};
-    return username.toLowerCase();
+    //regex to check the valid form
+    //username length between 3-15 characters. can contain alphabets, numbers 0-9 and
+    //and special characters !@#$%^&*-_+=|~`
+    if((username.length < 3) || (username.length > 15)) {throw 'Error: Username length has to be between 3 and 15';};
+    if(!(/^[a-zA-Z0-9!@#$%^&*-_+=|~]+$/.test(username))) {throw 'Error: Username can contain only alphabets a-z, numbers 0-9 and !@#$%^&*-_+=|~`';};
+    return username;
 
 }

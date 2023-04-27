@@ -1,0 +1,24 @@
+<main>
+    <h1>Welcome!!</h1>
+    <form id ="login-form" method="POST" action="/login">
+        <label for="emailUsername">Enter you email address or username:</label> <br>
+        <input id ="emailUsername" type="email" name="emailUsername"/>
+        <br>
+        <label for="passwordInput">Enter your password:</label><br>
+        <input id ="passwordInput" type="password" name="passwordInput"/> 
+        <br>        
+        <input class="clickbutton" type="submit" value="Sign In"/>
+        
+        {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+        {{/if}}
+        
+    
+    </form>
+    <hr>
+    <a href="/membershipPlan">Not yet a member yet! Click here to view our various plan to join one.!</a>
+</main>
