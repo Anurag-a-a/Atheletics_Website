@@ -23,11 +23,11 @@ export const isValidname = (name, variable) => {
 
 //validate email
 export const isValidemail = (email) => {
-    if (!email) { throw "Error: no email provided"; };
-    if (!(typeof email == 'string')) { throw "Error: email must be a string"; };
+    if(!email){throw "Error: no email provided";};
+    if(!(typeof email == 'string')){throw "Error: email must be a string";};
     email = email.trim().toLowerCase();
     if(email.length === 0){throw "Error: Email cannot be an empty string or string with just spaces";};
-    if(!email.match(/^[^\s\d@]+@[^\s\d@]+\.[^\s\d@]+$/)){
+    if(!(/^(?!.*\.\.)+([^.]+[A-Za-z0-9_.! @\\#"()$%&'*+/=?^`{|}~-])+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,3})*$/.test(email))){
         {throw "Error: Invalid Email";};
     };
     return email;
