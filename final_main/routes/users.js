@@ -21,7 +21,7 @@ router.route('/joinnow').get(async (req, res) => {
 });
 router.route('/signin').get(async (req, res) => {
     //code here for Getting the main page of the gym
-    return res.render('login',{title: "Gym Brat"});
+    return res.render('signIn',{title: "Gym Brat"});
 });
 
 
