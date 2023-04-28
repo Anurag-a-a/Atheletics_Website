@@ -266,15 +266,6 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
     return selectedTimeSlot;
 }
 
-//validate class capacity
-export const isValidClassCapacity = (classCapacity) => {
-    if (!classCapacity) { throw `Error: class capacity not given`; };
-    if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
-    if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
-    if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
-    return classCapacity;
-}
-
 //validate className
 export const isValidClassName = (className) => {
     if (!className) { throw `Error: class name not given`; };
@@ -320,11 +311,4 @@ export const isValidClassCapacity = (classCapacity) => {
     if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
     if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
     return classCapacity;
-//validate username
-export const isValidUsername = (username) => {
-    if(!username){throw `Error: username not given`;};
-    if(!(typeof username == 'string')){throw `Error: username must be a string`;};
-    username = username.trim();
-    if(username.length === 0){throw `Error: username cannot be an empty string or string with just spaces`;};
-    return username.toLowerCase();
 }
