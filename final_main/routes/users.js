@@ -13,7 +13,7 @@ router.route('/amenities').get(async (req, res) => {
 });
 router.route('/membershipdetails').get(async (req, res) => {
     //code here for Getting the main page of the gym
-    return res.render('membershipPlan',{title: "Gym Brat"});
+    return res.render('membershipDetails',{title: "Gym Brat"});
 });
 router.route('/joinnow').get(async (req, res) => {
     //code here for Getting the main page of the gym

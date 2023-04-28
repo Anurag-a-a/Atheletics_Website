@@ -20,7 +20,7 @@
 //   classCapacity: 20
 // }
 
-import { classes } from '../config/mongoCollections/js';
+import { classes } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import {
     isValidAction,
@@ -29,7 +29,7 @@ import {
     isValidDescription,
     isValidId,
     isValidTimeSlot,
-    isValidname,
+    isValidName,
 } from '../validateData.js';
 
 //get a class provided the id
@@ -49,9 +49,9 @@ export const createClass = async (
     description,
     classCapacity
 ) => {
-    className = isValidClassName(className);
+    className = isValidName(className);
     slots = isValidTimeSlot(slots);
-    instructor = isValidname(instructor);
+    instructor = isValidName(instructor);
     description = isValidDescription(description);
     classCapacity = isValidClassCapacity(classCapacity);
     let registeredUsers = [];
@@ -118,7 +118,7 @@ export const update = async (
     id = isValidId(id);
     className = isValidClassName(className);
     slots = isValidTimeSlot(slots);
-    instructor = isValidname(instructor);
+    instructor = isValidName(instructor);
     description = isValidDescription(description);
     classCapacity = isValidClassCapacity(classCapacity);
 

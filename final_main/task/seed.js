@@ -3,7 +3,7 @@ import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 
 async function main() {
     const db = await dbConnection();
-    await db.dropDatabase();
+    //await db.dropDatabase();
 
     let firstName = "Harry";
     let lastName = "Potter";

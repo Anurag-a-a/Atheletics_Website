@@ -35,13 +35,13 @@ import {ObjectId} from 'mongodb';
 import bcrypt from 'bcrypt';
 const saltRounds = 16;
 
-import {isValidname,
-        isValidemail,
-        isValidphoneNumber,
-        isValidaddress,
+import {isValidName,
+        isValidEmail,
+        isValidPhoneNumber,
+        isValidAddress,
         isValidUsername,
-        isValidpassword,
-        isValidmembershipPlanDetails,
+        isValidPassword,
+        isValidMembershipPlanDetails,
         isValidRole,
         isValidId,
         isValidAction,
@@ -75,16 +75,16 @@ export const createUser = async (
     role,
     membershipPlanDetails   
 ) => {
-    firstName = isValidname(firstName, 'firstName');
-    lastName = isValidname(lastName, 'lastName');
+    firstName = isValidName(firstName, 'firstName');
+    lastName = isValidName(lastName, 'lastName');
     sex = isValidSex(sex);
     dob = isValidDOB(dob); //Format: MM/DD/YYYY
-    email = isValidemail(email);
-    phoneNumber = isValidphoneNumber(phoneNumber);
-    address = isValidaddress(address);
+    email = isValidEmail(email);
+    phoneNumber = isValidPhoneNumber(phoneNumber);
+    address = isValidAddress(address);
     username = isValidUsername(username);
-    password = isValidpassword(password);
-    emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
+    password = isValidPassword(password);
+    emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
     role = isValidRole(role);
     membershipPlanDetails = isValidmembershipPlanDetails(membershipPlanDetails);
@@ -193,20 +193,20 @@ export const update = async (
     membershipPlanDetails,
   ) => {
     id = isValidId(id);
-    firstName = isValidname(firstName, 'firstName');
-    lastName = isValidname(lastName, 'lastName');
+    firstName = isValidName(firstName, 'firstName');
+    lastName = isValidName(lastName, 'lastName');
     sex = isValidSex(sex);
     dob = isValidDOB(dob);
-    email = isValidemail(email);
-    phoneNumber = isValidphoneNumber(phoneNumber);
-    address = isValidaddress(address);
+    email = isValidEmail(email);
+    phoneNumber = isValidPhoneNumber(phoneNumber);
+    address = isValidAddress(address);
     username = isValidUsername(username);
 //     hashedPassword = isValidpassword(hashedPassword);
 /* check how to validate password here, if password is not updated then the db will have hashed password so how to validate it*/
-    emergencyContactName = isValidname(emergencyContactName,'emergencyContactName');
-    emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
+    emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
+    emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
     role = isValidRole(role);
-    membershipPlanDetails = isValidmembershipPlanDetails(membershipPlanDetails);
+    membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
 
     const userCollection = await users();
     const existingUser = await getUserbyId(id);
