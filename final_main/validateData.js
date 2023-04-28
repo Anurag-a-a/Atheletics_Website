@@ -86,6 +86,25 @@ export const isValidaddress = (address) => {
 
 };
 
+export const isValidWebsite= (website) => {
+    if (!website) { throw "Error: no role provided"; };
+    if (!(typeof website == 'string')) { throw "Error: role must be a string"; };
+    website = website.trim();
+    if (website.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
+    let format =  /^http?(s):\/\/www\.[-a-zA-Z0-9@:%._\+~#=]{5,256}\.com$/;
+    if (!format.test(website)) { throw "Error: zipCode can contain only numbers"; };
+    return website;
+
+};
+
+export const isValidBranch = (branchName) => {
+    if (!branchName) { throw "Error: no role provided"; };
+    if (!(typeof branchName == 'string')) { throw "Error: role must be a string"; };
+    branchName = branchName.trim();
+    if (branchName.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
+
+    return branchName;
+};
 //validate password
 
 export const isValidpassword = (password) => {
@@ -196,6 +215,15 @@ export const isValidRating = (rating) => {
     return rating;
 }
 
+export const isValidCapacity = (capacity) => {
+    if (!capacity) throw 'You must provide a rating';
+    if (typeof capacity !== 'number') throw 'yrating must be a number'
+    if (capacity < 0 || capacity > 100 || (!Number.isInteger(capacity * 10) && !Number.isInteger(capacity))) {
+        throw 'rating must between 0-5 and rating must be integer or one decimal place float';
+    }
+    return capacity;
+}
+
 // validate TimeSlot
 export const isValidTimeSlot = (selectedTimeSlot) => {
     if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
@@ -254,12 +282,4 @@ export const isValidUsername = (username) => {
     username = username.trim();
     if(username.length === 0){throw `Error: username cannot be an empty string or string with just spaces`;};
     return username.toLowerCase();
-
-//validate class capacity
-export const isValidClassCapacity = (classCapacity) => {
-    if (!classCapacity) { throw `Error: class capacity not given`; };
-    if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
-    if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
-    if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
-    return classCapacity;
 }
