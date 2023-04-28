@@ -10,7 +10,7 @@
 import {reviews} from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 import {
-  isValidId, isValidRating, isValidreviewText 
+  isValidId, isValidRating, isValidReviewText 
 } from '../validateData.js';
 
 const getAllReviews = async () => {
@@ -39,7 +39,7 @@ const addReview = async (gymId, classId, reviewText, rating) => {
   if(!classId) {
     gymId = isValidId(gymId);
     classId = isValidId(classId);
-    reviewText = isValidreviewText(reviewText);
+    reviewText = isValidReviewText(reviewText);
     rating = isValidRating(rating);
 
     let newReview = {
@@ -60,7 +60,7 @@ const addReview = async (gymId, classId, reviewText, rating) => {
   } else {
     gymId = isValidId(gymId);
     classId = isValidId(classId);
-    reviewText = isValidreviewText(reviewText);
+    reviewText = isValidReviewText(reviewText);
     rating = isValidRating(rating);
 
     let newReview = {

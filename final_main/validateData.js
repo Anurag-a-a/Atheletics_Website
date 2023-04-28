@@ -13,7 +13,7 @@ export const isValidId = (id) => {
 };
 
 //validate names
-export const isValidname = (name, variable) => {
+export const isValidName = (name, variable) => {
     if (!name) { throw `Error: ${variable} not given`; };
     if (!(typeof name == 'string')) { throw `Error: ${variable} must be a string`; };
     name = name.trim();
@@ -22,7 +22,7 @@ export const isValidname = (name, variable) => {
 };
 
 //validate email
-export const isValidemail = (email) => {
+export const isValidEmail = (email) => {
     if(!email){throw "Error: no email provided";};
     if(!(typeof email == 'string')){throw "Error: email must be a string";};
     email = email.trim().toLowerCase();
@@ -35,7 +35,7 @@ export const isValidemail = (email) => {
 
 //validate phoneNumber
 
-export const isValidphoneNumber = (phoneNumber) => {
+export const isValidPhoneNumber = (phoneNumber) => {
     if (!phoneNumber) { throw "Error: no phoneNumber provided"; };
     if (!(typeof phoneNumber == 'string')) { throw "Error: phoneNumber must be a string"; };
     phoneNumber = phoneNumber.trim();
@@ -49,7 +49,7 @@ export const isValidphoneNumber = (phoneNumber) => {
 
 //validate address
 
-export const isValidaddress = (address) => {
+export const isValidAddress = (address) => {
     /*
         address: {
             streetName: '1234 NW Bobcat Lane',
@@ -107,7 +107,7 @@ export const isValidBranch = (branchName) => {
 };
 //validate password
 
-export const isValidpassword = (password) => {
+export const isValidPassword = (password) => {
     /*Password Rules:
         1. Atleast 8 characters long
         2. Should contain atleast 1 number
@@ -134,12 +134,12 @@ export const isValidpassword = (password) => {
 
 //validate membershipPlanDetails
 
-export const isValidmembershipPlanDetails = (plan) => {
+export const isValidMembershipPlanDetails = (plan) => {
     if (!plan) { throw "Error: no plan provided"; };
     if (!(typeof plan == 'string')) { throw "Error: plan must be a string"; };
     plan = plan.trim().toLowerCase();
     if (plan.length === 0) { throw "Error: plan cannot be an empty string or string with just spaces"; };
-    if (!((plan == "alpha") || (plan == "beta") || (plan == "omega") || (plan == "n/a"))) { throw "Error: Invalid plan"; };
+    if (!((plan == "alpha") || (plan == "beta") || (plan == "omega")) || (plan == "n/a")) { throw "Error: Invalid plan"; };
     return plan;
 };
 
@@ -150,7 +150,7 @@ export const isValidRole = (role) => {
     if (!(typeof role == 'string')) { throw "Error: role must be a string"; };
     role = role.trim().toLowerCase();
     if (role.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
-    if (!((role == 'user') || (role == 'management'))) { throw "Error: Invalid Role" };
+    if (!((role == 'user') || (role == 'admin'))) { throw "Error: Invalid Role" };
     return role;
 };
 
@@ -197,7 +197,7 @@ export const isValidDOB = (dob) => {
 
 
 // validate reviewText
-export const isValidreviewText = (reviewText) => {
+export const isValidReviewText = (reviewText) => {
     if (!reviewText) throw 'You must provide review information';
     if (typeof reviewText !== 'string') throw 'reviewText must be a string';
     if (reviewText.trim().length === 0) throw 'reviewText cannot be an empty string or string with just spaces';
@@ -254,6 +254,33 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
         throw 'End time must be greater than start time';
     }
     return selectedTimeSlot;
+}
+
+//validate class capacity
+export const isValidClassCapacity = (classCapacity) => {
+    if (!classCapacity) { throw `Error: class capacity not given`; };
+    if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
+    if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
+    if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
+    return classCapacity;
+}
+
+//validate className
+export const isValidClassName = (className) => {
+    if (!className) { throw `Error: class name not given`; };
+    if (!(typeof className == 'string')) { throw `Error: class name must be a string`; };
+    className = className.toLowerCase().trim().replace(/\s+/g, "");
+    if (className.length === 0) { throw `Error: class name cannot be an empty string or string with just spaces`; };
+    return className;
+}
+
+//validate description
+export const isValidDescription = (description) => {
+    if (!description) { throw `Error: class description not given`; };
+    if (!(typeof description == 'string')) { throw `Error: class description must be a string`; };
+    description = description.trim();
+    if (description.length === 0) { throw `Error: class description cannot be an empty string or string with just spaces`; };
+    return description;
 }
 
 // validate CancelledOrNot

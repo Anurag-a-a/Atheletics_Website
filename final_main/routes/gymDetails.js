@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { gyms } from '../config/mongoCollections';
+import { gyms } from '../config/mongoCollections.js';
 const router = Router();
 
 router.route('/location').get(async (req, res) => {

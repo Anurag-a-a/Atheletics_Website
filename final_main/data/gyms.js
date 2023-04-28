@@ -21,15 +21,17 @@
 //     '41f83110b3a1eb1911a2eac'
 //   ],
 //  maxCapacity: 40,
+// plan : 
 
 // } 
 
-import gymsData from '../config/mongoCollections.js';
+import {gyms} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import {isValidBranch,
         isValidEmail,
         isValidPhoneNumber,
         isValidAddress,
+        isValidWebsite,
         isValidMembershipPlanDetails,
         isValidRole,
         isValidId,
@@ -37,7 +39,6 @@ import {isValidBranch,
 } from '../validateData.js';
 
 export const createGym = async(
-    _id,
     branchName,
     website,
     address,
@@ -48,22 +49,29 @@ export const createGym = async(
     role )=>  {
     try {
       // Validate input parameters
+      role = isValidRole(role);
+      if (role !== "admin")
+        throw `Only admin can instert a new Gym`
       branchName = isValidBranch(branchName);
+     
+      const gymList = await getAllGyms();
+      for (const gym of gymList) {
+        if (gym.branchName === branchName) {
+          throw new Error(`Gym with Branch Name ${branchName} already exists`);
+        }
+      }
       website = isValidWebsite(website);
       address = isValidAddress(address);
       phoneNumber = isValidPhoneNumber(phoneNumber);
       membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
       email = isValidEmail(email);
-      role = isValidRole(role);
       maxCapacity = isValidCapacity(maxCapacity);
-
       let classIds = [];
       let reviewIds = [];
       let overallRating = 5;
 
-      const gymsCollection = await gymsData();
+      const gymsCollection = await gyms();
       const newGym = {
-        _id,
         branchName,
         website,
         address,
@@ -78,11 +86,11 @@ export const createGym = async(
       };
       const insertInfo = await gymsCollection.insertOne(newGym);
 
-      if (insertInfo.insertedCount === 0) {
+      if (! insertInfo.acknowledged) {
         throw new Error('Could not add gym');
       }
 
-      return await this.getGymById(insertInfo.insertedId);
+      return await getGymById(insertInfo.insertedId.toString());
     } 
     catch (err) {
       console.log(err);
@@ -90,11 +98,23 @@ export const createGym = async(
     }
 };
 
+export const getAllGyms = async () => {
+  const gymsCollection = await gyms();
+  let gymsList = await gymsCollection.find({}).toArray();
+  if(gymsList.length == 0){return gymsList;};
+  if (!gymsList){throw "Could not get all users";};
+  gymsList = gymsList.map((element) => {
+    element._id = element._id.toString();
+    return element;
+  });
+  return gymsList;
+};
+
 export const getGymById = async(id) => {
   try {
     
-    const gymsCollection = await gymsData();
-    const gym = await gymsCollection.findOne({ _id: ObjectId(id) });
+    const gymsCollection = await gyms();
+    const gym = await gymsCollection.findOne({ _id: new ObjectId(id) });
 
     if (!gym) {
       throw new Error('Gym not found');
@@ -133,8 +153,8 @@ export const updateGym = async(
     let reviewIds = []
     let overallRating = 5;
     
-    const gymsCollection = await gymsData();
-    const gym = await gymsCollection.findOne({ _id: ObjectId(_id) });
+    const gymsCollection = await gyms();
+    const gym = await gymsCollection.findOne({ _id: new ObjectId(_id) });
 
     if (!gym) {
       throw new Error('Gym not found');
@@ -153,7 +173,7 @@ export const updateGym = async(
     gym.reviewIds = reviewIds;
     gym.overallRating = overallRating;
     const updateInfo = await gymsCollection.replaceOne(
-      { _id: ObjectId(_id) },
+      { _id: new ObjectId(_id) },
       gym
     );
 
@@ -171,7 +191,7 @@ export const updateGym = async(
 
 const addClassId = async (gymId, classId) => {
   try {
-    const gym = await gymsData.findById(gymId);
+    const gym = await gyms.findOne({_id : new ObjectId(gymId)});
     if (!gym) {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
@@ -179,8 +199,8 @@ const addClassId = async (gymId, classId) => {
       console.log(`Class with ID ${classId} already exists in gym`);
       return gym;
     }
-    const updatedGym = await gymsData.findOneAndUpdate(
-      { _id: gymId }, // find the gym with the specified ID and ensure that the class ID is not already in the classIds array
+    const updatedGym = await gyms.findOneAndUpdate(
+      { _id: new ObjectId(gymId) }, // find the gym with the specified ID and ensure that the class ID is not already in the classIds array
       { $push: { classIds: classId } }, // add the class ID to the classIds array
       { new: true } // return the updated gym object
     );
@@ -200,7 +220,7 @@ const addClassId = async (gymId, classId) => {
 const addReviewId = async(gymId,reviewId) => {
 
   try {
-    const gym = await gymsData.findById(gymId);
+    const gym = await gyms.findOne({_id : new ObjectId(gymId)});
     if (!gym) {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
@@ -208,8 +228,8 @@ const addReviewId = async(gymId,reviewId) => {
       console.log(`Review with ID ${reviewId} already exists in gym`);
       return gym;
     }
-    const updatedGym = await gymsData.findOneAndUpdate(
-      { _id: gymId }, // find the gym with the specified ID and ensure that the class ID is not already in the classIds array
+    const updatedGym = await gyms.findOneAndUpdate(
+      { _id: new ObjectId(gymId) }, // find the gym with the specified ID and ensure that the class ID is not already in the classIds array
       { $push: { reviewIds: reviewId } }, // add the review ID to the classIds array
       { new: true } // return the updated gym object
     );
@@ -231,7 +251,7 @@ const removeClassId = async (gymId, classId) => {
 
   let gymCollection = db.collection('gyms'); // get the gym collection from the database
   const classRemoval = await gymCollection.findOneAndUpdate(
-    { _id: gymId },
+    { _id: new ObjectId(gymId) },
     { $pull: { classIds: classId } },
     { returnOriginal: false }
   ); // remove the class ID from the gym's classIds array
@@ -245,7 +265,7 @@ const removeClassId = async (gymId, classId) => {
 
 const removeReviewdid = async (gymId,reviewId) => {
     let reviewRemoval = await gymCollection.findOneAndUpdate(
-      { _id: gymId },
+      { _id: new ObjectId(gymId) },
       { $pull: { reviewIds: reviewId } },
       { returnOriginal: false }
     ); // remove the review ID from the gym's classIds array
