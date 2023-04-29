@@ -207,7 +207,7 @@ export const isValidDOB = (dob) => {
 
 
 // validate reviewText
-export const isValidReviewText = (reviewText) => {
+export const isValidreviewText = (reviewText) => {
     if (!reviewText) throw 'You must provide review information';
     if (typeof reviewText !== 'string') throw 'reviewText must be a string';
     if (reviewText.trim().length === 0) throw 'reviewText cannot be an empty string or string with just spaces';

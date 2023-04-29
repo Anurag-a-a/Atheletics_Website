@@ -23,7 +23,7 @@ const getAllAppointments = async () => {
 const getAppointmentById = async (appointmentId) => {
   appointmentId = isValidId(appointmentId);
   const appointmentCollection = await appointments();
-  const appointment = await appointmentCollection.findOne({_id: new ObjectId(id)});
+  const appointment = await appointmentCollection.findOne({_id: new ObjectId(appointmentId)});
   if (!appointment) throw 'Error: appointment not found';
   appointment._id = appointment._id.toString();
   return appointment;
@@ -34,19 +34,34 @@ const addAppointment = async (classId, selectedTimeSlot, cancelledOrNot) => {
   selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
   cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
 
+  const appointmentCollection = await appointments();
+
+  // Check if the time slot is available for the given class
+  const existingAppointment = await appointmentCollection.findOne({
+    classId: classId,
+    selectedTimeSlot: selectedTimeSlot,
+    cancelledOrNot: false,
+  });
+
+  if (existingAppointment) {
+    throw 'This time slot has already been booked for this class';
+  }
+
   let newAppointment = {
     classId: classId,
     selectedTimeSlot: selectedTimeSlot,
-    cancelledOrNot: cancelledOrNot
-  }
-  const appointmentCollection = await appointments();
+    cancelledOrNot: cancelledOrNot,
+  };
+
   const newInsertInfo = await appointmentCollection.insertOne(newAppointment);
-  if (!newInsertInfo.insertedID) throw 'Insert failed!';
+  if (!newInsertInfo.acknowledged || !newInsertInfo.insertedID)
+    throw 'Insert failed!';
+
   const newId = newInsertInfo.insertedID.toString();
   const addedAppointment = await getAppointmentById(newId);
   addedAppointment._id = addedAppointment._id.toString();
   return addedAppointment;
-}
+};
 
 const removeAppointment = async (appointmentId) => {
   appointmentId = isValidId(appointmentId);
@@ -62,6 +77,16 @@ const updateAppointmentPut = async (appointmentId, classId, selectedTimeSlot, ca
   classId = isValidId(classId);
   selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
   cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
+
+  // Check if there's already an appointment at the selected time slot
+  const existingAppointment = await appointments().findOne({
+    classId: classId,
+    selectedTimeSlot: selectedTimeSlot,
+    cancelledOrNot: false
+  });
+  if (existingAppointment && existingAppointment._id.toString() !== appointmentId) {
+    throw 'Error: The selected time slot is already booked.';
+  }
 
   const appointmentUpdateInfo = {
     classId: classId,
