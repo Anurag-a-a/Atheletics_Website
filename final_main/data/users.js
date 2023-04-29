@@ -355,7 +355,7 @@ export const checkUser = async (emailAddress, password) => {
         comparePassword = await bcrypt.compare(password, userList[i]['hashedPassword']);
         console.log(comparePassword)
       }catch(e){
-        throw {"Internal Server Error"}
+        throw "Internal Server Error";
       };
       if (comparePassword) {
         if(userList[i]['role'] == 'admin'){ 
