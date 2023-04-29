@@ -1,7 +1,7 @@
-//client side validation codes for all forms
+//client side validation codes for sign in forms
 
 ( function () {
-
+    // console.log("here in client side script")
     function validateEmail(email){
         if(!email){throw "Error: no email provided";};
         if(!(typeof email == 'string')){throw "Error: email must be a string";};
@@ -31,7 +31,7 @@
     };
 
     const formSignIn = document.getElementById('signIn-form');
-
+    console.log("here in client side script")
     if(formSignIn) {
         //get the Element object with the specified id
         const email = document.getElementById('emailAddress');
@@ -40,8 +40,10 @@
         const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
         formSignIn.addEventListener('submit', (event) => {
+            // event.preventDefault();
             const validInputsList = [];
             try {
+                console.log("inside client side validation");
                 errorContainer.classList.add('hidden');
                 const emailString = validateEmail(email.value);
                 validInputsList.push(emailString);
@@ -58,16 +60,10 @@
                 else {
                     /*below two lines of code reference from:
                       https://stackoverflow.com/questions/40531459/clear-a-single-form-field-in-html */
-                    var f = document.getElementById("signIn-form").elements;
+                    var f = formSignIn.elements;
                     f["passwordInput"].value = "";
                 };
-                
-
             };//close try-catch block
-
         });//close the eventListener
-
-
     };//close if(formSignIn)
-
 }) ();

@@ -5,12 +5,15 @@
     <meta charset="utf-8">
     <title>{{title}}</title>
     <link rel="stylesheet" href="/public/css/commonStyles.css">
-    <link rel="stylesheet" href='/public/css/landingPage.css'> {{!how to pass the style sheet url to main template}}  
+    <link rel="stylesheet" href='/public/css/landingPage.css'> {{!--how to pass the style sheet url to main template--}}  
     <link rel="stylesheet" href='/public/css/location.css'>
     <link rel="stylesheet" href='/public/css/amenities.css'>
     <link rel="stylesheet" href='/public/css/membershipPlan.css'>
 </head>
 <body>
+    <div class="form-group hidden" id="error-container">
+        <div class="alert alert-danger text-goes-here"></div>
+    </div>
     <header>
         <img id="header_image" alt="Gym brat" src="/public/images/headerImage.jpg">
         <div id="header_name">Gym Brat</div>
@@ -18,10 +21,14 @@
     {{{body}}}
     <footer>@gymBrat....</footer>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
-    {{> (lookup . 'partial') }}
+    crossorigin="anonymous"></script>
+    {{!-- <script src="/public/js/signInFormInput.js"></script> --}}
+    {{!-- {{> (lookup . 'sigInPartial') }} --}}
+    {{#if (eqSignIn partial "signIn")}}
+        {{> sigInPartial}}
+    {{/if}}
 </body>
  
 </html>

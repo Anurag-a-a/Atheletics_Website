@@ -32,7 +32,7 @@
 */
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 const saltRounds = 16;
 
 import {isValidName,
@@ -85,9 +85,9 @@ export const createUser = async (
     username = isValidUsername(username);
     password = isValidPassword(password);
     emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
-    emergencyContactPhoneNumber = isValidphoneNumber(emergencyContactPhoneNumber);
+    emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
     role = isValidRole(role);
-    membershipPlanDetails = isValidmembershipPlanDetails(membershipPlanDetails);
+    membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
     let MyAppointments = [];
     let MyReviews = [];
     let newUser = {};
@@ -323,3 +323,81 @@ export const updateReview = async (
       updatedInfo.value._id = updatedInfo.value._id.toString();
       return updatedInfo.value;
 };
+
+export const checkUser = async (emailAddress, password) => {
+  let firstName = "";
+  let lastName = "";
+  let sex = "";
+  let dob = "";
+  // let email = "";
+  let phoneNumber = "";
+  let address ={};
+  let username = "";
+  // let hashedPassword = "";
+  let emergencyContactName = "";
+  let emergencyContactPhoneNumber = "";
+  let role = "";
+  let membershipPlanDetails = "";
+  let MyAppointments =[];
+  let MyReviews = [];
+  let returnObj = {};
+  emailAddress = isValidEmail(emailAddress);
+  password = isValidPassword(password);
+  const userCollection = await users();
+  const userList = await getAllUser();
+  let check = false;
+  let comparePassword = false;
+  //iterating through the 
+  for (let i=0; i<userList.length; i++){
+    if(emailAddress == userList[i]['email']) { 
+      check = true;
+      try {
+        comparePassword = await bcrypt.compare(password, userList[i]['hashedPassword']);
+        console.log(comparePassword)
+      }catch(e){
+        throw {"Internal Server Error"}
+      };
+      if (comparePassword) {
+        if(userList[i]['role'] == 'admin'){ 
+          returnObj = {
+          firstName: userList[i]['firstName'],
+          lastName: userList[i]['lastName'],
+          sex: userList[i]['sex'],
+          dob: userList[i]['dob'],
+          emailAddress: userList[i]['emailAddress'],
+          phoneNumber: userList[i]['phoneNumber'],
+          address: userList[i]['address'],
+          username: userList[i]['username'],
+          emergencyContactName: userList[i]['emergencyContactName'],
+          emergencyContactPhoneNumber: userList[i]['emergencyContactPhoneNumber'],
+          role: userList[i]['role']
+        }
+      }else {
+        returnObj = {
+          firstName: userList[i]['firstName'],
+          lastName: userList[i]['lastName'],
+          sex: userList[i]['sex'],
+          dob: userList[i]['dob'],
+          emailAddress: userList[i]['emailAddress'],
+          phoneNumber: userList[i]['phoneNumber'],
+          address: userList[i]['address'],
+          username: userList[i]['username'],
+          emergencyContactName: userList[i]['emergencyContactName'],
+          emergencyContactPhoneNumber: userList[i]['emergencyContactPhoneNumber'],
+          role: userList[i]['role'],
+          membershipPlanDetails: userList[i]['membershipPlanDetails'],
+          MyAppointments: userList[i]['MyAppointments'],
+          MyReviews: userList[i]['MyReviews']
+        }
+      };//close if-else for role determination and assigning returnObj
+      } else {
+          throw "Error: Invalid Password. Try Again!!";
+      };//close if--else for password match
+      break;
+    };//close if
+  };//close for for finding user match in db
+  if(!check) {throw "Error: Invalid email. Try Again!!";};
+  return returnObj;
+  
+};
+

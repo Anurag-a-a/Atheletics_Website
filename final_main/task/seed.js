@@ -25,7 +25,7 @@ async function main() {
     let membershipPlanDetails = "Alpha";
     
     try {
-        let user1 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user1 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user1)
     }catch(e){
         console.log(e);
@@ -51,7 +51,7 @@ async function main() {
     	role = "User";
     	membershipPlanDetails = "Beta";
     
-        let user2 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user2 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user2)
     }catch(e){
         console.log(e);
@@ -77,7 +77,7 @@ async function main() {
     	role = "User";
     	membershipPlanDetails = "Omega";
     
-        let user3 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user3 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user3)
     }catch(e){
         console.log(e);
@@ -96,14 +96,14 @@ async function main() {
         	state: 'New Jersey',
         	zipCode: '07305'
 		};
-		username = "mc",
+		username = "mcg",
 		hashedPassword = "Minerva@12345";
     	emergencyContactName = "John Mcgonagall";
     	emergencyContactPhoneNumber = "1231231234";
     	role = "Management";
     	membershipPlanDetails = "N/A";
     
-        let user4 = await userData.createUser(firstName,lastName,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        let user4 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user4)
     }catch(e){
         console.log(e);

@@ -8,6 +8,12 @@ import {dirname} from 'path';
 import exphbs from 'express-handlebars';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const staticDir = express.static(__dirname + '/public');
+app.use('/public', staticDir);
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 
 const handlebarsInstance = exphbs.create({
@@ -18,21 +24,30 @@ const handlebarsInstance = exphbs.create({
       if (typeof spacing === 'number')
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
       return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    eqSignIn: (val) => {
+        if(val == 'signIn') {return true;}
     }
   },
   partialsDir: ['views/partials/']
 });
-const staticDir = express.static(__dirname + '/public');
-app.use('/public', staticDir);
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 
+app.use(
+  session({
+    name: 'AuthCookie',
+    secret: "This is a secret.. shhh don't tell anyone",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {maxAge: 60000}
+  })
+);
 
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
-
+// app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+// app.set('view engine', 'handlebars');
 
 configRoutes(app);
 

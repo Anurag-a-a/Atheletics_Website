@@ -1,3 +1,16 @@
+.alert{
+  color: red;
+  font-style: bold;
+}
+#login_error{
+  color:#8b0000;
+  font-style: bold;
+}
+#error-container{
+  font-family: 'Courier New', Courier, monospace;
+  color: red;
+  font-style: bold;
+}
 #header_image {  
     float: left;
     width: 50px;

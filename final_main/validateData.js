@@ -160,7 +160,7 @@ export const isValidRole = (role) => {
     if (!(typeof role == 'string')) { throw "Error: role must be a string"; };
     role = role.trim().toLowerCase();
     if (role.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
-    if (!((role == 'user') || (role == 'admin'))) { throw "Error: Invalid Role" };
+    if ((role != 'user') && (role != 'admin')) { throw "Error: Invalid Role" };
     return role;
 };
 
@@ -171,7 +171,7 @@ export const isValidAction = (action) => {
     if (!(typeof action == 'string')) { throw "Error: action must be a string"; };
     action = action.trim().toLowerCase();
     if (action.length === 0) { throw "Error: action cannot be an empty string or string with just spaces"; };
-    if ((action != 'delete') || (action != 'add')) { throw "Error: Invalid action" };
+    if ((action != 'delete') && (action != 'add')) { throw "Error: Invalid action" };
     return action;
 };
 
@@ -182,7 +182,8 @@ export const isValidSex = (sex) => {
     if (!(typeof sex == 'string')) { throw "Error: sex must be a string"; };
     sex = sex.trim().toLowerCase();
     if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
-    if ((sex != 'male') || (sex != 'female') || (sex != 'non-binary') || (sex != 'prefer not to say')) { throw "Error: Invalid sex" };
+    console.log(sex);
+    if ((sex != 'male') && (sex != 'female') && (sex != 'non-binary') && (sex != 'prefer not to say')) { throw "Error: Invalid sex" };
     return sex;
 
 };
