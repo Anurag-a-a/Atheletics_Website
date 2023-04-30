@@ -183,7 +183,7 @@ export const isValidSex = (sex) => {
     sex = sex.trim().toLowerCase();
     if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
     console.log(sex);
-    if ((sex != 'male') && (sex != 'female') && (sex != 'non-binary') && (sex != 'prefer not to say')) { throw "Error: Invalid sex" };
+    if ((sex != 'male') && (sex != 'female') && (sex != 'non-binary') && (sex != 'prefer-not-to-say')) { throw "Error: Invalid sex" };
     return sex;
 
 };
