@@ -66,6 +66,10 @@ router.route('/signin').post(middleware.signInMiddleware,async (req, res) => {
       }catch(e){
         return res.status(400).render('signIn', {error: e});
       };
+      router.route('/protectedUserHomePage').get(async (req, res) => {
+        //code here for Getting the main page of the gym
+        return res.render('protectedUserHomePage',{title: "Gym Brat"});
+    });
 });
 
 

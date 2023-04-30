@@ -1,3 +1,31 @@
 <main class="main">
     <p>Fill up the details below to join the gym membership</p>
+    <h1>Sign In</h1>
+    <form id ="joinNow-form" method="POST" action="/joinnow">
+        <label for="firstName">Enter you first name:</label>
+        <br>
+        <input id ="firstName" type="text" name="firstName"/>
+        <br>
+        <label for="lastName">Enter you last name:</label>
+        <br>
+        <input id ="lastName" type="text" name="lastName"/>
+        <br>
+
+        <label for="passwordInput">Enter your password:</label>
+        <br>
+        <input id ="passwordInput" type="password" name="passwordInput"/> 
+        <br>        
+        <input class="clickbutton" type="submit" value="Sign In"/>
+        <br>
+        {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+        {{/if}}    
+    </form>
+    <hr>
+    <a href="/signin">Already a memeber. Click here to sign In</a>
+    <a href="/membershipdetails">Waant to see our exclusive plans. Click here!</a>
 </main>

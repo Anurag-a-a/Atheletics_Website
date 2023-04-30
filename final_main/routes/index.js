@@ -9,6 +9,7 @@ const constructorMethod = (app) => {
     app.use('/membershipdetails', userRoutes);
     app.use('/joinnow', userRoutes);
     app.use('/signin', userRoutes);
+    app.use('/protectedUserHomePage', userRoutes);
     app.use('/location', gymRoutes);
     app.use('/membershipplandetails',gymRoutes);
     app.use('*', (req, res) => {

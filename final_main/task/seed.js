@@ -100,7 +100,7 @@ async function main() {
 		hashedPassword = "Minerva@12345";
     	emergencyContactName = "John Mcgonagall";
     	emergencyContactPhoneNumber = "1231231234";
-    	role = "Management";
+    	role = "admin";
     	membershipPlanDetails = "N/A";
     
         let user4 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
