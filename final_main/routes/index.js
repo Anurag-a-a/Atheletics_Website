@@ -6,7 +6,7 @@ const constructorMethod = (app) => {
     app.use(loggingMiddleware);
     app.use('/', userRoutes);
     app.use('/amenities', userRoutes);
-    app.use('/membershipdetails', userRoutes);
+    app.use('/membershipPlans', userRoutes);
     app.use('/joinnow', userRoutes);
     app.use('/signin', userRoutes);
     app.use('/location', gymRoutes);
