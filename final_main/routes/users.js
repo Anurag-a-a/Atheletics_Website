@@ -25,9 +25,9 @@ router.route('/amenities').get(async (req, res) => {
     //code here for Getting the main page of the gym
     return res.render('amenities',{title: "Gym Brat"});
 });
-router.route('/membershipdetails').get(async (req, res) => {
+router.route('/membershipPlans').get(async (req, res) => {
     //code here for Getting the main page of the gym
-    return res.render('membershipDetails',{title: "Gym Brat"});
+    return res.render('membershipPlans',{title: "Gym Brat"});
 });
 router.route('/joinnow').get(async (req, res) => {
     //code here for Getting the main page of the gym

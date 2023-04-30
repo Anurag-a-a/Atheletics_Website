@@ -1,4 +1,5 @@
 <main class="main">
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
     <p>Fill up the details below to join the gym membership</p>
     <h1>Sign In</h1>
     <form id ="joinNow-form" method="POST" action="/joinnow">
@@ -10,12 +11,73 @@
         <br>
         <input id ="lastName" type="text" name="lastName"/>
         <br>
-
+        <label for="sex">Sex: </label>
+        <select name="sex" id="sex">
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="non-binary">Non-Binary</option>
+            <option value="prefer-not-to-say">Prefer not to say</option>
+        </select>
+        <br>
+        <label for="dob">Enter your date of birth:</label>
+        <br>
+        <input id ="dob" type="text" name="dob" placeholder="MM/DD/YYYY"/>
+        <br>
+        <label for="emailAddress">Enter you email address:</label>
+        <br>
+        <input id ="emailAddress" type="email" name="emailAddress"/>
+        <br>
+        <label for="ph">Enter your phone number:</label>
+        <br>
+        <input id ="ph" type="text" name="ph" placeholder="xxx-xxx-xxxx"/>
+        <br>
+        <p>Enter your address: </p>
+        <label for="streetName" class = "tab">StreetName:</label>
+        <br>
+        <input id ="streetName" type="text" name="streetName" class = "tab"/>
+        <br>
+        <label for="city" class = "tab">City:</label>
+        <br>
+        <input id ="city" type="text" name="city" class = "tab"/>
+        <br>
+        <label for="state" class = "tab">State:</label>
+        <br>
+        <input id ="state" type="text" name="state" class = "tab"/>
+        <br>
+        <label for="zip" class = "tab">ZipCode:</label>
+        <br>
+        <input id ="zip" type="text" name="zip" class = "tab"/>
+        <br>
+        <label for="username">Enter your username:</label>
+        <br>
+        <input id ="username" type="text" name="username"/>
+        <br>
+        <label for="emergencyContactName">Enter your Emergency Contact Name:</label>
+        <br>
+        <input id ="emergencyContactName" type="text" name="emergencyContactName"/>
+        <br>
+        <label for="emergencyContactPhoneNumber">Enter your Emergency Contact's Phone number:</label>
+        <br>
+        <input id ="emergencyContactPhoneNumber" type="text" name="emergencyContactPhoneNumber"/>
+        <br>
+        <label for="role">Choose your Role: </label>
+        <select name="role" id="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <br>
+        <label for="plan">Choose your Plan: </label>
+        <select name="plan" id="plan">
+            <option value="alpha">Alpha</option>
+            <option value="beta">Beta</option>
+            <option value="omega">Omega</option>
+        </select>
+        <br>
         <label for="passwordInput">Enter your password:</label>
         <br>
         <input id ="passwordInput" type="password" name="passwordInput"/> 
         <br>        
-        <input class="clickbutton" type="submit" value="Sign In"/>
+        <input class="clickbutton" type="submit" value="Sign Up"/>
         <br>
         {{#if error }}
             <div class="form-group">
@@ -26,6 +88,6 @@
         {{/if}}    
     </form>
     <hr>
-    <a href="/signin">Already a memeber. Click here to sign In</a>
-    <a href="/membershipdetails">Waant to see our exclusive plans. Click here!</a>
+    <a href="/signin">Already a memeber. Click here to sign In</a><br>
+    <a href="/membershipPlans">Want to see our exclusive plans. Click here!</a>
 </main>
