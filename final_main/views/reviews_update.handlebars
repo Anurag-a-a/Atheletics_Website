@@ -1,0 +1,11 @@
+{{#if review}}
+  <form action="/reviews/update/{{review._id}}" method="POST">
+    <input type="text" name="gymId" placeholder="Gym ID" value="{{review.gymId}}">
+    <input type="text" name="classId" placeholder="Class ID" value="{{review.classId}}">
+    <input type="text" name="reviewText" placeholder="Review Text" value="{{review.reviewText}}">
+    <input type="number" name="rating" placeholder="Rating (1-5)" value="{{review.rating}}">
+    <button type="submit">Save Changes</button>
+  </form>
+{{/if}}
+
+<a href="/">Back to Reviews</a>
