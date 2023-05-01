@@ -1,0 +1,18 @@
+{{#if reviews}}
+  {{#each reviews}}
+    <div class="review">
+      <p>{{this.reviewText}}</p>
+      <p>Rating: {{this.rating}}</p>
+      <p>Gym ID: {{this.gymId}}</p>
+      <p>Class ID: {{this.classId}}</p>
+      <a href="/reviews/update/{{this._id}}">Edit</a>
+      <form action="/reviews/delete/{{this._id}}" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {{/each}}
+{{else}}
+  <p>No reviews found</p>
+{{/if}}
+
+<a href="/reviews/add">Add Review</a>

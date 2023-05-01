@@ -1,0 +1,34 @@
+{{!-- Get all appointments --}}
+{{#if appointments}}
+  {{#each appointments}}
+    <div class="appointment">
+      <p>Class ID: {{this.classId}}</p>
+      <p>Selected Time Slot: {{this.selectedTimeSlot}}</p>
+      <p>Cancelled: {{this.cancelledOrNot}}</p>
+      <a href="/appointments/update/{{this._id}}">Edit</a>
+      <form action="/appointments/delete/{{this._id}}" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {{/each}}
+{{else}}
+  <p>No appointments found</p>
+{{/if}}
+
+{{!-- Add a new appointment --}}
+<form action="/appointments/add" method="POST">
+  <input type="text" name="classId" placeholder="Class ID">
+  <input type="text" name="selectedTimeSlot" placeholder="Selected Time Slot">
+  <input type="checkbox" name="cancelledOrNot" value="true">Cancelled
+  <button type="submit">Add Appointment</button>
+</form>
+
+{{!-- Update an existing appointment --}}
+{{#if appointment}}
+  <form action="/appointments/update/{{appointment._id}}" method="POST">
+    <input type="text" name="classId" placeholder="Class ID" value="{{appointment.classId}}">
+    <input type="text" name="selectedTimeSlot" placeholder="Selected Time Slot" value="{{appointment.selectedTimeSlot}}">
+    <input type="checkbox" name="cancelledOrNot" value="true" {{#if appointment.cancelledOrNot}}checked{{/if}}>Cancelled
+    <button type="submit">Save Changes</button>
+  </form>
+{{/if}}
