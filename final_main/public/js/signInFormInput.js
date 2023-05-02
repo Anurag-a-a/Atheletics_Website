@@ -31,7 +31,7 @@
     };
 
     const formSignIn = document.getElementById('signIn-form');
-    console.log("here in client side script")
+    // console.log("here in client side script")
     if(formSignIn) {
         //get the Element object with the specified id
         const email = document.getElementById('emailAddress');
