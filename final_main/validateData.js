@@ -243,13 +243,13 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
 
     // Check date format
     const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
-    Date = Date.trim();
-    if (!dateFormat.test(Date.trim())) throw 'Date must be in the format MM/DD/YYYY';
+    const trimmedDate = Date.trim();
+    if (!dateFormat.test(trimmedDate)) throw 'Date must be in the format MM/DD/YYYY';
 
     // Check timing format and constraints
     const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
-    const match = timing.trim().match(timeFormat);
-    timing = timing.trim();
+    const trimmedTiming = timing.trim();
+    const match = trimmedTiming.match(timeFormat);
     if (!match) throw 'timing must be in the format HH:mm - HH:mm (24-hour format)';
     const startTime = match[1];
     const endTime = match[2];
@@ -264,7 +264,7 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
     if (startHour > endHour || (startHour === endHour && startMinute >= endMinute)) {
         throw 'End time must be greater than start time';
     }
-    return selectedTimeSlot;
+    return { ...selectedTimeSlot, Date: trimmedDate, timing: trimmedTiming };
 }
 
 //validate className
