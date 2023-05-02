@@ -97,7 +97,7 @@ export const isValidAddress = (address) => {
         'me', 'md', 'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nj', 'nm', 'ny', 'nc', 'nd', 'oh', 'ok',
         'or', 'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'
     ]
-    let s = state.toLowerCase();
+    let s = address.state.toLowerCase();
     if(!list_of_states.includes(s)) {throw "Error: State not valid. Enter a state in US."}
     if (address.zipCode.length === 0) { throw "Error: zipCode cannot be empty"; };
     if (address.zipCode.length > 5) { throw "Error: zipCode cannot be more than 5 digits"; };
