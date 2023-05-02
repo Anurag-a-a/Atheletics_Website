@@ -78,7 +78,7 @@ export const isValidAddress = (address) => {
     if (!address.zipCode) { throw "Error: No zipCode provided"; };
     if (!(typeof address.streetName == 'string')) { throw "Error: streetName must be a string"; };
     if (!(typeof address.city == 'string')) { throw "Error: city must be a string"; };
-    if (!(typeof address.city == 'string')) { throw "Error: city must be a string"; };
+    if (!(typeof address.state == 'string')) { throw "Error: state must be a string"; };
     if (!(typeof address.zipCode == 'string')) { throw "Error: zipCode must be a string"; };
     address.streetName = address.streetName.trim();
     address.city = address.city.trim();
@@ -87,6 +87,18 @@ export const isValidAddress = (address) => {
     if (address.streetName.length === 0) { throw "Error: streetName cannot be empty"; };
     if (address.city.length === 0) { throw "Error: city cannot be empty"; };
     if (address.state.length === 0) { throw "Error: state cannot be empty"; };
+    let list_of_states = [
+        "alabama", "alaska", "arizona", "arkansas", "california", "colorado", "connecticut", "delaware", "florida",
+        "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine",
+        "maryland", "massachusetts", "michigan", "minnesota", "mississippi", "missouri", "montana", "nebraska",
+        "nevada", "new hampshire", "new jersey", "new mexico", "new york", "north carolina", "north dakota", "ohio",
+        "oklahoma", "oregon", "pennsylvania", "rhode island", "south carolina", "south dakota", "tennessee", "texas",
+        "utah", "vermont", "virginia", "washington", "west virginia", "wisconsin", "wyoming",'al', 'ak', 'az', 'ar', 'ca', 'co', 'ct', 'de', 'fl', 'ga', 'hi', 'id', 'il', 'in', 'ia', 'ks', 'ky', 'la',
+        'me', 'md', 'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nj', 'nm', 'ny', 'nc', 'nd', 'oh', 'ok',
+        'or', 'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'
+    ]
+    let s = state.toLowerCase();
+    if(!list_of_states.includes(s)) {throw "Error: State not valid. Enter a state in US."}
     if (address.zipCode.length === 0) { throw "Error: zipCode cannot be empty"; };
     if (address.zipCode.length > 5) { throw "Error: zipCode cannot be more than 5 digits"; };
     let format = /^[0-9]+$/;
@@ -97,21 +109,21 @@ export const isValidAddress = (address) => {
 };
 
 export const isValidWebsite= (website) => {
-    if (!website) { throw "Error: no role provided"; };
-    if (!(typeof website == 'string')) { throw "Error: role must be a string"; };
+    if (!website) { throw "Error: no website provided"; };
+    if (!(typeof website == 'string')) { throw "Error: website must be a string"; };
     website = website.trim();
-    if (website.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
+    if (website.length === 0) { throw "Error: website cannot be an empty string or string with just spaces"; };
     let format =  /^http?(s):\/\/www\.[-a-zA-Z0-9@:%._\+~#=]{5,256}\.com$/;
-    if (!format.test(website)) { throw "Error: zipCode can contain only numbers"; };
+    if (!format.test(website)) { throw "Error: Invalid website"; };
     return website;
 
 };
 
 export const isValidBranch = (branchName) => {
-    if (!branchName) { throw "Error: no role provided"; };
-    if (!(typeof branchName == 'string')) { throw "Error: role must be a string"; };
+    if (!branchName) { throw "Error: no branchName provided"; };
+    if (!(typeof branchName == 'string')) { throw "Error: branchName must be a string"; };
     branchName = branchName.trim();
-    if (branchName.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
+    if (branchName.length === 0) { throw "Error: branchName cannot be an empty string or string with just spaces"; };
 
     return branchName;
 };
@@ -149,7 +161,7 @@ export const isValidMembershipPlanDetails = (plan) => {
     if (!(typeof plan == 'string')) { throw "Error: plan must be a string"; };
     plan = plan.trim().toLowerCase();
     if (plan.length === 0) { throw "Error: plan cannot be an empty string or string with just spaces"; };
-    if (!((plan == "alpha") || (plan == "beta") || (plan == "omega")) || (plan == "n/a")) { throw "Error: Invalid plan"; };
+    if (!(["alpha", "beta", "omega","na"].includes(plan))) { throw "Error: Invalid plan"; };
     return plan;
 };
 
@@ -160,7 +172,7 @@ export const isValidRole = (role) => {
     if (!(typeof role == 'string')) { throw "Error: role must be a string"; };
     role = role.trim().toLowerCase();
     if (role.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
-    if ((role != 'user') && (role != 'admin')) { throw "Error: Invalid Role" };
+    if (!(["user", "admin"].includes(role))) { throw "Error: Invalid Role" };
     return role;
 };
 
@@ -171,7 +183,7 @@ export const isValidAction = (action) => {
     if (!(typeof action == 'string')) { throw "Error: action must be a string"; };
     action = action.trim().toLowerCase();
     if (action.length === 0) { throw "Error: action cannot be an empty string or string with just spaces"; };
-    if ((action != 'delete') && (action != 'add')) { throw "Error: Invalid action" };
+    if (!(["delete", "add"].includes(action))) { throw "Error: Invalid action" };
     return action;
 };
 
@@ -183,7 +195,7 @@ export const isValidSex = (sex) => {
     sex = sex.trim().toLowerCase();
     if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
     console.log(sex);
-    if ((sex != 'male') && (sex != 'female') && (sex != 'non-binary') && (sex != 'prefer-not-to-say')) { throw "Error: Invalid sex" };
+    if(!(['male','female','non-binary','prefer-not-to-say'].includes(sex))) { throw "Error: Invalid sex" };
     return sex;
 
 };
