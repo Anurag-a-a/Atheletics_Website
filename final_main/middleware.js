@@ -19,3 +19,16 @@ export const signInMiddleware = (req, res, next) => {
     if(req.url === '/') return res.redirect('/');
     next();
 }
+
+export const signUpMiddleware = (req, res, next) => {
+  // console.log('loginMiddleware');
+  if (req.session.user) {
+      if (req.session.user.role === 'admin') {
+        return res.redirect('/admin');
+      } else if (req.session.user.role === 'user') {
+        return res.redirect('/protectedUserHomePage');
+      }
+  }
+  if(req.url === '/') return res.redirect('/');
+  next();
+}

@@ -27,6 +27,9 @@ const handlebarsInstance = exphbs.create({
     },
     eqSignIn: (val) => {
         if(val == 'signIn') {return true;}
+    },
+    eqSignUp: (val) => {
+      if(val == 'signUp') {return true;}
     }
   },
   partialsDir: ['views/partials/']

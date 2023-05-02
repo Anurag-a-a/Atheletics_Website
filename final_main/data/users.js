@@ -101,7 +101,7 @@ export const createUser = async (
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    if (role == 'management') { 
+    if (role == 'admin') { 
         newUser = {
             firstName: firstName,
             lastName: lastName,
@@ -325,6 +325,7 @@ export const updateReview = async (
 };
 
 export const checkUser = async (emailAddress, password) => {
+  let id = "";
   let firstName = "";
   let lastName = "";
   let sex = "";
@@ -360,6 +361,7 @@ export const checkUser = async (emailAddress, password) => {
       if (comparePassword) {
         if(userList[i]['role'] == 'admin'){ 
           returnObj = {
+          id: userList[i]['_id'].toString(),
           firstName: userList[i]['firstName'],
           lastName: userList[i]['lastName'],
           sex: userList[i]['sex'],
@@ -374,6 +376,7 @@ export const checkUser = async (emailAddress, password) => {
         }
       }else {
         returnObj = {
+          id: userList[i]['_id'].toString(),
           firstName: userList[i]['firstName'],
           lastName: userList[i]['lastName'],
           sex: userList[i]['sex'],
