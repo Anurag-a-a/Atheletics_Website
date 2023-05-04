@@ -1,5 +1,4 @@
 export const loggingMiddleware = (req, res, next) => {
-    // console.log('loggingMiddleware')
     const currentTimestamp = new Date().toUTCString();
     const reqMethod = req.method;
     const reqRoute = req.originalUrl;
@@ -8,7 +7,6 @@ export const loggingMiddleware = (req, res, next) => {
     next();  
 }
 export const signInMiddleware = (req, res, next) => {
-    // console.log('loginMiddleware');
     if (req.session.user) {
         if (req.session.user.role === 'admin') {
           return res.redirect('/admin');
@@ -21,7 +19,6 @@ export const signInMiddleware = (req, res, next) => {
 }
 
 export const signUpMiddleware = (req, res, next) => {
-  // console.log('loginMiddleware');
   if (req.session.user) {
       if (req.session.user.role === 'admin') {
         return res.redirect('/admin');
@@ -34,7 +31,6 @@ export const signUpMiddleware = (req, res, next) => {
 }
 
 export const userHomePageMiddleware = (req, res, next) => {
-  // console.log('loginMiddleware');
   if (!req.session.user) {
     return res.redirect('/signIn');
   };
@@ -42,7 +38,13 @@ export const userHomePageMiddleware = (req, res, next) => {
 }
 
 export const userProfilePageMiddleware = (req, res, next) => {
-  // console.log('loginMiddleware');
+  if (!req.session.user) {
+    return res.redirect('/signIn');
+  };
+  next();
+}
+
+export const updatePlanMiddleware = (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/signIn');
   };
