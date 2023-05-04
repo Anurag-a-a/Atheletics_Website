@@ -1,19 +1,18 @@
 <br>
 <br>
 <br>
-<a href="/appointments/add">Add Appointment</a>
+<a href="/myAppointments/add">Add Appointment</a>
 <h2>Active Appointments</h2>
 {{#if activeAppointments}}
   {{#each activeAppointments}}
-    <div class="appointment">
+    <div class="myAppointments">
       <p>Class Name: {{this.className}}</p>
       <p>Selected Time Slot: {{this.selectedTimeSlotString}}</p>
-      <form action="/appointments/update/{{this._id}}/cancellation" method="POST">
+      <form action="/myAppointments/update/{{this._id}}/cancellation" method="POST">
         <input type="hidden" name="cancelledOrNot" value="true">
         <button type="submit">Cancel</button>
       </form>
-      {{!-- <a href="/appointments/update/{{this._id}}">Edit</a> --}}
-      <form action="/appointments/delete/{{this._id}}" method="POST">
+      <form action="/myAppointments/delete/{{this._id}}" method="POST">
         <button type="submit">Delete</button>
       </form>
     </div>
@@ -25,14 +24,14 @@
 <h2>Cancelled Appointments</h2>
 {{#if cancelledAppointments}}
   {{#each cancelledAppointments}}
-    <div class="appointment">
+    <div class="myAppointments">
       <p>Class Name: {{this.className}}</p>
       <p>Selected Time Slot: {{this.selectedTimeSlotString}}</p>
-      <form action="/appointments/update/{{this._id}}/cancellation" method="POST">
+      <form action="/myAppointments/update/{{this._id}}/cancellation" method="POST">
         <input type="hidden" name="cancelledOrNot" value="false">
         <button type="submit">Reschedule</button>
       </form>
-      <form action="/appointments/delete/{{this._id}}" method="POST">
+      <form action="/myAppointments/delete/{{this._id}}" method="POST">
         <button type="submit">Delete</button>
       </form>
     </div>
