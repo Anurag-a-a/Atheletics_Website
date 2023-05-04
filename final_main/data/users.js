@@ -81,6 +81,7 @@ export const createUser = async (
     dob = isValidDOB(dob); //Format: MM/DD/YYYY
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
+    // console.log("validating address in data function");
     address = isValidAddress(address);
     username = isValidUsername(username);
     password = isValidPassword(password);

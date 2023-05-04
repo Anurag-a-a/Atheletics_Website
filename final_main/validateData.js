@@ -46,6 +46,8 @@ export const isValidUsername = (username) => {
 //validate phoneNumber
 
 export const isValidPhoneNumber = (phoneNumber) => {
+    // console.log("In validateData.js file phone number check");
+    // console.log(phoneNumber);
     if (!phoneNumber) { throw "Error: no phoneNumber provided"; };
     if (!(typeof phoneNumber == 'string')) { throw "Error: phoneNumber must be a string"; };
     phoneNumber = phoneNumber.trim();
@@ -53,7 +55,6 @@ export const isValidPhoneNumber = (phoneNumber) => {
     if (phoneNumber.length > 10) { throw "Error: phoneNumber cannot be more than 10 digits"; };
     let format = /^[0-9]+$/;
     if (!format.test(phoneNumber)) { throw "Error: PhoneNumbers can contain only numbers"; };
-    phoneNumber = phoneNumber.slice(0, 3) + '-' + phoneNumber.slice(3, 6) + '-' + phoneNumber.slice(6);
     return phoneNumber;
 };
 
@@ -68,6 +69,7 @@ export const isValidAddress = (address) => {
             zipCode: '07305'
       }
     */
+    // console.log(address);
     if (!address) { throw "Error: no address provided"; };
     let isObjectResult = (typeof address == 'object') && (address != null) && (!Array.isArray(address));
     if (!(isObjectResult)) { throw "Error: address must be an object"; };
@@ -75,15 +77,15 @@ export const isValidAddress = (address) => {
     if (!address.streetName) { throw "Error: No streetName provided"; };
     if (!address.city) { throw "Error: No city provided"; };
     if (!address.state) { throw "Error: No state provided"; };
-    if (!address.zipCode) { throw "Error: No zipCode provided"; };
+    if (!address.zip) { throw "Error: No zipCode provided"; };
     if (!(typeof address.streetName == 'string')) { throw "Error: streetName must be a string"; };
     if (!(typeof address.city == 'string')) { throw "Error: city must be a string"; };
     if (!(typeof address.state == 'string')) { throw "Error: state must be a string"; };
-    if (!(typeof address.zipCode == 'string')) { throw "Error: zipCode must be a string"; };
+    if (!(typeof address.zip == 'string')) { throw "Error: zipCode must be a string"; };
     address.streetName = address.streetName.trim();
     address.city = address.city.trim();
     address.state = address.state.trim();
-    address.zipCode = address.zipCode.trim();
+    address.zip = address.zip.trim();
     if (address.streetName.length === 0) { throw "Error: streetName cannot be empty"; };
     if (address.city.length === 0) { throw "Error: city cannot be empty"; };
     if (address.state.length === 0) { throw "Error: state cannot be empty"; };
@@ -99,10 +101,10 @@ export const isValidAddress = (address) => {
     ]
     let s = address.state.toLowerCase();
     if(!list_of_states.includes(s)) {throw "Error: State not valid. Enter a state in US."}
-    if (address.zipCode.length === 0) { throw "Error: zipCode cannot be empty"; };
-    if (address.zipCode.length > 5) { throw "Error: zipCode cannot be more than 5 digits"; };
+    if (address.zip.length === 0) { throw "Error: zipCode cannot be empty"; };
+    if (address.zip.length > 5) { throw "Error: zipCode cannot be more than 5 digits"; };
     let format = /^[0-9]+$/;
-    if (!format.test(address.zipCode)) { throw "Error: zipCode can contain only numbers"; };
+    if (!format.test(address.zip)) { throw "Error: zipCode can contain only numbers"; };
 
     return address;
 
