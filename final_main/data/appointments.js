@@ -54,10 +54,10 @@ const addAppointment = async (classId, selectedTimeSlot, cancelledOrNot) => {
   };
 
   const newInsertInfo = await appointmentCollection.insertOne(newAppointment);
-  if (!newInsertInfo.acknowledged || !newInsertInfo.insertedID)
+  if (!newInsertInfo.acknowledged || !newInsertInfo.insertedId)
     throw 'Insert failed!';
 
-  const newId = newInsertInfo.insertedID.toString();
+  const newId = newInsertInfo.insertedId.toString();
   const addedAppointment = await getAppointmentById(newId);
   addedAppointment._id = addedAppointment._id.toString();
   return addedAppointment;

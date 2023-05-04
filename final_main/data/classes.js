@@ -64,7 +64,7 @@ export const createClass = async (
 
     // }
 
-    newUser = {
+    let newUser = {
         className: className,
         slots: slots,
         instructor: instructor,
@@ -73,8 +73,8 @@ export const createClass = async (
     }
 
     const insertInfo = await classCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertInfo) { throw 'Error: Could not create user'; };
-    const newId = insertInfo.insertId.toString();
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) { throw 'Error: Could not create user'; };
+    const newId = insertInfo.insertedId.toString();
     const newClass = await getClassbyId(newId);
     return newClass;
 }
