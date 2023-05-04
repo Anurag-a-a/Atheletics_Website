@@ -30,6 +30,9 @@ const handlebarsInstance = exphbs.create({
     },
     eqSignUp: (val) => {
       if(val == 'signUp') {return true;}
+    },
+    eqSignUp: (val) => {
+      if(val == 'updatePlan') {return true;}
     }
   },
   partialsDir: ['views/partials/']
@@ -41,7 +44,7 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
-    cookie: {maxAge: 60000}
+    // cookie: {maxAge: 60000}
   })
 );
 
