@@ -1,0 +1,37 @@
+<main>
+    <br><br>
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
+    <h1>Sign In</h1>
+    <form id ="updatePlan-form" method="POST" action="/signin">
+        <pre>
+            Email    : <input type="text" name="email" value='<%=user.email%>'> <br>
+        </pre>
+        <label for="plan">Choose your Plan: </label>
+        <select name="plan" id="plan">
+            <option selected="selected" value="alpha">Alpha</option>
+            <option value="beta">Beta</option>
+            <option value="omega">Omega</option>
+        </select>
+        <div class="form-group hidden" id="error-container15">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
+        <br>
+        <label for="passwordInput">Password: </label>
+        <input id ="passwordInput" type="password" name="passwordInput"/>
+        <div class="form-group hidden" id="error-container16">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
+        <br>        
+        <input id="submit" class="clickbutton" type="submit" value="Update"/>
+       
+        {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+        {{/if}}    
+    </form>
+    <hr>
+    <a href="/membershipPlans">See Plan Details</a>
+</main>
