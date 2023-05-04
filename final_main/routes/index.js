@@ -1,6 +1,8 @@
 
 import userRoutes from './users.js';
 import gymRoutes from './gymDetails.js';
+import reviewRoutes from './reviews.js';
+import appointmentRoutes from './appointments.js';
 import { loggingMiddleware } from '../middleware.js';
 const constructorMethod = (app) => {
     app.use(loggingMiddleware);
@@ -14,6 +16,8 @@ const constructorMethod = (app) => {
     app.use('/updateplan', userRoutes);
     app.use('/location', gymRoutes);
     app.use('/membershipplandetails',gymRoutes);
+    app.use('/reviews', reviewRoutes);
+    app.use('/appointments', appointmentRoutes);
     app.use('*', (req, res) => {
       res.status(404).json({ error: '404 Error: Not found' });
     });

@@ -48,3 +48,12 @@ export const userProfilePageMiddleware = (req, res, next) => {
   };
   next();
 }
+
+export const ensureAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    req.user = req.session.user;
+    console.log('Session User:', req.session.user);
+    return next();
+  }
+  res.redirect('/signIn');
+};
