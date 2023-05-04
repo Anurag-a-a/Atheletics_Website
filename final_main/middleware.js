@@ -32,3 +32,28 @@ export const signUpMiddleware = (req, res, next) => {
   if(req.url === '/') return res.redirect('/');
   next();
 }
+
+export const userHomePageMiddleware = (req, res, next) => {
+  // console.log('loginMiddleware');
+  if (!req.session.user) {
+    return res.redirect('/signIn');
+  };
+  next();
+}
+
+export const userProfilePageMiddleware = (req, res, next) => {
+  // console.log('loginMiddleware');
+  if (!req.session.user) {
+    return res.redirect('/signIn');
+  };
+  next();
+}
+
+export const ensureAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    req.user = req.session.user;
+    console.log('Session User:', req.session.user);
+    return next();
+  }
+  res.redirect('/signIn');
+};
