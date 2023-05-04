@@ -49,7 +49,7 @@ router.route('/update/:id/cancellation').post(async (req, res) => {
     const appointment = await appointmentData.getAppointmentById(appointmentId);
     const updatedAppointment = await appointmentData.updateAppointmentPut(appointmentId, null, null, cancelledOrNot);
 
-    res.redirect('/appointments');
+    res.redirect('/myAppointments');
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
@@ -58,7 +58,7 @@ router.route('/update/:id/cancellation').post(async (req, res) => {
 router.get('/success', ensureAuthenticated, (req, res) => {
   if (req.session.forceReload) {
     req.session.forceReload = false;
-    res.redirect('/appointments');
+    res.redirect('/myAppointments');
   } else {
     res.status(404).json({ error: error.toString() });
   }
@@ -111,7 +111,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
     await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
     req.session.forceReload = true;
     // res.redirect('/appointments/success');
-    res.redirect('/appointments');
+    res.redirect('/myAppointments');
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
@@ -120,7 +120,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
 router.get('/deleted', ensureAuthenticated, (req, res) => {
   if (req.session.forceReload) {
     req.session.forceReload = false;
-    res.redirect('/appointments');
+    res.redirect('/myAppointments');
   } else {
     res.status(404).json({ error: error.toString() });
   }
@@ -130,7 +130,7 @@ router.route('/delete/:id').post(ensureAuthenticated, async (req, res) => {
     const deletedAppointment = await appointmentData.removeAppointment(req.params.id);
     await userData.updateAppointment(req.user.id, req.params.id, 'delete');
     req.session.forceReload = true;
-    res.redirect('/appointments/deleted');
+    res.redirect('/myAppointments/deleted');
   } catch (error) {
     res.status(404).json({ error: error.toString() });
   }
