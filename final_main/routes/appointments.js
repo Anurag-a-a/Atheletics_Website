@@ -94,7 +94,8 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
       timing: timing
     };
 
-    const userAppointments = req.user.MyAppointments;
+    const user = await userData.getUserbyId(req.user.id);
+    const userAppointments = user.MyAppointments;
     for (const appointmentId of userAppointments) {
       const appointment = await appointmentData.getAppointmentById(appointmentId);
       if (
@@ -121,7 +122,6 @@ router.get('/deleted', ensureAuthenticated, (req, res) => {
     req.session.forceReload = false;
     res.redirect('/appointments');
   } else {
-    // res.render('deleted');
     res.status(404).json({ error: error.toString() });
   }
 });
