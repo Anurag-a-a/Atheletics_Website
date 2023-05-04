@@ -165,11 +165,32 @@ router.route('/signin').post(async (req, res) => {
       }catch(e){
         return res.status(400).render('signIn', {error: e});
       };
-      router.route('/protectedUserHomePage').get(async (req, res) => {
+      router.route('/protectedUserHomePage').get(middleware.userHomePageMiddleware, async (req, res) => {
         //code here for Getting the main page of the gym
         // console.log(req.session.user);
         const theSessionUser = await userData.getUserbyId(req.session.user.id);
         return res.render('protectedUserHomePage',{title: "Gym Brat", firstName: theSessionUser.firstName, lastName: theSessionUser.lastName});
+    });
+
+    router.route('/userProfile').get(middleware.userProfilePageMiddleware, async (req, res) => {
+      const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      return res.render('userProfile',{
+        title: "Gym Brat", 
+        firstName: theSessionUser.firstName, 
+        lastName: theSessionUser.lastName, 
+        username: theSessionUser.username,
+        sex: theSessionUser.sex,
+        dob: theSessionUser.dob,
+        email: theSessionUser.emailAddress,
+        ph: theSessionUser.phoneNumber,
+        st: theSessionUser.address.streetName,
+        city: theSessionUser.address.city,
+        state: theSessionUser.address.state,
+        zip: theSessionUser.address.zip,
+        eName: theSessionUser.emergencyContactName,
+        ePh: theSessionUser.emergencyContactPhoneNumber,
+        plan: theSessionUser.membershipPlanDetails
+       });
     });
 });
 

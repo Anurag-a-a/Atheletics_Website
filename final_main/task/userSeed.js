@@ -19,7 +19,7 @@ async function main() {
         streetName: '1234 NW Bobcat Lane',
         city: 'Hoboken',
         state: 'New Jersey',
-        zipCode: '07305'
+        zip: '07305'
 	};
 	let username = "harryPotter"
 	let hashedPassword = "Harry@12345";
@@ -46,7 +46,7 @@ async function main() {
         	streetName: '1234 NW Bobcat Lane',
         	city: 'Hoboken',
         	state: 'New Jersey',
-        	zipCode: '07305'
+        	zip: '07305'
 		};
 		username = "ron",
 		hashedPassword = "Ron@12345";
@@ -72,7 +72,7 @@ async function main() {
         	streetName: '1234 NW Bobcat Lane',
         	city: 'Hoboken',
         	state: 'New Jersey',
-        	zipCode: '07305'
+        	zip: '07305'
 		};
 		username = "hermoine",
 		hashedPassword = "Hermoine@12345";
@@ -98,14 +98,14 @@ async function main() {
         	streetName: '1234 NW Bobcat Lane',
         	city: 'Hoboken',
         	state: 'New Jersey',
-        	zipCode: '07305'
+        	zip: '07305'
 		};
 		username = "mcg",
 		hashedPassword = "Minerva@12345";
     	emergencyContactName = "John Mcgonagall";
     	emergencyContactPhoneNumber = "1231231234";
     	role = "admin";
-    	membershipPlanDetails = "N/A";
+    	membershipPlanDetails = "NA";
     
         let user4 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user4)

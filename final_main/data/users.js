@@ -92,7 +92,7 @@ export const createUser = async (
     let MyAppointments = [];
     let MyReviews = [];
     let newUser = {};
-
+    let joinedPlanDate = new Date();
     const userCollection = await users();
     const existingUsers = await getAllUser();
     /*check for existing similar usernames */
@@ -134,6 +134,7 @@ export const createUser = async (
             membershipPlanDetails: membershipPlanDetails,
             MyAppointments: MyAppointments,
             MyReviews: MyReviews,
+            joinedPlanDate: joinedPlanDate
         };
     };
     
