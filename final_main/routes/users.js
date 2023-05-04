@@ -16,6 +16,7 @@ import {isValidName,
     isValidDOB
 } from '../validateData.js';
 import xss from 'xss';
+import session from 'express-session';
 
 /* route for landing page */
 router.route('/').get(async (req, res) => {
@@ -33,10 +34,10 @@ router.route('/membershipPlans').get(async (req, res) => {
 });
 
 /* route for sign up page */
-router.route('/joinnow').get(async (req, res) => {
+router.route('/joinnow').get(middleware.signUpMiddleware,async (req, res) => {
     return res.render('joinNow',{title: "Gym Brat", partial: 'signUp'});
 });
-router.route('/joinnow').post(middleware.signUpMiddleware,async (req, res) => {
+router.route('/joinnow').post(async (req, res) => {
     // validate inputs
     let signUpInfo = req.body;
     if(!signUpInfo){
@@ -131,10 +132,10 @@ router.route('/joinnow').post(middleware.signUpMiddleware,async (req, res) => {
 });
 
 /* route for sign in page */
-router.route('/signin').get(async (req, res) => {
+router.route('/signin').get(middleware.signInMiddleware,async (req, res) => {
     return res.render('signIn',{title: "Gym Brat" , partial: 'signIn'});
 });
-router.route('/signin').post(middleware.signInMiddleware,async (req, res) => {
+router.route('/signin').post(async (req, res) => {
     let signinInfo = req.body;
     if(!signinInfo){
         return res.status(400).render('signIn', {error: "Fill all the fields!!"});
@@ -153,7 +154,10 @@ router.route('/signin').post(middleware.signInMiddleware,async (req, res) => {
         // console.log("Inside checking credentials");
         const userObject = await userData.checkUser(email,password);
         if(!userObject) { return res.status(500).render('signIn', {error: "Internal Server Error"});};
-        req.session.user = userObject;
+        req.session.user = {
+          id: userObject.id,
+          role: userObject.role
+        };
         // console.log(req.session.user);
         // console.log('/login session set',req.session.user);
         if(req.session.user.role == 'admin') {res.redirect('/admin');}
@@ -163,7 +167,9 @@ router.route('/signin').post(middleware.signInMiddleware,async (req, res) => {
       };
       router.route('/protectedUserHomePage').get(async (req, res) => {
         //code here for Getting the main page of the gym
-        return res.render('protectedUserHomePage',{title: "Gym Brat"});
+        // console.log(req.session.user);
+        const theSessionUser = await userData.getUserbyId(req.session.user.id);
+        return res.render('protectedUserHomePage',{title: "Gym Brat", firstName: theSessionUser.firstName, lastName: theSessionUser.lastName});
     });
 });
 
