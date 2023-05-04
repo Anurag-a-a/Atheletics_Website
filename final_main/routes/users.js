@@ -129,7 +129,7 @@ router.route('/joinnow').post(async (req, res) => {
       return res.status(400).render('joinNow', {error: e});
     };
     //redirect to login page
-});
+});//end join now post
 
 /* route for sign in page */
 router.route('/signin').get(middleware.signInMiddleware,async (req, res) => {
@@ -165,7 +165,9 @@ router.route('/signin').post(async (req, res) => {
       }catch(e){
         return res.status(400).render('signIn', {error: e});
       };
-      router.route('/protectedUserHomePage').get(middleware.userHomePageMiddleware, async (req, res) => {
+    });//end sign in post
+
+    router.route('/protectedUserHomePage').get(middleware.userHomePageMiddleware, async (req, res) => {
         //code here for Getting the main page of the gym
         // console.log(req.session.user);
         const theSessionUser = await userData.getUserbyId(req.session.user.id);
@@ -192,7 +194,63 @@ router.route('/signin').post(async (req, res) => {
         plan: theSessionUser.membershipPlanDetails
        });
     });
-});
+
+    router.route('/updateplan').get(middleware.updatePlanMiddleware,async (req, res) => {
+      try{
+        const theSessionUser = await userData.getUserbyId(req.session.user.id);
+        if(theSessionUser){
+          return res.render('updatePlan',{title: "Gym Brat", partial: "updatePlan"});
+        }else{ throw "Error: Internal Server Error"};
+      }catch(e){
+        return res.status(500).json(e);
+      };
+    });
+    router.route('/updateplan').post(async(req, res) => {
+      let updatePlanInfo = req.body;
+      if(!updatePlanInfo){
+        return res.status(400).render('updatePlan', {error: "Fill all the fields!!"});
+      };
+      let plan = "";
+      let password = "";
+      try {
+        password = isValidPassword(updatePlanInfo.passwordInput);
+        plan = isValidMembershipPlanDetails(updatePlanInfo.plan);
+        // console.log("passed all the input validation");
+      }catch(e){
+        // console.log("Route updatePlan post input error caught");
+        return res.status(400).render('updatePlan', {error: e});
+      };
+      try{
+        // console.log("Inside checking credentials");
+        const theuser = await userData.getUserbyId(req.session.user.id);
+        if(!theuser){return res.status(500).json("Internal Server Error");};
+        // console.log("Route updatePlan /post checking user");
+        // console.log(theuser);
+        const userObject = await userData.checkUser(theuser.email,password);
+        if(!userObject) { return res.status(500).json("Internal Server Error");};
+        const updateUser = await userData.update(theuser._id.toString(),
+        theuser.firstName,
+        theuser.lastName,
+        theuser.sex,
+        theuser.dob,
+        theuser.email,
+        theuser.phoneNumber,
+        theuser.address,
+        theuser.username,
+        theuser.emergencyContactName,
+        theuser.emergencyContactPhoneNumber,
+        theuser.role,
+        plan
+        );
+        if(!updateUser){return res.status(400).render('updatePlan', {error: "couldn't update plan. Try again"});}
+        return res.redirect('/userProfile');
+      }catch(e){
+        return res.status(400).render('updatePlan', {error: e});
+      };
+
+    });
+
+
 
 
 export default router;

@@ -188,7 +188,6 @@ export const update = async (
     phoneNumber,
     address,
     username,
-    hashedPassword,
     emergencyContactName,
     emergencyContactPhoneNumber,
     role,
@@ -199,6 +198,7 @@ export const update = async (
     lastName = isValidName(lastName, 'lastName');
     sex = isValidSex(sex);
     dob = isValidDOB(dob);
+    // console.log("in data update user checking email");
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
     address = isValidAddress(address);
@@ -223,7 +223,6 @@ export const update = async (
         phoneNumber: phoneNumber,
         address: address,
         username: username,
-        hashedPassword: hashedPassword,
         emergencyContactName: emergencyContactName,
         emergencyContactPhoneNumber: emergencyContactPhoneNumber,
         role: role,
@@ -343,6 +342,7 @@ export const checkUser = async (emailAddress, password) => {
   let MyAppointments =[];
   let MyReviews = [];
   let returnObj = {};
+  console.log(emailAddress);
   emailAddress = isValidEmail(emailAddress);
   password = isValidPassword(password);
   const userCollection = await users();

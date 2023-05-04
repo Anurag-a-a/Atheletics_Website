@@ -1,11 +1,9 @@
 <main>
     <br><br>
     <a class="go_home_link" href="/">Go to Home Page</a><br>
-    <h1>Sign In</h1>
-    <form id ="updatePlan-form" method="POST" action="/signin">
-        <pre>
-            Email    : <input type="text" name="email" value='<%=user.email%>'> <br>
-        </pre>
+    <a class="go_home_link" href="/userProfile">Profile</a><br>
+    <h1>Update plan</h1>
+    <form id ="updatePlan-form" method="POST" action="/updateplan">
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
             <option selected="selected" value="alpha">Alpha</option>
