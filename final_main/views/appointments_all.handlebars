@@ -1,7 +1,10 @@
 <br>
 <br>
 <br>
+<a class="go_home_link" href="/protectedUserHomePage">Back to User Home Page</a><br>
+<br>
 <a href="/myAppointments/add">Add Appointment</a>
+<br>
 <h2>Active Appointments</h2>
 {{#if activeAppointments}}
   {{#each activeAppointments}}
@@ -38,4 +41,16 @@
   {{/each}}
 {{else}}
   <p>No cancelled appointments found</p>
+{{/if}}
+
+<h2>Past Appointments</h2>
+{{#if pastAppointments}}
+  {{#each pastAppointments}}
+    <div class="myAppointments">
+      <p>Class Name: {{this.className}}</p>
+      <p>Selected Time Slot: {{this.selectedTimeSlotString}}</p>
+    </div>
+  {{/each}}
+{{else}}
+  <p>No past appointments found</p>
 {{/if}}
