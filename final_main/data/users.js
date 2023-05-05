@@ -244,43 +244,42 @@ export const update = async (
   
 //update appointment list in user
 export const updateAppointment = async (
-    id,
-    MyAppointmentsId,
-    action //'Delete' or 'Add'
+  id,
+  MyAppointmentsId,
+  action //'Delete' or 'Add'
 ) => {
-    id = isValidId(id);
-    MyAppointmentsId = isValidId(MyAppointmentsId);
-    action = isValidAction(action);
+  id = isValidId(id);
+  MyAppointmentsId = isValidId(MyAppointmentsId);
+  action = isValidAction(action);
 
-    const userCollection = await users();
-    const theUser = await getUserbyId(id);
+  const userCollection = await users();
+  const theUser = await getUserbyId(id);
 
-    let CurrentAppointmentList = theUser.MyAppointments;
-    if(!CurrentAppointmentList.includes(MyAppointmentsId)) {throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`};
-    let newAppointmentList = [];
-    if(action == 'delete'){
-        for (let i=0; i<CurrentAppointmentList.length; i++){
-            if(CurrentAppointmentList[i] != MyAppointmentsId){ newAppointmentList.push(CurrentAppointmentList[i]);};
-        };
+  let CurrentAppointmentList = theUser.MyAppointments;
 
-    }else{
-        newAppointmentList = CurrentAppointmentList;
-        newAppointmentList.push(MyAppointmentsId);
-    };
-    let MyAppointments = newAppointmentList;
-    let updateUser = {
-        MyAppointments: MyAppointments
-    };
-    const updatedInfo = await userCollection.findOneAndUpdate(
-        {_id: new ObjectId(id)},
-        {$set: updateUser},
-        {returnDocument: 'after'}
-      );
-      if (updatedInfo.lastErrorObject.n === 0) {
-        throw 'Failed to update Appointments';
-      };
-      updatedInfo.value._id = updatedInfo.value._id.toString();
-      return updatedInfo.value;
+  let newAppointmentList = [];
+  if (action == 'delete') {
+    if (!CurrentAppointmentList.includes(MyAppointmentsId)) {
+      throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`;
+    }
+    newAppointmentList = CurrentAppointmentList.filter(appointmentId => appointmentId !== MyAppointmentsId);
+  } else {
+    newAppointmentList = [...CurrentAppointmentList, MyAppointmentsId];
+  }
+  let MyAppointments = newAppointmentList;
+  let updateUser = {
+    MyAppointments: MyAppointments
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(id)},
+    {$set: updateUser},
+    {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update Appointments';
+  }
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
 };
 
 

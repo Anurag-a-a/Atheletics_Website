@@ -1,0 +1,43 @@
+<br>
+<br>
+<a class="go_home_link" href="/myAppointments">Back to My Appointments Page</a><br>
+<br>
+<h1>Add Appointment</h1>
+<form action="/myAppointments/add" method="POST">
+  <label for="classId">Class Name:</label>
+  <select name="classId" id="classId" required>
+    <option value="">Select a class</option>
+    {{#each classes}}
+      <option value="{{this._id}}" data-timeslot="{{this.slots.Date}} {{this.slots.timing}}">{{this.className}}</option>
+    {{/each}}
+  </select>
+
+  <label for="selectedTimeSlot">Selected Time Slot:</label>
+  <input type="text" name="selectedTimeSlot" id="selectedTimeSlot" required>
+  
+  <input type="hidden" name="userId" value="{{currentUser._id}}">
+
+  <input type="hidden" name="cancelledOrNot" value="false">
+
+  <button type="submit">Add Appointment</button>
+</form>
+
+<script>
+  const classSelectElement = document.getElementById('classId');
+
+  function updateSlots() {
+    const selectedClass = classSelectElement.options[classSelectElement.selectedIndex];
+    const selectedTimeSlotElement = document.getElementById('selectedTimeSlot');
+
+    if (selectedClass) {
+      const slotText = selectedClass.getAttribute('data-timeslot');
+      selectedTimeSlotElement.value = slotText;
+    } else {
+      selectedTimeSlotElement.value = '';
+    }
+  }
+
+  classSelectElement.addEventListener('change', updateSlots);
+
+  updateSlots();
+</script>
