@@ -113,9 +113,9 @@ async function main() {
         console.log(e);
     };
     
-    let gym = undefined;
+let gym = undefined;
 try{
-  gym = await gymData.createGym( 'Hoboken', 'https://www.google.com',{ streetName: '815 E Hudson st',    city: 'Hoboken',    state: 'New Jersey',    zipCode: '07305'}, '5513445955', 'anu14298@gmail.com', 70, "alpha", 'admin' ) ;
+  gym = await gymData.createGym( 'Hoboken', 'https://www.google.com',{ streetName: '815 E Hudson st',    city: 'Hoboken',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, "alpha", 'admin' ) ;
   console.log(`${gym.name} successfully created \n`,gym);   
 }
 catch(e){
@@ -149,9 +149,18 @@ catch(e){
    console.log(e)
 }
 
+let class4 = undefined;
+try{
+  class4 = await classData.createClass('Yoga0', {Date: '04/19/2023', timing: '15:00 - 17:00'}, 'hill','Rewind, revive with this yoga session.', 30) ;
+  console.log(class3);   
+}
+catch(e){
+   console.log(e)
+}
+
 let appointment1 = undefined;
 try{
-  appointment1 = await appointmentData.addAppointment(class1._id.toString(), {Date: '02/13/2023', timing: '10:00 - 12:00'}, false);   
+  appointment1 = await appointmentData.addAppointment(class1._id.toString(), {Date: '06/13/2023', timing: '10:00 - 12:00'}, false);   
   console.log(`an appointment for ${appointment1.classId} successfully created`);  
 }
 catch(e){
@@ -169,12 +178,24 @@ catch(e){
 }
 console.log('appointment2:', appointment2);
 
+let appointment3 = undefined;
+try{
+  appointment3 = await appointmentData.addAppointment(class4._id.toString(), {Date: '04/19/2023', timing: '15:00 - 17:00'}, false);   
+  console.log(`an appointment for ${appointment3.classId} successfully created`);  
+}
+catch(e){
+   console.log(e)
+}
+
 await userData.updateAppointment(user1._id.toString(), appointment1._id.toString(), 'add').catch((error) => {
 	console.log('Error adding appointment1:', error);
       });
-      await userData.updateAppointment(user1._id.toString(), appointment2._id.toString(), 'add').catch((error) => {
+await userData.updateAppointment(user1._id.toString(), appointment2._id.toString(), 'add').catch((error) => {
 	console.log('Error adding appointment2:', error);
       });
+await userData.updateAppointment(user1._id.toString(), appointment3._id.toString(), 'add').catch((error) => {
+	console.log('Error adding appointment1:', error);
+  });
 
 let gymreview = undefined;
 try{

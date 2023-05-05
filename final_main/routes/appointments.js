@@ -15,22 +15,28 @@ router.route('/').get(ensureAuthenticated, async (req, res) => {
       })
     );
 
-    
     const cancelledAppointments = [];
     const activeAppointments = [];
+    const pastAppointments = [];
+    const currentTime = new Date();
+
     for (const appointment of userAppointments) {
       const classInfo = await classData.getClassbyId(appointment.classId.toString());
       appointment.className = classInfo.className;
 
       appointment.selectedTimeSlotString = `${appointment.selectedTimeSlot.Date} ${appointment.selectedTimeSlot.timing}`;
 
+      const appointmentTime = new Date(appointment.selectedTimeSlot.Date + ' ' + appointment.selectedTimeSlot.timing.split(' - ')[1]);
+
       if (appointment.cancelledOrNot) {
         cancelledAppointments.push(appointment);
+      } else if (appointmentTime < currentTime) {
+        pastAppointments.push(appointment);
       } else {
         activeAppointments.push(appointment);
       }
     }
-    res.render('appointments_all', { activeAppointments, cancelledAppointments });
+    res.render('appointments_all', { activeAppointments, cancelledAppointments, pastAppointments });
 
   } catch (error) {
     res.status(500).json({ error: error.toString() });
@@ -64,11 +70,17 @@ router.get('/success', ensureAuthenticated, (req, res) => {
   }
 });
 
+function isFutureClass(classInfo) {
+  const currentTime = new Date();
+  const classDate = new Date(classInfo.slots.Date);
+  return classDate >= currentTime;
+}
 
 router.route('/add').get(ensureAuthenticated, async (req, res) => {
   try {
     const allClasses = await classData.getAllClass();
-    res.render('appointments_add', { classes: allClasses });
+    const futureClasses = allClasses.filter(isFutureClass);
+    res.render('appointments_add', { classes: futureClasses });
   } catch (error) {
     res.status(500).json({ error: error });
   }
