@@ -9,6 +9,7 @@
     <link rel="stylesheet" href='/public/css/location.css'>
     <link rel="stylesheet" href='/public/css/amenities.css'>
     <link rel="stylesheet" href='/public/css/membershipPlan.css'>
+    <link rel="stylesheet" href='/public/css/joinNow.css'>
 </head>
 <body>
     <div class="form-group hidden" id="error-container">
@@ -24,11 +25,11 @@
     crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
     crossorigin="anonymous"></script>
-    {{!-- <script src="/public/js/signInFormInput.js"></script> --}}
-    {{!-- {{> (lookup . 'sigInPartial') }} --}}
-    {{#if (eqSignIn partial "signIn")}}
-        {{> sigInPartial}}
+    {{#if partial}}
+        {{> (lookup . 'partial') }}
     {{/if}}
+    
+    
 </body>
  
 </html>

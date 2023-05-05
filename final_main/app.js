@@ -24,10 +24,11 @@ const handlebarsInstance = exphbs.create({
       if (typeof spacing === 'number')
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
       return new Handlebars.SafeString(JSON.stringify(obj));
-    },
-    eqSignIn: (val) => {
-        if(val == 'signIn') {return true;}
     }
+    // eqSignIn: (val) => {
+    //     if(val == 'signIn') {return true;}
+    // },
+    
   },
   partialsDir: ['views/partials/']
 });
@@ -38,7 +39,7 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
-    cookie: {maxAge: 60000}
+    // cookie: {maxAge: 60000}
   })
 );
 
