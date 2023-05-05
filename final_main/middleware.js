@@ -6,6 +6,18 @@ export const loggingMiddleware = (req, res, next) => {
     console.log(`${currentTimestamp}: ${reqMethod} ${reqRoute} ${userAuthStatus}`);
     next();  
 }
+
+export const landingPageMiddleware = (req, res, next) => {
+  if (req.session.user) {
+      if (req.session.user.role === 'admin') {
+        return res.redirect('/admin');
+      } else if (req.session.user.role === 'user') {
+        return res.redirect('/protectedUserHomePage');
+      }
+  }
+  next();
+}
+
 export const signInMiddleware = (req, res, next) => {
     if (req.session.user) {
         if (req.session.user.role === 'admin') {
