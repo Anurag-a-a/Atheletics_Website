@@ -54,16 +54,17 @@ const addAppointment = async (classId, selectedTimeSlot, cancelledOrNot) => {
   };
 
   const newInsertInfo = await appointmentCollection.insertOne(newAppointment);
-  if (!newInsertInfo.acknowledged || !newInsertInfo.insertedID)
+  if (!newInsertInfo.acknowledged || !newInsertInfo.insertedId)
     throw 'Insert failed!';
 
-  const newId = newInsertInfo.insertedID.toString();
+  const newId = newInsertInfo.insertedId.toString();
   const addedAppointment = await getAppointmentById(newId);
   addedAppointment._id = addedAppointment._id.toString();
   return addedAppointment;
 };
 
 const removeAppointment = async (appointmentId) => {
+  const appointmentCollection = await appointments();
   appointmentId = isValidId(appointmentId);
   const deletionInfo = await appointmentCollection.findOneAndDelete({_id: new ObjectId(appointmentId)});
   if (deletionInfo.lastErrorObject.n === 0) {
@@ -74,25 +75,34 @@ const removeAppointment = async (appointmentId) => {
 
 const updateAppointmentPut = async (appointmentId, classId, selectedTimeSlot, cancelledOrNot) => {
   appointmentId = isValidId(appointmentId);
-  classId = isValidId(classId);
-  selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
-  cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
 
-  // Check if there's already an appointment at the selected time slot
-  const existingAppointment = await appointments().findOne({
-    classId: classId,
-    selectedTimeSlot: selectedTimeSlot,
-    cancelledOrNot: false
-  });
-  if (existingAppointment && existingAppointment._id.toString() !== appointmentId) {
-    throw 'Error: The selected time slot is already booked.';
+  if (classId) {
+    classId = isValidId(classId);
   }
 
-  const appointmentUpdateInfo = {
-    classId: classId,
-    selectedTimeSlot: selectedTimeSlot,
-    cancelledOrNot: cancelledOrNot
+  if (selectedTimeSlot) {
+    selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
   }
+
+  if (cancelledOrNot !== null) {
+    cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
+  }
+
+  // Only update the fields that are not null
+  const appointmentUpdateInfo = {};
+
+  if (classId) {
+    appointmentUpdateInfo.classId = classId;
+  }
+
+  if (selectedTimeSlot) {
+    appointmentUpdateInfo.selectedTimeSlot = selectedTimeSlot;
+  }
+
+  if (cancelledOrNot !== null) {
+    appointmentUpdateInfo.cancelledOrNot = cancelledOrNot;
+  }
+
   const appointmentCollection = await appointments();
   const updatedInfo = await appointmentCollection.findOneAndUpdate(
     {_id: new ObjectId(appointmentId)},

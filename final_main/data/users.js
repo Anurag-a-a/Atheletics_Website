@@ -81,6 +81,7 @@ export const createUser = async (
     dob = isValidDOB(dob); //Format: MM/DD/YYYY
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
+    // console.log("validating address in data function");
     address = isValidAddress(address);
     username = isValidUsername(username);
     password = isValidPassword(password);
@@ -91,7 +92,7 @@ export const createUser = async (
     let MyAppointments = [];
     let MyReviews = [];
     let newUser = {};
-
+    let joinedPlanDate = new Date();
     const userCollection = await users();
     const existingUsers = await getAllUser();
     /*check for existing similar usernames */
@@ -101,7 +102,7 @@ export const createUser = async (
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    if (role == 'management') { 
+    if (role == 'admin') { 
         newUser = {
             firstName: firstName,
             lastName: lastName,
@@ -133,6 +134,7 @@ export const createUser = async (
             membershipPlanDetails: membershipPlanDetails,
             MyAppointments: MyAppointments,
             MyReviews: MyReviews,
+            joinedPlanDate: joinedPlanDate
         };
     };
     
@@ -186,7 +188,6 @@ export const update = async (
     phoneNumber,
     address,
     username,
-    hashedPassword,
     emergencyContactName,
     emergencyContactPhoneNumber,
     role,
@@ -197,6 +198,7 @@ export const update = async (
     lastName = isValidName(lastName, 'lastName');
     sex = isValidSex(sex);
     dob = isValidDOB(dob);
+    // console.log("in data update user checking email");
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
     address = isValidAddress(address);
@@ -221,7 +223,6 @@ export const update = async (
         phoneNumber: phoneNumber,
         address: address,
         username: username,
-        hashedPassword: hashedPassword,
         emergencyContactName: emergencyContactName,
         emergencyContactPhoneNumber: emergencyContactPhoneNumber,
         role: role,
@@ -243,43 +244,42 @@ export const update = async (
   
 //update appointment list in user
 export const updateAppointment = async (
-    id,
-    MyAppointmentsId,
-    action //'Delete' or 'Add'
+  id,
+  MyAppointmentsId,
+  action //'Delete' or 'Add'
 ) => {
-    id = isValidId(id);
-    MyAppointmentsId = isValidId(MyAppointmentsId);
-    action = isValidAction(action);
+  id = isValidId(id);
+  MyAppointmentsId = isValidId(MyAppointmentsId);
+  action = isValidAction(action);
 
-    const userCollection = await users();
-    const theUser = await getUserbyId(id);
+  const userCollection = await users();
+  const theUser = await getUserbyId(id);
 
-    let CurrentAppointmentList = theUser.MyAppointments;
-    if(!CurrentAppointmentList.includes(MyAppointmentsId)) {throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`};
-    let newAppointmentList = [];
-    if(action == 'delete'){
-        for (let i=0; i<CurrentAppointmentList.length; i++){
-            if(CurrentAppointmentList[i] != MyAppointmentsId){ newAppointmentList.push(CurrentAppointmentList[i]);};
-        };
+  let CurrentAppointmentList = theUser.MyAppointments;
 
-    }else{
-        newAppointmentList = CurrentAppointmentList;
-        newAppointmentList.push(MyAppointmentsId);
-    };
-    let MyAppointments = newAppointmentList;
-    let updateUser = {
-        MyAppointments: MyAppointments
-    };
-    const updatedInfo = await userCollection.findOneAndUpdate(
-        {_id: new ObjectId(id)},
-        {$set: updateUser},
-        {returnDocument: 'after'}
-      );
-      if (updatedInfo.lastErrorObject.n === 0) {
-        throw 'Failed to update Appointments';
-      };
-      updatedInfo.value._id = updatedInfo.value._id.toString();
-      return updatedInfo.value;
+  let newAppointmentList = [];
+  if (action == 'delete') {
+    if (!CurrentAppointmentList.includes(MyAppointmentsId)) {
+      throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`;
+    }
+    newAppointmentList = CurrentAppointmentList.filter(appointmentId => appointmentId !== MyAppointmentsId);
+  } else {
+    newAppointmentList = [...CurrentAppointmentList, MyAppointmentsId];
+  }
+  let MyAppointments = newAppointmentList;
+  let updateUser = {
+    MyAppointments: MyAppointments
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(id)},
+    {$set: updateUser},
+    {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update Appointments';
+  }
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
 };
 
 
@@ -325,6 +325,7 @@ export const updateReview = async (
 };
 
 export const checkUser = async (emailAddress, password) => {
+  let id = "";
   let firstName = "";
   let lastName = "";
   let sex = "";
@@ -341,6 +342,7 @@ export const checkUser = async (emailAddress, password) => {
   let MyAppointments =[];
   let MyReviews = [];
   let returnObj = {};
+  console.log(emailAddress);
   emailAddress = isValidEmail(emailAddress);
   password = isValidPassword(password);
   const userCollection = await users();
@@ -360,6 +362,7 @@ export const checkUser = async (emailAddress, password) => {
       if (comparePassword) {
         if(userList[i]['role'] == 'admin'){ 
           returnObj = {
+          id: userList[i]['_id'].toString(),
           firstName: userList[i]['firstName'],
           lastName: userList[i]['lastName'],
           sex: userList[i]['sex'],
@@ -374,6 +377,7 @@ export const checkUser = async (emailAddress, password) => {
         }
       }else {
         returnObj = {
+          id: userList[i]['_id'].toString(),
           firstName: userList[i]['firstName'],
           lastName: userList[i]['lastName'],
           sex: userList[i]['sex'],
