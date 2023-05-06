@@ -24,6 +24,10 @@
     {{#if partial}}
         {{> (lookup . 'partial') }}
     {{/if}}
+
+    {{#if renew}}
+        {{> (lookup . 'renew') }}
+    {{/if}}
     
     
 </body>

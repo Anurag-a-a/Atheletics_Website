@@ -251,6 +251,14 @@ router.route('/signin').post(async (req, res) => {
       return res.redirect('/');
     });
 
+    router.route('/renewplan').post(async(req, res) => {
+      //req.session.user.id
+      const theuser = await userData.getUserbyId(req.session.user.id);
+      if(!theuser){return res.status(500).json("Internal Server Error");};
+      const planRenewStatus = userData.renewPlan(req.session.user.id, theuser.membershipPlanDetails);
+      return res.json({planRenewStatus, renew: 'renewPlan'});
+    });
+
 
 
 export default router;

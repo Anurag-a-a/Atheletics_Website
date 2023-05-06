@@ -1,6 +1,7 @@
 <main>
     <br><br>
     <a class="go_home_link" href="/protectedUserHomePage">Home</a><br>
+    <a href='/updateinfo'><button id="update_info">Update Info</button></a>
     <h2>Personal Info</h2>
     <h3>{{firstName}} {{lastName}}</h3>
     <p>Username: {{username}}</p>
@@ -23,5 +24,7 @@
     <h2>Gym Membership Plan</h2>
     <p>{{plan}}</p>
     <a href='/updateplan'><button id="plan_update_button">Cancel or Change Plan</button></a>
-    <button id="plan_renew_button" onclick="renewplan()">Renew</button><br>
+    <button id="plan_renew_button" >Renew</button><br>
 </main>
+
+{{!-- onclick="renewplan()" --}}
