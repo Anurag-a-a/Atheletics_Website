@@ -1,0 +1,22 @@
+<br>
+<br>
+<h1>Gym Reviews</h1>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Review Text</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each reviews}}
+      <tr>
+        <td>{{this.username}}</td>
+        <td>{{this.reviewText}}</td>
+        <td>{{this.rating}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
