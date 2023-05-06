@@ -1,11 +1,21 @@
+<br>
+<br>
+<br>
+<a class="go_home_link" href="/myReviews">Back to My Reviews Page</a>
+<br>
 {{#if review}}
-  <form action="/reviews/update/{{review._id}}" method="POST">
-    <input type="text" name="gymId" placeholder="Gym ID" value="{{review.gymId}}">
-    <input type="text" name="classId" placeholder="Class ID" value="{{review.classId}}">
+  <form action="/myReviews/update/{{review._id}}" method="POST">
+    {{#if review.gymId}}
+      <p>Branch Name: {{branchName}}</p>
+      <input type="hidden" name="gymId" value="{{review.gymId}}">
+    {{/if}}
+    {{#if review.classId}}
+      <p>Class Name: {{className}}</p>
+      <input type="hidden" name="classId" value="{{review.classId}}">
+    {{else}}
+      <input type="number" name="rating" placeholder="Rating (1-5)" value="{{review.rating}}" min="1" max="5" step="0.1">
+    {{/if}}
     <input type="text" name="reviewText" placeholder="Review Text" value="{{review.reviewText}}">
-    <input type="number" name="rating" placeholder="Rating (1-5)" value="{{review.rating}}">
     <button type="submit">Save Changes</button>
   </form>
 {{/if}}
-
-<a href="/">Back to Reviews</a>

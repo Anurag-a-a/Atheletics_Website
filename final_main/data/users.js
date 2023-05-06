@@ -262,44 +262,49 @@ export const updateAppointment = async (
 
 
 //update review list in user
-export const updateReview = async (
-    id,
-    MyReviewId,
-    action //'Delete' or 'Add'
-) => {
-    id = isValidId(id);
-    MyReviewId = isValidId(MyReviewId);
-    action = isValidAction(action);
+export const updateReview = async (id, MyReviewId, action) => {
+  id = isValidId(id);
+  MyReviewId = isValidId(MyReviewId);
+  action = isValidAction(action);
 
-    const userCollection = await users();
-    const theUser = await getUserbyId(id);
+  const userCollection = await users();
+  const theUser = await getUserbyId(id);
 
-    let CurrentReviewList = theUser.MyReviews;
-    if(!CurrentReviewList.includes(MyReviewId)) {throw `Error: No such appointment for ${theUser.firstName} ${theUser.lastName}`};
-    let newReviewList = [];
-    if(action == 'delete'){
-        for (let i=0; i<CurrentReviewList.length; i++){
-            if(CurrentReviewList[i] != MyReviewId){ newReviewList.push(CurrentReviewList[i]);};
-        };
+  let currentReviewList = theUser.MyReviews;
+  let newReviewList = [];
 
-    }else{
-        newReviewList = CurrentReviewList;
-        newReviewList.push(MyReviewId);
-    };
-    let MyReviews = newReviewList;
-    let updateUser = {
-        MyReviews: MyReviews
-    };
-    const updatedInfo = await userCollection.findOneAndUpdate(
-        {_id: new ObjectId(id)},
-        {$set: updateUser},
-        {returnDocument: 'after'}
+  if (action === "add") {
+    if (!currentReviewList.includes(MyReviewId)) {
+      newReviewList = [...currentReviewList, MyReviewId];
+    } else {
+      newReviewList = currentReviewList;
+    }
+  } else if (action === "delete") {
+    if (currentReviewList.includes(MyReviewId)) {
+      newReviewList = currentReviewList.filter(
+        (reviewId) => reviewId !== MyReviewId
       );
-      if (updatedInfo.lastErrorObject.n === 0) {
-        throw 'Failed to update Reviews';
-      };
-      updatedInfo.value._id = updatedInfo.value._id.toString();
-      return updatedInfo.value;
+    } else {
+      throw `Error: No such review for ${theUser.firstName} ${theUser.lastName}`;
+    }
+  }
+
+  let updateUser = {
+    MyReviews: newReviewList,
+  };
+
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: updateUser },
+    { returnDocument: "after" }
+  );
+
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw "Failed to update Reviews";
+  }
+
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
 };
 
 export const checkUser = async (emailAddress, password) => {
