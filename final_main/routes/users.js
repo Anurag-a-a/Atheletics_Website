@@ -106,18 +106,18 @@ router.route('/joinnow').post(async (req, res) => {
     //create the user in db
     try{
       const userReturnObject = await userData.createUser(
-        firstName,
-        lastName,
-        sex,
-        dob,
-        email,
-        phoneNumber,
-        address,
-        username,
-        password,
-        emergencyContactName,
-        emergencyContactPhoneNumber,
-        plan
+        xss(firstName),
+        xss(lastName),
+        xss(sex),
+        xss(dob),
+        xss(email),
+        xss(phoneNumber),
+        xss(address),
+        xss(username),
+        xss(password),
+        xss(emergencyContactName),
+        xss(emergencyContactPhoneNumber),
+        xss(plan)
       );
       if(!userReturnObject) {return res.status(500).json({error: "Internal Server Error"});};
       return res.render('signIn',{title: "Gym Brat" , partial: 'sigInPartial'});
@@ -148,7 +148,7 @@ router.route('/signin').post(async (req, res) => {
       };
       try{
         // console.log("Inside checking credentials");
-        const userObject = await userData.checkUser(email,password);
+        const userObject = await userData.checkUser(xss(email),xss(password));
         if(!userObject) { return res.status(500).render('signIn', {title: "Gym Brat", error: "Internal Server Error",partial: false});};
         req.session.user = {
           id: userObject.id,
@@ -222,7 +222,7 @@ router.route('/signin').post(async (req, res) => {
         if(!theuser){return res.status(500).json("Internal Server Error");};
         // console.log("Route updatePlan /post checking user");
         // console.log(theuser);
-        const userObject = await userData.checkUser(theuser.email,password);
+        const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).json("Internal Server Error");};
         const updateUser = await userData.update(theuser._id.toString(),
         theuser.firstName,
