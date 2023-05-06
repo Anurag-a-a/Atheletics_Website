@@ -30,15 +30,21 @@ router.route('/amenities').get(async (req, res) => {
 
 /* route for membershipPlans page */
 router.route('/membershipPlans').get(async (req, res) => {
-    return res.render('membershipPlans',{title: "Gym Brat", partial: false});
+    if(!req.session.user)
+    {return res.render('membershipPlans',{title: "Gym Brat", partial: false, notloogedIn: true});}
+    else {
+      return res.render('membershipPlans',{title: "Gym Brat", partial: false, notloogedIn: false});
+    }
 });
 
 /* route for sign up page */
 router.route('/joinnow').get(middleware.signUpMiddleware,async (req, res) => {
+  console.log("renedered join now");
     return res.render('joinNow',{title: "Gym Brat", partial: 'signUpPartial'});
 });
 router.route('/joinnow').post(async (req, res) => {
     // validate inputs
+    console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
         return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: false});
@@ -58,7 +64,6 @@ router.route('/joinnow').post(async (req, res) => {
     let password = "";
     let emergencyContactName = "";
     let emergencyContactPhoneNumber = "";
-    let role = "";
     let plan = "";
     let accountCheck =  false;
     try {
@@ -67,7 +72,7 @@ router.route('/joinnow').post(async (req, res) => {
         password = isValidPassword(signUpInfo.passwordInput);
         sex = isValidSex(signUpInfo.sex);
         dob = isValidDOB(signUpInfo.dob);
-        console.log("checking phoneNumber in routes");
+        // console.log("checking phoneNumber in routes");
         phoneNumber = isValidPhoneNumber(signUpInfo.ph);
         streetName = signUpInfo.streetName;
         city = signUpInfo.city;
@@ -79,7 +84,7 @@ router.route('/joinnow').post(async (req, res) => {
           state: state,
           zip: zip
         };
-        console.log("validating address in route function");
+        // console.log("validating address in route function");
         address = isValidAddress(address);
         email = isValidEmail(signUpInfo.emailAddress);
         const existingUsers = await userData.getAllUser();
@@ -92,18 +97,10 @@ router.route('/joinnow').post(async (req, res) => {
           if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
         };
         emergencyContactName = isValidName(signUpInfo.emergencyContactName,'Emergency Contact Name');
-        console.log("checking emergency phoneNumber in routes");
+        // console.log("checking emergency phoneNumber in routes");
         emergencyContactPhoneNumber = isValidPhoneNumber(signUpInfo.emergencyContactPhoneNumber);
-        role = isValidRole(signUpInfo.role);
         plan = isValidMembershipPlanDetails(signUpInfo.plan);
       }catch(e){
-        // console.log("Validating input threw errro routes")
-        if(accountCheck){
-          var delayInMilliseconds = 5000;
-          setTimeout(function() {
-            //your code to be executed after 1 second
-          }, delayInMilliseconds);
-          return res.render('signIn',{title: "Gym Brat" , partial: 'sigInPartial', error: e});};
         return res.status(400).render('joinNow', {title: "Gym Brat", error: e, partial: false});
       };
     //create the user in db
@@ -120,7 +117,6 @@ router.route('/joinnow').post(async (req, res) => {
         password,
         emergencyContactName,
         emergencyContactPhoneNumber,
-        role,
         plan
       );
       if(!userReturnObject) {return res.status(500).json({error: "Internal Server Error"});};
