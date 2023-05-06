@@ -107,14 +107,6 @@
         return zipCode;
     };
 
-    function validateRole(role){
-        if (!role) { throw "Error: no role provided"; };
-        if (!(typeof role == 'string')) { throw "Error: role must be a string"; };
-        role = role.trim().toLowerCase();
-        if (role.length === 0) { throw "Error: role cannot be an empty string or string with just spaces"; };
-        if (!(["user", "admin"].includes(role))) { throw "Error: Invalid Role" };
-        return role;
-    };
 
     function validateSex(sex){
         if (!sex) { throw "Error: no sex provided"; };
@@ -151,48 +143,16 @@
         if (!(["alpha", "beta", "omega","na"].includes(plan))) { throw "Error: Invalid plan"; };
         return plan;
     };
+    function validateSecondPassword(firstp, secondp){
+        if(firstp != secondp) {throw "Error: Passwords do not match."};
+        return secondp;
+    };
 
     const formSignUp = document.getElementById('joinNow-form');
     if(formSignUp){
-        const rolesField = document.getElementById('role');
-        rolesField.addEventListener('change', (event) => {
-        if (event.target.value === 'admin') {
-            while (document.getElementById("plan").options.length > 0) {
-                document.getElementById("plan").remove(0);
-            };
-            var x = document.createElement("OPTION");
-            x.setAttribute("value", "na");
-            var t = document.createTextNode("NA");
-            x.appendChild(t);
-            document.getElementById("plan").appendChild(x);
-        }else {
-            while (document.getElementById("plan").options.length > 0) {
-                document.getElementById("plan").remove(0);
-            };
-            var x1 = document.createElement("OPTION");
-            x1.setAttribute("value", "alpha");
-            x1.setAttribute('selected', 'selected');
-            var t1 = document.createTextNode("Alpha");
-            x1.appendChild(t1);
-            document.getElementById("plan").appendChild(x1);
-
-            var x2 = document.createElement("OPTION");
-            x2.setAttribute("value", "beta");
-            var t2 = document.createTextNode("Beta");
-            x2.appendChild(t2);
-            document.getElementById("plan").appendChild(x2);
-
-            var x3 = document.createElement("OPTION");
-            x3.setAttribute("value", "omega");
-            var t3 = document.createTextNode("Omega");
-            x3.appendChild(t3);
-            document.getElementById("plan").appendChild(x3);
-        };
-
-        });//select change event listener
         
-        const errorContainer = document.getElementById('error-container');
-        const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
+        // const errorContainer = document.getElementById('error-container');
+        // const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
         const errorContainer1 = document.getElementById('error-container1');
         const errorTextElement1 = errorContainer1.getElementsByClassName('text-goes-here')[0];
@@ -233,14 +193,17 @@
         const errorContainer13 = document.getElementById('error-container13');
         const errorTextElement13 = errorContainer13.getElementsByClassName('text-goes-here')[0];
 
-        const errorContainer14 = document.getElementById('error-container14');
-        const errorTextElement14 = errorContainer14.getElementsByClassName('text-goes-here')[0];
+        // const errorContainer14 = document.getElementById('error-container14');
+        // const errorTextElement14 = errorContainer14.getElementsByClassName('text-goes-here')[0];
 
         const errorContainer15 = document.getElementById('error-container15');
         const errorTextElement15 = errorContainer15.getElementsByClassName('text-goes-here')[0];
 
         const errorContainer16 = document.getElementById('error-container16');
         const errorTextElement16 = errorContainer16.getElementsByClassName('text-goes-here')[0];
+
+        const errorContainer17 = document.getElementById('error-container17');
+        const errorTextElement17 = errorContainer17.getElementsByClassName('text-goes-here')[0];
 
         formSignUp.addEventListener('submit', (event) => {
             // event.preventDefault();
@@ -417,19 +380,6 @@
                 // formSignUp.reset();
             };
             try{
-                errorContainer14.classList.add('hidden');
-                errorContainer14.style.display = 'none';
-                const role = validateRole(document.getElementById('role').value);
-
-            }catch(e){
-                event.preventDefault();
-                const message = typeof e === 'string' ? e : e.message;
-                errorTextElement14.textContent = e;
-                errorContainer14.style.display = 'block';
-                errorContainer14.classList.remove('hidden');
-                // formSignUp.reset();
-            };
-            try{
                 errorContainer15.classList.add('hidden');
                 errorContainer15.style.display = 'none';
                 const role = validatePlan(document.getElementById('plan').value);
@@ -454,6 +404,21 @@
                 errorContainer16.style.display = 'block';
                 errorContainer16.classList.remove('hidden');
                 formSignUp['passwordInput'].value = "";
+            };
+
+            try{
+                errorContainer17.classList.add('hidden');
+                errorContainer17.style.display = 'none';
+                const cPasswordString = validateSecondPassword(document.getElementById('passwordInput').value,document.getElementById('confirmPasswordInput').value);
+
+            }catch(e){
+                event.preventDefault();
+                const message = typeof e === 'string' ? e : e.message;
+                errorTextElement17.textContent = e;
+                errorContainer17.style.display = 'block';
+                errorContainer17.classList.remove('hidden');
+                formSignUp['passwordInput'].value = "";
+                formSignUp['confirmPasswordInput'].value = "";
             };
 
     });//close event listener

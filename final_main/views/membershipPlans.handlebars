@@ -6,17 +6,23 @@
         <div class="plan">
             <h3>Alpha</h3>
             <p>some details...</p>
-            <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}
          </div>
          <div class="plan">
             <h3>Beta</h3>
             <p>some details...</p>
-            <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}        
         </div>
         <div class="plan">
-        <h3>Omega</h3>
-        <p>some details...</p>
-        <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            <h3>Omega</h3>
+            <p>some details...</p>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}        
         </div>
     </div>
 </main>

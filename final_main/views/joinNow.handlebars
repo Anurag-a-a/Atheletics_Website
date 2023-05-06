@@ -4,14 +4,7 @@
     <a href="/signin">Already a member. Click here to sign In</a><br>
     <a href="/membershipPlans">Want to see our exclusive plans. Click here!</a>
     <p>Fill up the details below to join the gym membership</p>
-    <h1>Sign In</h1>
-     {{#if error }}
-            <div class="form-group">
-                <div class="alert alert-danger">
-                    <p>{{ error }} </p>
-                </div>
-            </div>
-        {{/if}}
+    <h1>Sign Up</h1>
     <form id ="joinNow-form" method="POST" action="/joinnow">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
@@ -97,15 +90,6 @@
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
-        <label for="role">Choose your Role: </label>
-        <select name="role" id="role">
-            <option selected="selected" value="user">User</option>
-            <option value="admin">Admin</option>
-        </select>
-         <div class="form-group hidden" id="error-container14">
-        <div class="alert alert-danger text-goes-here"></div>
-        </div>
-        <br>
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
             <option selected="selected" value="alpha">Alpha</option>
@@ -121,9 +105,22 @@
         <div class="form-group hidden" id="error-container16">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
+        <br>
+        <label for="confirmPasswordInput">Confirm password: </label>
+        <input id ="confirmPasswordInput" type="password" name="confirmPasswordInput"/>
+        <div class="form-group hidden" id="error-container17">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>        
         <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
         <br>    
     </form>
+    {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+    {{/if}}
     <hr>
 </main>
