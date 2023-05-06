@@ -87,20 +87,20 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
 }).post(ensureAuthenticated, async (req, res) => {
   try {
     console.log('User in the request:', req.user);
-    const { classId, selectedTimeSlot, cancelledOrNot} = req.body;
+    const { classId, selectedTimeSlot, cancelledOrNot } = req.body;
 
     const regex = /^(\d{2}\/\d{2}\/\d{4}) (\d{2}:\d{2}) - (\d{2}:\d{2})$/;
     const match = selectedTimeSlot.match(regex);
-    
+
     if (!match) {
       throw new Error("Invalid selectedTimeSlot format");
     }
-    
+
     const date = match[1];
     const startTime = match[2];
     const endTime = match[3];
     const timing = `${startTime} - ${endTime}`;
-    
+
     const selectedTimeSlotObj = {
       Date: date,
       timing: timing
@@ -137,6 +137,7 @@ router.get('/deleted', ensureAuthenticated, (req, res) => {
     res.status(404).json({ error: error.toString() });
   }
 });
+
 router.route('/delete/:id').post(ensureAuthenticated, async (req, res) => {
   try {
     const deletedAppointment = await appointmentData.removeAppointment(req.params.id);
