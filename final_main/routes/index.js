@@ -3,6 +3,7 @@ import userRoutes from './users.js';
 import gymRoutes from './gymDetails.js';
 import reviewRoutes from './reviews.js';
 import appointmentRoutes from './appointments.js';
+import gymreviewsRoutes from './gymreviews.js'
 import { loggingMiddleware } from '../middleware.js';
 import classandeventRoutes from './classandevent.js';
 const constructorMethod = (app) => {
