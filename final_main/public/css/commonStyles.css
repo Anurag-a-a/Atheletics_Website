@@ -29,7 +29,7 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 0.5rem; 
+    height: 1.0rem; 
     text-align: center;
     background-color: lavender;
  }
@@ -65,6 +65,30 @@ a:visited {
   margin-right:auto;
   line-height: 2em;
   
+}
+.images{
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+#workout_suggestions{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 50%;
+}
+#userPageCancellationInfo{
+  color: #8b0000;
+  text-align: center;
+  background-color: lightgreen;
+}
+#userHomePageh1{
+  text-align: center;
+}
+#plan_update_button{
+  padding-bottom: 10px;
 }
 
 
