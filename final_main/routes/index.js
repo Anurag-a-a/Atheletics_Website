@@ -26,5 +26,5 @@ const constructorMethod = (app) => {
     res.status(404).json({ error: '404 Error: Not found' });
   });
 };
-
+  
 export default constructorMethod;
