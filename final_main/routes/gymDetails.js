@@ -2,10 +2,10 @@ import {Router} from 'express';
 import { gyms } from '../config/mongoCollections.js';
 const router = Router();
 
-router.route('/location').get(async (req, res) => {
+router.route('/locations').get(async (req, res) => {
     //code here for Getting the main page of the gym
-    gymData
-    return res.render('Locations',{title: "Gym Brat"});
+    const locations = await gyms.getAllGyms();
+    return res.render('locations',{title: "Gym Brat",locations : locations});
 });
 router.route('/membershipplans').get(async (req, res) => {
     //code here for Getting the main page of the gym
