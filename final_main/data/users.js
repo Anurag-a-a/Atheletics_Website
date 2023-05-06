@@ -72,7 +72,6 @@ export const createUser = async (
     password,
     emergencyContactName,
     emergencyContactPhoneNumber,
-    role,
     membershipPlanDetails   
 ) => {
     firstName = isValidName(firstName, 'firstName');
@@ -87,7 +86,6 @@ export const createUser = async (
     password = isValidPassword(password);
     emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
-    role = isValidRole(role);
     membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
     let MyAppointments = [];
     let MyReviews = [];
@@ -102,44 +100,24 @@ export const createUser = async (
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    if (role == 'admin') { 
-        newUser = {
-            firstName: firstName,
-            lastName: lastName,
-            sex: sex,
-            dob: dob,
-            email: email,
-            phoneNumber: phoneNumber,
-            address: address,
-            username: username,
-            hashedPassword: hashedPassword,
-            emergencyContactName: emergencyContactName,
-            emergencyContactPhoneNumber: emergencyContactPhoneNumber,
-            role: role
-          };
-    }else {
-        newUser = {
-            firstName: firstName,
-            lastName: lastName,
-            sex: sex,
-            dob: dob,
-            email: email,
-            phoneNumber: phoneNumber,
-            address: address,
-            username: username,
-            hashedPassword: hashedPassword,
-            emergencyContactName: emergencyContactName,
-            emergencyContactPhoneNumber: emergencyContactPhoneNumber,
-            role: role,
-            membershipPlanDetails: membershipPlanDetails,
-            MyAppointments: MyAppointments,
-            MyReviews: MyReviews,
-            joinedPlanDate: joinedPlanDate
-        };
-    };
-    
-  
-      
+    newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        sex: sex,
+        dob: dob,
+        email: email,
+        phoneNumber: phoneNumber,
+        address: address,
+        username: username,
+        hashedPassword: hashedPassword,
+        emergencyContactName: emergencyContactName,
+        emergencyContactPhoneNumber: emergencyContactPhoneNumber,
+        role: 'user',
+        membershipPlanDetails: membershipPlanDetails,
+        MyAppointments: MyAppointments,
+        MyReviews: MyReviews,
+        joinedPlanDate: joinedPlanDate
+    }; 
       const insertInfo = await userCollection.insertOne(newUser);
       if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create user';};
       const newId = insertInfo.insertedId.toString();
@@ -330,24 +308,8 @@ export const updateReview = async (id, MyReviewId, action) => {
 };
 
 export const checkUser = async (emailAddress, password) => {
-  let id = "";
-  let firstName = "";
-  let lastName = "";
-  let sex = "";
-  let dob = "";
-  // let email = "";
-  let phoneNumber = "";
-  let address ={};
-  let username = "";
-  // let hashedPassword = "";
-  let emergencyContactName = "";
-  let emergencyContactPhoneNumber = "";
-  let role = "";
-  let membershipPlanDetails = "";
-  let MyAppointments =[];
-  let MyReviews = [];
   let returnObj = {};
-  console.log(emailAddress);
+  // console.log(emailAddress);
   emailAddress = isValidEmail(emailAddress);
   password = isValidPassword(password);
   const userCollection = await users();
@@ -360,7 +322,7 @@ export const checkUser = async (emailAddress, password) => {
       check = true;
       try {
         comparePassword = await bcrypt.compare(password, userList[i]['hashedPassword']);
-        console.log(comparePassword)
+        // console.log(comparePassword)
       }catch(e){
         throw "Internal Server Error";
       };
