@@ -10,10 +10,44 @@ router
     .route('/')
     .get(ensureAuthenticated, async (req, res) => {
         try {
-            const allClasses = await classData.getAllClass();
-            res.render('classandevent', { classes: allClasses });
+            const Classes = await classData.getAllClass();
+            
+            let allClass = Classes.map(c=>{
+                if (c.slots.Date){
+                    const currentDate = new Date(); 
+                    let formattedDate = currentDate.toLocaleDateString('en-US');
+                    if (c.slots.Date<=formattedDate){
+                        return c;
+                    }
+                }
+            })
+            console.log(allClass);
+            //get all reviewText from review data
+            let result = null;
+            let data = null;
+            async function processData() {
+              data = await Promise.all(allClass.map(async item => {
+                item.reviewsText = [];
+                console.log(item);
+                let reviews = item.reviewIds;
+                console.log(reviews);
+                if (reviews.length !== 0) {
+                  await Promise.all(reviews.map(async i => {
+                    console.log(i);
+                    const text = await reviewData.getReviewById(i);
+                    console.log(text.reviewText);
+                    item.reviewsText.push(text.reviewText);
+                  }))
+                }
+                return item;
+              }));
+              console.log(data);
+            }
+            await processData();
+            res.render('classandevent', { classes: data });
         } catch (e) {
             res.status(500).json({ error: error });
+            return;
         }
     })
     .post(ensureAuthenticated, async (req, res) => {
@@ -54,13 +88,21 @@ router
             const newAppointment = await appointmentData.addAppointment(classId, selectedTimeSlotObj, cancelledOrNot);
             await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
             req.session.forceReload = true;
-            // res.redirect('/appointments/success');
             res.redirect('/myAppointments');
         } catch (error) {
             res.status(500).json({ error: error.toString() });
         }
     });
 
+    router.route('/reviews_add').post(async (req, res) => {
+        try {
+          const {gymId, classId, reviewText} = req.body;
+            const newReview = await reviewData.addReview(gymId, classId, reviewText);
+            return res.json({added: true});
+        } catch(error) {
+          res.status(500).json({ error: error });
+        }
+      })
 // router.get('/add', ensureAuthenticated, (req, res) => {
 
 // }).post(ensureAuthenticated, async (req, res) => {
