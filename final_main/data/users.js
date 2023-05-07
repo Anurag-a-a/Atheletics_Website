@@ -372,11 +372,11 @@ export const checkUser = async (emailAddress, password) => {
   
 };
 
-export const renewPlan = async (id, plan) => {
+export const renewPlan = async (id) => {
   
   id = isValidId(id);
-  plan = isValidMembershipPlanDetails(plan);
-  const theuser = await userData.getUserbyId(id);
+  const userCollection = await users();
+  const theuser = await getUserbyId(id);
   if(!theuser){throw "Internal Server Error";};
   let joinedPlanDate = new Date();
   const updateUser ={

@@ -18,10 +18,15 @@ import {isValidName,
 import xss from 'xss';
 import session from 'express-session';
 
-/* route for landing page */
 router.route('/').get(middleware.landingPageMiddleware, async (req, res) => {
-    return res.render('landingPage',{title: "Gym Brat", partial: false});
+  return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
+
+/* route for landing page */
+router.route('/landingpage').get(middleware.landingPageMiddleware, async (req, res) => {
+  return res.render('landingPage',{title: "Gym Brat", partial: false});
+});
+
 
 /* route for amenities page */
 router.route('/amenities').get(async (req, res) => {
@@ -172,6 +177,12 @@ router.route('/signin').post(async (req, res) => {
 
     router.route('/userProfile').get(middleware.userProfilePageMiddleware, async (req, res) => {
       const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      var month = theSessionUser.joinedPlanDate.getUTCMonth() + 1; //months from 1-12
+      var day = theSessionUser.joinedPlanDate.getUTCDate();
+      var year = theSessionUser.joinedPlanDate.getUTCFullYear() + 1; 
+      const expire = `${month}/${day}/${year}`;
+      let ph = `${theSessionUser.phoneNumber.slice(0,3)}-${theSessionUser.phoneNumber.slice(3,6)}-${theSessionUser.phoneNumber.slice(6)}`;
+      let eph = `${theSessionUser.emergencyContactPhoneNumber.slice(0,3)}-${theSessionUser.emergencyContactPhoneNumber.slice(3,6)}-${theSessionUser.emergencyContactPhoneNumber.slice(6)}`;
       return res.render('userProfile',{
         title: "Gym Brat", 
         firstName: theSessionUser.firstName, 
@@ -180,22 +191,29 @@ router.route('/signin').post(async (req, res) => {
         sex: theSessionUser.sex,
         dob: theSessionUser.dob,
         email: theSessionUser.emailAddress,
-        ph: theSessionUser.phoneNumber,
+        ph: ph,
         st: theSessionUser.address.streetName,
         city: theSessionUser.address.city,
         state: theSessionUser.address.state,
         zip: theSessionUser.address.zip,
         eName: theSessionUser.emergencyContactName,
-        ePh: theSessionUser.emergencyContactPhoneNumber,
-        plan: theSessionUser.membershipPlanDetails
+        ePh: eph,
+        plan: theSessionUser.membershipPlanDetails,
+        expire: expire
        });
     });
 
     router.route('/updateplan').get(middleware.updatePlanMiddleware,async (req, res) => {
       try{
         const theSessionUser = await userData.getUserbyId(req.session.user.id);
+        const theuser = await userData.getUserbyId(req.session.user.id);
+        if(!theuser){return res.status(500).json("Internal Server Error");};
         if(theSessionUser){
-          return res.render('updatePlan',{title: "Gym Brat", partial: "updatePlanPartial"});
+          let plan = theuser.membershipPlanDetails;
+          if (plan == "alpha"){return res.render('updatePlan',{title: "Gym Brat", partial: "updatePlanPartial", alpha: true, beta: false, omega: false });}
+          else if(plan == "beta"){return res.render('updatePlan',{title: "Gym Brat", partial: "updatePlanPartial", alpha: false, beta: true, omega: false });}
+          else {return res.render('updatePlan',{title: "Gym Brat", partial: "updatePlanPartial", alpha: false, beta: false, omega: true });};
+            
         }else{ throw "Error: Internal Server Error"};
       }catch(e){
         return res.status(500).json(e);
@@ -224,22 +242,29 @@ router.route('/signin').post(async (req, res) => {
         // console.log(theuser);
         const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).json("Internal Server Error");};
-        const updateUser = await userData.update(theuser._id.toString(),
-        theuser.firstName,
-        theuser.lastName,
-        theuser.sex,
-        theuser.dob,
-        theuser.email,
-        theuser.phoneNumber,
-        theuser.address,
-        theuser.username,
-        theuser.emergencyContactName,
-        theuser.emergencyContactPhoneNumber,
-        theuser.role,
-        plan
-        );
-        if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: false});}
-        return res.redirect('/userProfile');
+        if(updatePlanInfo.plan != 'renew') {
+          const updateUser = await userData.update(theuser._id.toString(),
+          theuser.firstName,
+          theuser.lastName,
+          theuser.sex,
+          theuser.dob,
+          theuser.email,
+          theuser.phoneNumber,
+          theuser.address,
+          theuser.username,
+          theuser.emergencyContactName,
+          theuser.emergencyContactPhoneNumber,
+          theuser.role,
+          plan
+          );
+          if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: false});}
+          return res.redirect('/userProfile');
+        }
+        else{
+          const renewPlan = userData.renewPlan(theuser._id.toString());
+          return res.redirect('/userProfile');
+        };
+        
       }catch(e){
         return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: false});
       };
@@ -259,6 +284,9 @@ router.route('/signin').post(async (req, res) => {
       return res.json({planRenewStatus, renew: 'renewPlan'});
     });
 
+    router.route('/updatepassword').get(middleware.updatePasswordMiddleware,async(req, res) => {
+      return res.render('updatePassword',{title: "Gym Brat",partial: false})
 
+    });
 
 export default router;

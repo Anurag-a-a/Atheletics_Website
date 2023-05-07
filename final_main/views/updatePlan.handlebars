@@ -8,6 +8,7 @@
             <option selected="selected" value="alpha">Alpha</option>
             <option value="beta">Beta</option>
             <option value="omega">Omega</option>
+            <option value="renew">Renew current plan</option>
         </select>
         <div class="form-group hidden" id="error-container15">
         <div class="alert alert-danger text-goes-here"></div>
@@ -31,4 +32,23 @@
     </form>
     <hr>
     <a href="/membershipPlans">See Plan Details</a>
+
+    <div id = "plans-container">
+        <p>Current plan details</p>
+        <div class="plan">
+            {{#if alpha}}
+                <p>Alpha</p>
+                <p>some details of alpha...</p>
+            {{/if}}
+            {{#if beta}}
+                <p>Beta</p>
+                <p>some details of beta...</p>
+            {{/if}}
+            {{#if omega}}
+                <p>Omega</p>
+                <p>some details of omega...</p>
+            {{/if}}
+         </div>
+
+    </div>
 </main>
