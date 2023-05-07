@@ -236,3 +236,22 @@ export const updateReview = async (
     updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
 };
+
+export const addReviewId = async (userId, reviewId) => {
+    userId = isValidId(userId);
+    reviewId = isValidId(reviewId);
+  
+    const classCollection = await classes();
+    const updatedInfo = await classCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $addToSet: { reviewIds: reviewId } },
+      { returnDocument: 'after' }
+    );
+  
+    if (updatedInfo.lastErrorObject.n === 0) {
+      throw 'Failed to update MyReviews';
+    }
+  
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+  };

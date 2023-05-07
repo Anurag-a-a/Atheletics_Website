@@ -86,9 +86,10 @@ const addReview = async (gymId, classId, reviewText, rating = null) => {
       const updatedReviewIds = [...gymToUpdate.reviewIds, newId];
 
       const gymReviews = await reviewCollection.find({ gymId: gymId, classId: null }).toArray();
-      const totalRating = gymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) + parseFloat(rating);
-      const averageRating = totalRating / (gymReviews.length + 1);
-
+      const filteredGymReviews = gymReviews.filter((review) => gymToUpdate.reviewIds.includes(review._id.toString()));
+      const totalRating = filteredGymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) + parseFloat(rating);
+      const averageRating = parseFloat((totalRating / (filteredGymReviews.length + 1)).toFixed(1));
+    
       await gymCollection.updateOne(
         { _id: new ObjectId(gymId) },
         {
@@ -155,9 +156,10 @@ const updateReview = async (reviewId, gymId, classId, reviewText, rating = null)
   if (gymId && rating) {
     const gymToUpdate = await gymCollection.findOne({ _id: new ObjectId(gymId) });
     const gymReviews = await reviewCollection.find({ gymId: gymId }).toArray();
-    const totalRating = gymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) - previousRating + parseFloat(rating);
-    const averageRating = totalRating / gymReviews.length;
-
+    const filteredGymReviews = gymReviews.filter((review) => gymToUpdate.reviewIds.includes(review._id.toString()));
+    const totalRating = filteredGymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0);
+    const averageRating = parseFloat((totalRating / filteredGymReviews.length).toFixed(1));
+  
     await gymCollection.updateOne(
       { _id: new ObjectId(gymId) },
       {
