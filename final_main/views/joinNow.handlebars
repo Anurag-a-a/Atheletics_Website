@@ -1,93 +1,126 @@
 <main class="main">
+    <br>
     <a class="go_home_link" href="/">Go to Home Page</a><br>
+    <a href="/signin">Already a member. Click here to sign In</a><br>
+    <a href="/membershipPlans">Want to see our exclusive plans. Click here!</a>
     <p>Fill up the details below to join the gym membership</p>
-    <h1>Sign In</h1>
+    <h1>Sign Up</h1>
     <form id ="joinNow-form" method="POST" action="/joinnow">
-        <label for="firstName">Enter you first name:</label>
-        <br>
+        <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
+        <div class="form-group hidden" id="error-container1">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="lastName">Enter you last name:</label>
-        <br>
+        <label for="lastName">Enter you last name: </label>
         <input id ="lastName" type="text" name="lastName"/>
+        <div class="form-group hidden" id="error-container2">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
         <label for="sex">Sex: </label>
         <select name="sex" id="sex">
-            <option value="female">Female</option>
+            <option selected="selected" value="female">Female</option>
             <option value="male">Male</option>
             <option value="non-binary">Non-Binary</option>
             <option value="prefer-not-to-say">Prefer not to say</option>
         </select>
+        <div class="form-group hidden" id="error-container3">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="dob">Enter your date of birth:</label>
-        <br>
+        <label for="dob">Enter your date of birth: </label>
         <input id ="dob" type="text" name="dob" placeholder="MM/DD/YYYY"/>
+        <div class="form-group hidden" id="error-container4">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="emailAddress">Enter you email address:</label>
-        <br>
+        <label for="emailAddress">Enter you email address: </label>
         <input id ="emailAddress" type="email" name="emailAddress"/>
+        <div class="form-group hidden" id="error-container5">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="ph">Enter your phone number:</label>
+        <label for="username">Enter your username: </label>
+        <input id ="username" type="text" name="username"/>
+        <div class="form-group hidden" id="error-container11">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <input id ="ph" type="text" name="ph" placeholder="xxx-xxx-xxxx"/>
+        <label for="ph">Enter your phone number: </label>
+        <input id ="ph" type="text" name="ph"/>
+        <div class="form-group hidden" id="error-container6">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
         <p>Enter your address: </p>
-        <label for="streetName" class = "tab">StreetName:</label>
-        <br>
+        <label for="streetName" class = "tab">StreetName: </label>
         <input id ="streetName" type="text" name="streetName" class = "tab"/>
+        <div class="form-group hidden" id="error-container7">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="city" class = "tab">City:</label>
-        <br>
+        <label for="city" class = "tab">City: </label>
         <input id ="city" type="text" name="city" class = "tab"/>
+        <div class="form-group hidden" id="error-container8">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="state" class = "tab">State:</label>
-        <br>
+        <label for="state" class = "tab">State: </label>
         <input id ="state" type="text" name="state" class = "tab"/>
+        <div class="form-group hidden" id="error-container9">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="zip" class = "tab">ZipCode:</label>
-        <br>
+        <label for="zip" class = "tab">ZipCode: </label>
         <input id ="zip" type="text" name="zip" class = "tab"/>
+        <div class="form-group hidden" id="error-container10">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="username">Enter your username:</label>
-        <br>
-        <input id ="username" type="text" name="username"/>
-        <br>
-        <label for="emergencyContactName">Enter your Emergency Contact Name:</label>
-        <br>
+        <label for="emergencyContactName">Enter your Emergency Contact Name: </label>
         <input id ="emergencyContactName" type="text" name="emergencyContactName"/>
+        <div class="form-group hidden" id="error-container12">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="emergencyContactPhoneNumber">Enter your Emergency Contact's Phone number:</label>
-        <br>
+        <label for="emergencyContactPhoneNumber">Enter your Emergency Contact's Phone number: </label>
         <input id ="emergencyContactPhoneNumber" type="text" name="emergencyContactPhoneNumber"/>
-        <br>
-        <label for="role">Choose your Role: </label>
-        <select name="role" id="role">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-        </select>
+        <div class="form-group hidden" id="error-container13">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
-            <option value="alpha">Alpha</option>
+            <option selected="selected" value="alpha">Alpha</option>
             <option value="beta">Beta</option>
             <option value="omega">Omega</option>
         </select>
+        <div class="form-group hidden" id="error-container15">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <label for="passwordInput">Enter your password:</label>
+        <label for="passwordInput">Enter your password: </label>
+        <input id ="passwordInput" type="password" name="passwordInput"/>
+        <div class="form-group hidden" id="error-container16">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>
-        <input id ="passwordInput" type="password" name="passwordInput"/> 
+        <label for="confirmPasswordInput">Confirm password: </label>
+        <input id ="confirmPasswordInput" type="password" name="confirmPasswordInput"/>
+        <div class="form-group hidden" id="error-container17">
+        <div class="alert alert-danger text-goes-here"></div>
+        </div>
         <br>        
-        <input class="clickbutton" type="submit" value="Sign Up"/>
-        <br>
-        {{#if error }}
+        <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
+        <br>    
+    </form>
+    {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
                     <p>{{ error }} </p>
                 </div>
             </div>
-        {{/if}}    
-    </form>
+    {{/if}}
     <hr>
-    <a href="/signin">Already a memeber. Click here to sign In</a><br>
-    <a href="/membershipPlans">Want to see our exclusive plans. Click here!</a>
 </main>

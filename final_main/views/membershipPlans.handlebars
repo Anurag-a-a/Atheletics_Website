@@ -1,22 +1,28 @@
 <main class="main">
     <h1 id="plan_h1">Membership plans</h1>
-    <a class="go_home_link" href="/">Go to Home Page</a>
+    <a class="go_home_link" href="/">Home</a>
     <hr>
     <div class="plans-container">
         <div class="plan">
             <h3>Alpha</h3>
             <p>some details...</p>
-            <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}
          </div>
          <div class="plan">
             <h3>Beta</h3>
             <p>some details...</p>
-            <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}        
         </div>
         <div class="plan">
-        <h3>Omega</h3>
-        <p>some details...</p>
-        <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            <h3>Omega</h3>
+            <p>some details...</p>
+            {{#if notloogedIn}}
+                <a href='/joinnow'><button class="plan_join_button">Join Now</button></a>
+            {{/if}}        
         </div>
     </div>
 </main>

@@ -1,0 +1,32 @@
+<form action="/gym/updateGym" id="gymUpdation" method="post">
+    <label for="branchName">Branch Name:</label><br>
+    <input type="text" id="branchName" name="branchName" value="{{gym.branchName}}" required><br>
+
+    <label for="website">Website:</label><br>
+    <input type="url" id="website" name="website" value="{{gym.website}}" required><br>
+
+    <label for="address">Address:</label><br>
+
+    <label for="streetName">Street:</label>
+    <textarea id="streetName" name="streetName" placeholder="Enter Street Name" required>{{gym.address.streetName}}</textarea><br>
+
+    <label for="city">City:</label>
+    <textarea id="city" name="city" placeholder="Enter City" required>{{gym.address.city}}</textarea><br>
+
+    <label for="state">State:</label>
+    <textarea id="state" name="state" placeholder="Enter State" required>{{gym.address.state}}</textarea><br>
+
+    <label for="zipCode">Zip Code:</label>
+    <input type="text" id="zipCode" name="zipCode" value="{{gym.address.zipcode}}" required><br>
+
+    <label for="phoneNumber">Phone Number:</label><br>
+    <input type="tel" id="phoneNumber" name="phoneNumber" value="{{gym.phoneNumber}}" required><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" value="{{gym.email}}" required><br>
+
+    <label for="maxCapacity">Max Population Density:</label><br>
+    <input type="number" id="maxCapacity" name="maxCapacity" value="{{gym.maxCapacity}}" required><br>
+
+    <input type="submit" value="updateGym">
+</form>

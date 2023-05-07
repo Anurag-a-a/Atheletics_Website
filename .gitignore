@@ -2,6 +2,7 @@
 */.DS_Store
 */package-lock.json
 */node_modules
-database
+database/
 myDraft
 draft2
+node_modules/

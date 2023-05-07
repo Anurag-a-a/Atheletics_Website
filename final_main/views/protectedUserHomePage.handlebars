@@ -1,12 +1,46 @@
 <main>
-    <p>In user Home page</p>
-    <p>Not yet designed!!</p>
-    <p>Will have the below links on this page </p>
+    <br><br>
+    {{!-- <a class="go_home_link" href="/">Go to Home Page</a><br> --}}
+    <h1 id="userHomePageh1">Welcome, {{firstName}} {{lastName}}</h1>
     <ol>
-       <li>link to user profile page which will have all the details abou the user including the plan the user is currently erolled in.</li>
-       <li>My appointments page to list the past, upcoming and cancelled appointments</li>
-       <li>locations link</li>
-       <li>amenities link</li>
-       <li>reviews link </li>
+        <li><a id="userProfile" href="/userProfile">Profile</a></li>
+        <li><a id="appointments" href="/myAppointments">My Appointments</a></li>
+        <li><a id="reviews" href="/myReviews">My Reviews</a></li>
+        <li><a id="amenities_link" href="/amenities">Amenities</a></li>
+        <li><a id="location_link" href="/locations">Locations</a></li>
+        <li><a id="log_out_link" href="/logout">Log Out</a></li>
+        
     </ol>
+    <br><br>
+    <h3>Current gym density</h3>
+    <p>List location wise gym density. after gym db and management page is complete</p>
+    <hr>
+    <h3>Classes and events</h3>
+    <p><a id="class_link" href="/classandevent">classandevent</a></p>
+    <hr>
+    <div id="workout_suggestions">
+        <h3>Workout suggestions</h3><br>
+        <h4>Shoulder and back workout</h4>
+        <img class="images" alt="Arms only birddog" src="/public/images/Arms_only_birddog.jpg">
+        <p>Arms only birddog</p>
+        <br>
+        <img class="images" alt="Bent over row" src="/public/images/bent_over_row.jpg">
+        <p>Bent over row</p>
+        <br>
+        <h4>Arm and shoulder workout</h4>
+        <img class="images" alt="Elevated biceps curl" src="/public/images/elevated_biceps_curl.jpg">
+        <p>Elevated biceps curl</p>
+        <br>
+        <h4>Core Workouts</h4>
+        <img class="images" alt="Side Plank" src="/public/images/side_plank.jpg">
+        <p>Side Plank</p>
+        <br>
+        <img class="images" alt="100" src="/public/images/100.jpg">
+        <p>100</p>
+    </div>
+
+
+
+    <p id="userPageCancellationInfo">For cancelling gym membership Please, contact the Gym Branch office in Hoboken.</p>
+
 </main>

@@ -1,0 +1,49 @@
+<br>
+<br>
+<br>
+<a class="go_home_link" href="/protectedUserHomePage">Back to User Home Page</a><br>
+<br>
+<a href="/myAppointments">Go to My Appointment</a>
+<br>
+<h2>Class and event</h2>
+<div class="classandevent">
+    <p></p>
+
+    {{#if classes}}
+    <ul>
+        {{#each classes}}
+        <li>
+            <h2>{{this.className}}</h2>
+
+            {{#if this.slots}}
+            <ul>
+                {{#each this.slots}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{else}}
+            <p>No time slots available.</p>
+            {{/if}}
+
+            {{#if this.reviewsText}}
+            <ul>
+                {{#each this.reviewsText}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{else}}
+            <p>No reviews.</p>
+            {{/if}}
+        </li>
+        <button class="add_class_review">add reviews</button>
+        {{/each}}
+    </ul>
+
+    {{else}}
+    <p>No classes available.</p>
+    {{/if}}
+    <a href="/myAppointments/add">go here to add!</a>
+
+
+</div>
+<script src="/public/js/addClassReview.js"></script>

@@ -29,7 +29,7 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 0.5rem; 
+    height: 1.0rem; 
     text-align: center;
     background-color: lavender;
  }
@@ -63,6 +63,164 @@ a:visited {
   top: 50px;
   margin-left:auto; 
   margin-right:auto;
+  line-height: 2em;
   
 }
+.images{
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+#workout_suggestions{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 50%;
+}
+#userPageCancellationInfo{
+  color: #8b0000;
+  text-align: center;
+  background-color: lightgreen;
+}
+#userHomePageh1{
+  text-align: center;
+}
+#plan_update_button{
+  padding-bottom: 10px;
+}
+
+
+
+.amenities_list{
+  text-align: center;
+}
+
+
+#amenities_h1{
+  text-align: center;
+  color: rebeccapurple;
+  font-style: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+.tab {
+  tab-size: 4;
+}
+
+/* #location_link {
+    width:300px;        
+    position:fixed;
+    z-index:10;         
+    top:10px;
+    right:0px;
+}
+#signIn_link {
+    width:300px;        
+    position:fixed;
+    z-index:10;        
+    top:10px;
+    right:100px;
+}
+#joinNow_link {
+    width:300px;        
+    position:fixed;
+    z-index:10;         
+    top:10px;
+    right:200px;
+} */
+#gym_description{
+  color:blueviolet;
+  font-style: italic;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+
+}
+
+#amenities_link{
+  font-family: Arial, Helvetica, sans-serif;    
+}
+
+#plan_link{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#reviews_view_link{
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+#landing_page_div{
+  text-align: center;
+  font-weight: bold;
+
+}
+.landingPage_class{
+  position: relative;
+  top: 50px;
+}
+
+marquee {
+  width: "60%"; 
+  direction: "left"; 
+  height: "100px"
+}
+/* Style for the plans container */
+.plans-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+/* Style for each plan */
+.plan {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 30%;
+}
+
+/* Style for the plan title */
+.plan h3 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Style for the plan details */
+.plan p {
+  color: #777;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Style for the join now button */
+.plan .plan_join_button {
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Style for the hover effect on the join now button */
+.plan .plan_join_button:hover {
+  background-color: #3e8e41;
+}
+
+
+
+
+
+
 
