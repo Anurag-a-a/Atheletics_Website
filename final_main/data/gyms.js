@@ -62,7 +62,7 @@ export const createGym = async(
         phoneNumber = isValidPhoneNumber(phoneNumber);
         email = isValidEmail(email);
         maxCapacity = isValidCapacity(maxCapacity);
-        currentCapacity = 0;
+        let currentCapacity = 0;
         if(currentCapacity > maxCapacity)
         {
           throw 'Current capacity cannot be greater than MaxCapacity'
@@ -146,9 +146,6 @@ export const updateGym = async(
     email = isValidEmail(email);
     maxCapacity = isValidCapacity(maxCapacity);
     role = isValidRole(role);
-    let classIds = []
-    let reviewIds = []
-    let overallRating = 5;
     
     const gymsCollection = await gyms();
     const gym = await gymsCollection.findOne({ _id: new ObjectId(_id) });
@@ -165,9 +162,10 @@ export const updateGym = async(
     gym.email = email;
     gym.maxCapacity = maxCapacity;
     gym.role = role;
-    gym.classIds = classIds;
-    gym.reviewIds = reviewIds;
-    gym.overallRating = overallRating;
+    gym.classIds = gym.classIds;
+    gym.reviewIds = gym.reviewIds;
+    gym.overallRating = gym.overallRating;
+    gym.currentCapacity = gym.currentCapacity;
     const updateInfo = await gymsCollection.replaceOne(
       { _id: new ObjectId(_id) },
       gym

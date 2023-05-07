@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node ./task/gymseed.js"
   },
   "author": "Anurag Athwale, Cong Guo, Hanlu Zhang, Nimmikrishna Babu",
   "license": "ISC",
