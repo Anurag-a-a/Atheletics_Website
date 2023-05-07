@@ -5,7 +5,7 @@ const db = await dbConnection();
 
 let gym = undefined;
 try{
-  gym = await gymData.createGym( 'Hoboken', 'https://www.google.com',{ streetName: '815 E Hudson st',    city: 'Hoboken',    state: 'New Jersey',    zipCode: '07305'}, '5513445955', 'anu14298@gmail.com', 70, "alpha", 'admin' ) ;
+  gym = await gymData.createGym( 'Union City', 'https://www.union.com',{ streetName: '815 E Hudson st',    city: 'Union City',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, 'admin' ) ;
   console.log(`${gym.name} successfully created \n`,gym);   
 }
 catch(e){
