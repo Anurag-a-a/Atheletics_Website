@@ -111,12 +111,12 @@ export const isValidAddress = (address) => {
 };
 
 export const isValidWebsite= (website) => {
-    if (!website) { throw "Error: no website provided"; };
-    if (!(typeof website == 'string')) { throw "Error: website must be a string"; };
+    if (!website) { throw "Error: no website provided"; }
+    if (!(typeof website == 'string')) { throw "Error: website must be a string"; }
     website = website.trim();
-    if (website.length === 0) { throw "Error: website cannot be an empty string or string with just spaces"; };
+    if (website.length === 0) { throw "Error: website cannot be an empty string or string with just spaces"; }
     let format =  /^http?(s):\/\/www\.[-a-zA-Z0-9@:%._\+~#=]{5,256}\.com$/;
-    if (!format.test(website)) { throw "Error: Invalid website"; };
+    if (!format.test(website)) { throw "Error: Invalid website"; }
     return website;
 
 };
@@ -242,9 +242,9 @@ export const isValidRating = (rating) => {
 
 export const isValidCapacity = (capacity) => {
     if (!capacity) throw 'You must provide a rating';
-    if (typeof capacity !== 'number') throw 'yrating must be a number'
+    if (typeof parseInt(capacity) !== 'number') throw 'yrating must be a number'
     if (capacity < 0 || capacity > 100 || (!Number.isInteger(capacity * 10) && !Number.isInteger(capacity))) {
-        throw 'rating must between 0-5 and rating must be integer or one decimal place float';
+        throw 'rating must between 0-100 and rating must be integer or one decimal place float';
     }
     return capacity;
 }
@@ -253,7 +253,7 @@ export const isValidCapacity = (capacity) => {
 export const isValidTimeSlot = (selectedTimeSlot) => {
     if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
     if (typeof selectedTimeSlot !== 'object') throw 'selectedTimeSlot must be an object';
-    const { Date, timing } = selectedTimeSlot;
+    const { Date, timing } = selectedTimeSlot[0];
 
     // Check date format
     const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;

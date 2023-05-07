@@ -1,37 +1,66 @@
 import {Router} from 'express';
-import { gyms } from '../config/mongoCollections.js';
 const router = Router();
+import * as gymData from '../data/gyms.js';
+import {isValidBranch,
+  isValidEmail,
+  isValidPhoneNumber,
+  isValidAddress,
+  isValidWebsite,
+  isValidId,
+  isValidRole,
+  isValidCapacity
+} from '../validateData.js';
 
 router.route('/locations').get(async (req, res) => {
-    //code here for Getting the main page of the gym
-    const locations = await gyms.getAllGyms();
-    return res.render('locations',{title: "Gym Brat",locations : locations});
-});
-router.route('/membershipplans').get(async (req, res) => {
-    //code here for Getting the main page of the gym
-    return res.render('membershipPlans',{title: "Gym Brat"});
+  try {
+    const locations = await gymData.getAllGyms();
+    return res.render('locations', { title: 'Gym Brat', locations : locations });
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
 });
 
-router.route('AddGym').post(async(req,res) => {
-    let gymInfo = req.body;
-    if (!gymInfo || Object.keys(gymInfo).length === 0) {
+router.route('/gymDetails').get(async (req, res) => {
+  try {
+    const gymDetails = await gymData.getAllGyms();
+    return res.render('locations', { title: 'Gym Brat', locations : gymDetails });
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+
+router.route('/addGym').get(async (req, res) => {
+  try {
+    const locations = await gymData.getAllGyms();
+    return res.render('gymCreateForm', { title: 'Gym Brat'});
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+router.route('/addGym').post(async(req,res) => {
+  let gymInfo = req.body;
+  if (!gymInfo || Object.keys(gymInfo).length === 0) {
       
-      return res
-        .status(400)
-        .json({
-          error: 'There are no fields in the request body'
-        });
-    }
+    return res
+      .status(400)
+      .json({
+        error: 'There are no fields in the request body'
+      });
+  }
 
-    try {
-      gymInfo.branchName = isValidBranch(branchName);
-      gymInfo.website = isValidWebsite(website);
-      gymInfo.address = isValidAddress(address);
-      gymInfo.phoneNumber = isValidPhoneNumber(phoneNumber);
-      gymInfo.membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
-      gymInfo.email = isValidEmail(email);
-      gymInfo.role = isValidRole(role);
-      gymInfo.maxCapacity = isValidCapacity(maxCapacity);
+  try {
+      gymInfo.branchName = isValidBranch(gymInfo.branchName);
+      gymInfo.website = isValidWebsite(gymInfo.website);
+      gymInfo.address = isValidAddress(gymInfo.address);
+      gymInfo.phoneNumber = isValidPhoneNumber(gymInfo.phoneNumber);
+      gymInfo.email = isValidEmail(gymInfo.email);
+      gymInfo.maxCapacity = isValidCapacity(gymInfo.maxCapacity);
+      gymInfo.role = isValidRole(gymInfo.role);
     } 
     catch (e) {
       return res
@@ -41,30 +70,40 @@ router.route('AddGym').post(async(req,res) => {
         });
     }
 
-    try {
-      const gymCreation = await gyms.createGym(
-        gymInfo.branchName,
-        gymInfo.website,
-        gymInfo.address,
-        gymInfo.phoneNumber,
-        gymInfo.membershipPlanDetails,
-        gymInfo.email,
-        gymInfo.role,
-        gymInfo.maxCapacity,
-        
-      );
+  try {
+    const gymCreation = await gymData.createGym(
+      gymInfo.branchName,
+      gymInfo.website,
+      gymInfo.address,
+      gymInfo.phoneNumber,
+      gymInfo.email,
+      gymInfo.maxCapacity,
+      gymInfo.role,        
+    );
       
-      res
+    return res
       .status(200)
-      .json(gymCreation);
+      .redirect('/gym/gymDetails');
     } 
     catch (e) {
-      res.sendStatus(400);
+      return res.sendStatus(400);
     }
 
 })
 
-router.route('updateGym').post(async(req,res) => {
+router.route('/updateGym/:id').post(async(req,res) => {
+  try {
+    req.params.id = isValidId( req.params.id )
+  } 
+  
+  catch (e) {
+    res
+      .status(400)
+      .json({
+        error: e
+      });
+  }
+
   let gymInfo = req.body;
     if (!gymInfo || Object.keys(gymInfo).length === 0) {
       
@@ -76,14 +115,14 @@ router.route('updateGym').post(async(req,res) => {
     }
 
     try {
-      gymInfo.branchName = isValidBranch(branchName);
-      gymInfo.website = isValidWebsite(website);
-      gymInfo.address = isValidAddress(address);
-      gymInfo.phoneNumber = isValidPhoneNumber(phoneNumber);
-      gymInfo.membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
-      gymInfo.email = isValidEmail(email);
-      gymInfo.role = isValidRole(role);
-      gymInfo.maxCapacity = isValidCapacity(maxCapacity);
+      req.params.id = req.params.id
+      gymInfo.branchName = isValidBranch(gymInfo.branchName);
+      gymInfo.website = isValidWebsite(gymInfo.website);
+      gymInfo.address = isValidAddress(gymInfo.address);
+      gymInfo.phoneNumber = isValidPhoneNumber(gymInfo.phoneNumber);
+      gymInfo.email = isValidEmail(gymInfo.email);
+      gymInfo.maxCapacity = isValidCapacity(gymInfo.maxCapacity);
+      gymInfo.role = isValidRole(gymInfo.role);
     } 
     catch (e) {
       return res
@@ -94,23 +133,23 @@ router.route('updateGym').post(async(req,res) => {
     }
 
   try {
-    const gymCreation = await gyms.updateGym(
+    const gymUpdation = await gymData.updateGym(
+      req.params.id,
       gymInfo.branchName,
       gymInfo.website,
       gymInfo.address,
       gymInfo.phoneNumber,
-      gymInfo.membershipPlanDetails,
       gymInfo.email,
-      gymInfo.role,
       gymInfo.maxCapacity,
+      gymInfo.role,      
     );
     
-    res
+  return res
     .status(200)
-    .json(gymCreation);
+    .redirect('/gym/gymDetails');
   } 
   catch (e) {
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
 
 

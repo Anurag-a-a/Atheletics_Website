@@ -115,16 +115,16 @@ async function main() {
     
     let gym = undefined;
 try{
-  gym = await gymData.createGym( 'Hoboken', 'https://www.google.com',{ streetName: '815 E Hudson st',    city: 'Hoboken',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, "alpha", 'admin' ) ;
+  gym = await gymData.createGym( 'Union City', 'https://www.union.com',{ streetName: '815 E Hudson st',    city: 'Union City',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, 'admin' ) ;
   console.log(`${gym.name} successfully created \n`,gym);   
 }
 catch(e){
-   console.log("Sort and filter should not give errorfor any of the three test cases: ",e)
+   console.log("Gym creation had error mighgt be gym is already present in the database: ",e)
 }
 
 let class1 = undefined;
 try{
-  class1 = await classData.createClass('swim1', {Date: '06/13/2023', timing: '10:00 - 12:00'}, 'John','this is siwm class', 30, [user1._id.toString()]) ;
+  class1 = await classData.createClass('Zumba', {Date: '05/09/2023', timing: '10:00 - 12:00'}, 'Mariam Shudon ','this is a class for Zumba Enthusiasts', 40) ;
   console.log(class1);   
 }
 catch(e){
@@ -133,7 +133,7 @@ catch(e){
 
 let class2 = undefined;
 try{
-  class2 = await classData.createClass('Yoga1', {Date: '07/18/2023', timing: '13:00 - 15:00'}, 'hill','Rewind, revive with this yoga session.', 30, [user1._id.toString()]) ;
+  class2 = await classData.createClass('Yoga', {Date: '05/18/2023', timing: '13:00 - 15:00'}, 'Mark Hill','Taking you all to vitness the power of yoga registrations fill out soon', 30) ;
   console.log(class2);   
 }
 catch(e){
@@ -142,7 +142,7 @@ catch(e){
 
 let class3 = undefined;
 try{
-  class3 = await classData.createClass('Yoga2', {Date: '07/18/2023', timing: '16:00 - 18:00'}, 'hill','Rewind, revive with this yoga session.', 30) ;
+  class3 = await classData.createClass('Gymnastics', {Date: '06/18/2023', timing: '16:00 - 18:00'}, 'Harry Grande','Basics for becoming a profesional Gymnast', 20) ;
   console.log(class3);   
 }
 catch(e){
@@ -151,7 +151,7 @@ catch(e){
 
 let class4 = undefined;
 try{
-  class4 = await classData.createClass('Yoga0', {Date: '04/19/2023', timing: '15:00 - 17:00'}, 'hill','Rewind, revive with this yoga session.', 30, [user1._id.toString()]) ;
+  class4 = await classData.createClass('Rock Climbing', {Date: '06/19/2023', timing: '15:00 - 17:00'}, 'zar hill','Teaching you to rock climb as a pro', 50) ;
   console.log(class3);   
 }
 catch(e){

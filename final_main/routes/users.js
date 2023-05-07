@@ -10,8 +10,6 @@ import {isValidName,
     isValidPassword,
     isValidMembershipPlanDetails,
     isValidRole,
-    isValidId,
-    isValidAction,
     isValidSex,
     isValidDOB
 } from '../validateData.js';

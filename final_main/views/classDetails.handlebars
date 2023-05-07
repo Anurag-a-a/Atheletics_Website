@@ -1,0 +1,27 @@
+{{#each classes}}
+<div class=" location">
+
+<div>
+<p>
+    <h2>
+        {{  this.className  }}
+    </h2>
+</p>
+    <p>
+        Slots:
+        Date : {{this.slots.Date}}
+        Time : {{this.slots.timing}}
+    </p>
+    <p>
+        Phone: 
+        {{  this.instructor }}
+    </p>
+    <p>
+        Email: {{   this.description }}
+    </p>
+    <p>
+        Max Population Density : {{ this.classCapacity  }}
+    </p>
+</div>
+    {{/each}}
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
