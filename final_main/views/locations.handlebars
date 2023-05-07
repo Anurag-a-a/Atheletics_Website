@@ -1,48 +1,53 @@
-{{#each locations}}
-<div class=" location">
-<h2>
-    {{ this.BranchName }}
-</h2>
+    {{#each locations}}
+    <div class=" location">
+    <h2>
+        {{  this.BranchName  }}
+    </h2>
 
-<div>
-    <p>
-        Website: 
-        <a href="{{this.website}}">
-            {{this.website}}
-        </a>
-    </p>
-    <p>
-        Address: 
-        
-        {{#if this.streetName.length}}
-            {{  this.streetName  }}
-        {{else}}
-            "N/A"
-        {{/if}}
-        {{#if this.city.length}}
-            {{  this.city  }}
-        {{else}}
-            "N/A"
-        {{/if}}
-        {{#if this.state.length}}
-            {{  this.state  }}
-        {{else}}
-            "N/A"
-        {{/if}}
-        {{#if this.zipcode.length}}
-            {{  this.zipcode  }}
-        {{else}}
-            "N/A"
-        {{/if}}
-    </p>
-    <p>
-        Phone: 
-        {{this.phoneNumber}}
-    </p>
-    <p>
-        Email: {{this.email}}
-    </p>
-    <p>
-        Max Population Density : {{this.maxCapacity}}
-    </p>
-</div>
+    <div>
+        <p>
+            Website: 
+            <a href="">
+                {{  this.website    }}
+            </a>
+        </p>
+        <p>
+            Address: 
+            
+            {{#if this.address.streetName.length}}
+                {{  this.address.streetName  }}
+            {{else}}
+                "N/A"
+            {{/if}}
+            {{#if this.address.city.length}}
+                {{  this.address.city  }}
+            {{else}}
+                "N/A"
+            {{/if}}
+            {{#if this.address.state.length}}
+                {{  this.address.state  }}
+            {{else}}
+                "N/A"
+            {{/if}}
+            {{#if this.address.zipCode.length}}
+                {{  this.address.zipCode  }}
+            {{else}}
+                "N/A"
+            {{/if}}
+        </p>
+        <p>
+            Phone: 
+            {{  this.phoneNumber    }}
+        </p>
+        <p>
+            Email: {{   this.email }}
+        </p>
+        <p>
+            Max Population Density : {{ this.maxCapacity    }}
+        </p>
+        <p>
+            Overall Rating: {{  this.overallRating   }}
+        </p>
+    </div>
+        {{/each}}
+        <a class="go_home_link" href="/">Go to Home Page</a><br>

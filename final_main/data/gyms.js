@@ -32,7 +32,6 @@ import {isValidBranch,
         isValidPhoneNumber,
         isValidAddress,
         isValidWebsite,
-        isValidMembershipPlanDetails,
         isValidRole,
         isValidId,
         isValidCapacity
@@ -45,56 +44,56 @@ export const createGym = async(
     phoneNumber,
     email,
     maxCapacity,
-    membershipPlanDetails,
     role )=>  {
-    try {
-      // Validate input parameters
-      role = isValidRole(role);
-      if (role !== "admin")
-        throw `Only admin can instert a new Gym`
-      branchName = isValidBranch(branchName);
+      try {
+        role = isValidRole(role);
+        if (role !== "admin")
+          throw `Only admin can instert a new Gym`
+        branchName = isValidBranch(branchName);
      
-      const gymList = await getAllGyms();
-      for (const gym of gymList) {
-        if (gym.branchName === branchName) {
-          throw new Error(`Gym with Branch Name ${branchName} already exists`);
+        const gymList = await getAllGyms();
+        for (let gym of gymList) {
+          if (gym.branchName === branchName) {
+            throw new Error(`Gym with Branch Name ${branchName} already exists`);
+          }
         }
-      }
-      website = isValidWebsite(website);
-      address = isValidAddress(address);
-      phoneNumber = isValidPhoneNumber(phoneNumber);
-      membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
-      email = isValidEmail(email);
-      maxCapacity = isValidCapacity(maxCapacity);
-      let classIds = [];
-      let reviewIds = [];
-      let overallRating = 5;
+        website = isValidWebsite(website);
+        address = isValidAddress(address);
+        phoneNumber = isValidPhoneNumber(phoneNumber);
+        email = isValidEmail(email);
+        maxCapacity = isValidCapacity(maxCapacity);
+        currentCapacity = 0;
+        if(currentCapacity > maxCapacity)
+        {
+          throw 'Current capacity cannot be greater than MaxCapacity'
+        }
+        let classIds = [];
+        let reviewIds = [];
+        let overallRating = 5;
 
-      const gymsCollection = await gyms();
-      const newGym = {
-        branchName,
-        website,
-        address,
-        phoneNumber,
-        membershipPlanDetails,
-        email,
-        maxCapacity,
-        role,
-        classIds,
-        reviewIds,
-        overallRating
-      };
-      const insertInfo = await gymsCollection.insertOne(newGym);
+        const gymsCollection = await gyms();
+        const newGym = {
+          branchName,
+          website,
+          address,
+          phoneNumber,
+          email,
+          maxCapacity,
+          currentCapacity,
+          role,
+          classIds,
+          reviewIds,
+          overallRating
+        };
+        const insertInfo = await gymsCollection.insertOne(newGym);
 
-      if (! insertInfo.acknowledged) {
-        throw new Error('Could not add gym');
-      }
-
+        if (! insertInfo.acknowledged) {
+          throw new Error('Could not add gym');
+        }
       return await getGymById(insertInfo.insertedId.toString());
     } 
     catch (err) {
-      console.log(err);
-      throw err; // re-throw the error to the caller
+      throw err; 
     }
 };
 
@@ -133,7 +132,6 @@ export const updateGym = async(
   website,
   address,
   phoneNumber,
-  membershipPlanDetails,
   email,
   maxCapacity,
   role
@@ -147,7 +145,6 @@ export const updateGym = async(
     phoneNumber = isValidPhoneNumber(phoneNumber);
     email = isValidEmail(email);
     maxCapacity = isValidCapacity(maxCapacity);
-    membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
     role = isValidRole(role);
     let classIds = []
     let reviewIds = []
@@ -167,7 +164,6 @@ export const updateGym = async(
     gym.phoneNumber = phoneNumber;
     gym.email = email;
     gym.maxCapacity = maxCapacity;
-    gym.membershipPlanDetails = membershipPlanDetails
     gym.role = role;
     gym.classIds = classIds;
     gym.reviewIds = reviewIds;
