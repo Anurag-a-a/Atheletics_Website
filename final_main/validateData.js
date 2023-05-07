@@ -163,7 +163,7 @@ export const isValidMembershipPlanDetails = (plan) => {
     if (!(typeof plan == 'string')) { throw "Error: plan must be a string"; };
     plan = plan.trim().toLowerCase();
     if (plan.length === 0) { throw "Error: plan cannot be an empty string or string with just spaces"; };
-    if (!(["alpha", "beta", "omega","na"].includes(plan))) { throw "Error: Invalid plan"; };
+    if (!(["alpha", "beta", "omega","na","renew"].includes(plan))) { throw "Error: Invalid plan"; };
     return plan;
 };
 

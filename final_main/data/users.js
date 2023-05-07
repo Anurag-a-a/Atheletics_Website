@@ -372,6 +372,29 @@ export const checkUser = async (emailAddress, password) => {
   
 };
 
+export const renewPlan = async (id) => {
+  
+  id = isValidId(id);
+  const userCollection = await users();
+  const theuser = await getUserbyId(id);
+  if(!theuser){throw "Internal Server Error";};
+  let joinedPlanDate = new Date();
+  const updateUser ={
+    joinedPlanDate: joinedPlanDate
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(id)},
+    {$set: updateUser},
+    {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update Appointments';
+  }
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
+};
+
+
 export const addReviewId = async (userId, reviewId) => {
   userId = isValidId(userId);
   reviewId = isValidId(reviewId);
