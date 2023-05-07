@@ -1,6 +1,7 @@
 <br>
 <br>
 <br>
+<a class="go_home_link" href="/myReviews">Back to My Reviews Page</a>
 <br>
 <form action="/myReviews/add" method="POST">
   <label for="gymId">Gym Branch:</label>
@@ -8,14 +9,6 @@
     <option value="">Select a gym branch</option>
     {{#each branches}}
       <option value="{{this._id}}">{{this.branchName}}</option>
-    {{/each}}
-  </select>
-
-  <label for="classId">Class:</label>
-  <select name="classId" id="classId">
-    <option value="">None</option>
-    {{#each classes}}
-      <option value="{{this._id}}">{{this.className}}</option>
     {{/each}}
   </select>
 
