@@ -1,8 +1,8 @@
 <main>
     <br><br>
-    <a class="go_home_link" href="/protectedUserHomePage">Home</a><br>
+    <a class="go_home_link" href="/user/protectedUserHomePage">Home</a><br>
     <h1>Update plan</h1>
-    <form id ="updatePlan-form" method="POST" action="/updateplan">
+    <form id ="updatePlan-form" method="POST" action="/user/updateplan">
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
             <option selected="selected" value="alpha">Alpha</option>
@@ -31,7 +31,7 @@
         {{/if}}    
     </form>
     <hr>
-    <a href="/membershipPlans">See Plan Details</a>
+    <a href="/user/membershipPlans">See Plan Details</a>
 
     <div id = "plans-container">
         <p>Current plan details</p>

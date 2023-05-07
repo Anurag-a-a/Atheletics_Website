@@ -160,7 +160,7 @@ router.route('/signin').post(async (req, res) => {
         // console.log(req.session.user);
         // console.log('/login session set',req.session.user);
         if(req.session.user.role == 'admin') {res.redirect('/admin');}
-        else {res.redirect('/protectedUserHomePage');};        
+        else {res.redirect('/user/protectedUserHomePage');};        
       }catch(e){
         return res.status(400).render('signIn', {title: "Gym Brat", error: e, partial: false});
       };
@@ -256,11 +256,11 @@ router.route('/signin').post(async (req, res) => {
           plan
           );
           if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: false});}
-          return res.redirect('/userProfile');
+          return res.redirect('/user/userProfile');
         }
         else{
           const renewPlan = userData.renewPlan(theuser._id.toString());
-          return res.redirect('/userProfile');
+          return res.redirect('/user/userProfile');
         };
         
       }catch(e){
@@ -271,7 +271,7 @@ router.route('/signin').post(async (req, res) => {
 
     router.route('/logout').get(async(req, res) => {
       req.session.destroy();
-      return res.redirect('/');
+      return res.redirect('/user');
     });
 
     router.route('/renewplan').post(async(req, res) => {

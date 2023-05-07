@@ -10,58 +10,58 @@ export const loggingMiddleware = (req, res, next) => {
 export const landingPageMiddleware = (req, res, next) => {
 if (req.session.user) {
     if (req.session.user.role === 'admin') {
-      return res.redirect('/admin');
+      return res.redirect('/user/admin');
     } else if (req.session.user.role === 'user') {
-      return res.redirect('/protectedUserHomePage');
+      return res.redirect('/user/protectedUserHomePage');
     }
 }
-console.log(req.path)
-console.log(req.url)
-if(req.url === '/') return res.redirect('/landingpage');
+// console.log(req.path)
+// console.log(req.url)
+if(req.url === '/') return res.redirect('/user/landingpage');
 next();
 }
 
 export const signInMiddleware = (req, res, next) => {
   if (req.session.user) {
       if (req.session.user.role === 'admin') {
-        return res.redirect('/admin');
+        return res.redirect('/user/admin');
       } else if (req.session.user.role === 'user') {
-        return res.redirect('/protectedUserHomePage');
+        return res.redirect('/user/protectedUserHomePage');
       }
   }
-  if(req.url === '/') return res.redirect('/');
+  if(req.url === '/') return res.redirect('/user');
   next();
 }
 
 export const signUpMiddleware = (req, res, next) => {
 if (req.session.user) {
     if (req.session.user.role === 'admin') {
-      return res.redirect('/admin');
+      return res.redirect('/user/admin');
     } else if (req.session.user.role === 'user') {
-      return res.redirect('/protectedUserHomePage');
+      return res.redirect('/user/protectedUserHomePage');
     }
 }
-if(req.url === '/') return res.redirect('/');
+if(req.url === '/') return res.redirect('/user');
 next();
 }
 
 export const userHomePageMiddleware = (req, res, next) => {
 if (!req.session.user) {
-  return res.redirect('/signIn');
+  return res.redirect('/user/signIn');
 };
 next();
 }
 
 export const userProfilePageMiddleware = (req, res, next) => {
 if (!req.session.user) {
-  return res.redirect('/signIn');
+  return res.redirect('/user/signIn');
 };
 next();
 }
 
 export const updatePlanMiddleware = (req, res, next) => {
 if (!req.session.user) {
-  return res.redirect('/signIn');
+  return res.redirect('/user/signIn');
 };
 next();
 };
@@ -72,12 +72,12 @@ if (req.session.user) {
   console.log('Session User:', req.session.user);
   return next();
 }
-res.redirect('/signIn');
+res.redirect('/user/signIn');
 };
 
 export const updatePasswordMiddleware = (req, res, next) => {
 if (!req.session.user) {
-  return res.redirect('/signIn');
+  return res.redirect('/user/signIn');
 };
 next();
 };
