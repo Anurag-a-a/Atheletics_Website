@@ -96,13 +96,22 @@ router
 
     router.route('/reviews_add').post(async (req, res) => {
         try {
-          const {gymId, classId, reviewText} = req.body;
-            const newReview = await reviewData.addReview(gymId, classId, reviewText);
-            return res.json({added: true});
-        } catch(error) {
+          const branchName = 'Hoboken';
+          const gym = await gymData.getGymByBranch(branchName);
+          const gymId = gym._id.toString();
+      
+          const { classId, reviewText } = req.body;
+      
+          if (!reviewText) {
+            throw "You must provide review information";
+          }
+
+          const newReview = await reviewData.addReview(gymId, classId, reviewText);
+          return res.json({ added: true });
+        } catch (error) {
           res.status(500).json({ error: error });
         }
-      })
+      });
 // router.get('/add', ensureAuthenticated, (req, res) => {
 
 // }).post(ensureAuthenticated, async (req, res) => {
