@@ -19,9 +19,10 @@ const constructorMethod = (app) => {
   app.use('/logout', userRoutes);
   app.use('/location', gymRoutes);
   app.use('/membershipplandetails', gymRoutes);
-  app.use('/reviews', reviewRoutes);
+  app.use('/myReviews', reviewRoutes);
   app.use('/myAppointments', appointmentRoutes);
   app.use('/classandevent', classandeventRoutes);
+  app.use('/allreviews', gymreviewsRoutes);
   app.use('*', (req, res) => {
     res.status(404).json({ error: '404 Error: Not found' });
   });
