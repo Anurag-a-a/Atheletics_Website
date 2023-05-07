@@ -34,29 +34,65 @@ router
   .get(ensureAuthenticated, async (req, res) => {
     try {
       const allBranches = await gymData.getAllGyms();
-      const pastAppointments = await appointmentData.getPastAppointmentsByUserId(req.user.id);
-      console.log(pastAppointments);
-      const pastClasses = await Promise.all(pastAppointments.map(async (appointment) => await classData.getClassbyId(appointment.classId)));
-      res.render('reviews_add', { branches: allBranches, classes: pastClasses });
+
+      // Get the user's reviews
+      const user = await userData.getUserbyId(req.user.id);
+      console.log('User in the request:', req.user);
+      const userReviews = user.MyReviews;
+      console.log(userReviews);
+      const reviewedGymIds = new Set();
+
+      // Find which gyms the user has already reviewed
+      for (const reviewId of userReviews) {
+        const review = await reviewData.getReviewById(reviewId.toString());
+        if (review.classId === null) {
+          reviewedGymIds.add(review.gymId.toString());
+        }
+      }
+      console.log(reviewedGymIds);
+
+      res.render('reviews_add', { branches: allBranches, reviewedGymIds: Array.from(reviewedGymIds) });
     } catch (error) {
       res.status(500).json({ error: error });
     }
   })
-  .post(async (req, res) => {
+  .post(ensureAuthenticated, async (req, res) => {
     try {
-      const { gymId, classId, reviewText, rating } = req.body;
+      const { gymId, reviewText, rating } = req.body;
+      console.log(gymId);
+      console.log(reviewText);
+      console.log(rating);
       const parsedRating = parseFloat(rating);
   
-      if ((!gymId && !classId) || !reviewText || (gymId && (!classId && (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5)))) {
-        res.status(400).json({ error: 'Missing required fields or invalid rating' });
-      } else {
-        const ratingNumber = classId ? null : parseFloat(rating);
+      // Check if the user has already reviewed this gym
+      console.log('User in the request:', req.user);
+      const user = await userData.getUserbyId(req.user.id);
+      console.log(user);
+      const userReviews = user.MyReviews;
+      console.log(userReviews)
+      let hasReviewedGym = false;
   
-        const newReview = await reviewData.addReview(gymId, classId, reviewText, ratingNumber);
+      for (const reviewId of userReviews) {
+        const review = await reviewData.getReviewById(reviewId.toString());
+        if (review.gymId.toString() === gymId && review.classId === null) {
+          hasReviewedGym = true;
+          break;
+        }
+      }
+  
+      if ((!gymId) || !reviewText || (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5)) {
+        res.status(400).json({ error: 'Missing required fields or invalid rating' });
+      } else if (hasReviewedGym) {
+        res.status(400).json({ error: 'You have already reviewed this gym' });
+      } else {
+        const ratingNumber = parseFloat(rating);
+  
+        const newReview = await reviewData.addReview(gymId, null, reviewText, ratingNumber);
+        await userData.addReviewId(user._id.toString(), newReview._id.toString());
         res.redirect('/myReviews');
       }
     } catch (error) {
-      res.status(500).json({ error: error });
+      res.status(500).json({ error: error.toString() });
     }
   });
 
