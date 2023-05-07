@@ -372,3 +372,24 @@ export const checkUser = async (emailAddress, password) => {
   
 };
 
+export const addReviewId = async (userId, reviewId) => {
+  userId = isValidId(userId);
+  reviewId = isValidId(reviewId);
+
+  const userCollection = await users();
+  console.log('userCollection:', userCollection);
+  
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    // { $addToSet: { MyReviews: new ObjectId(reviewId) } },
+    { $addToSet: { MyReviews: reviewId } },
+    { returnDocument: 'after' }
+  );
+
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update MyReviews';
+  }
+
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
+};
