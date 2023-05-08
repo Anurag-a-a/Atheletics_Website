@@ -346,6 +346,83 @@ router.route('/signin').post(async (req, res) => {
       email: theSessionUser.email,
       partial: 'updateForm'});
   });
+  router.route('/updateinfo').post(async (req, res) => {
+    const theSessionUser = await userData.getUserbyId(req.session.user.id);
+    // return res.render('updateForm',{title: "Gym Brat"});
+    let updateInfo = req.body;
+    if(!updateInfo){
+        return res.status(400).render('updateForm', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'updateForm'});
+    };
+    let firstName = "";
+    let lastName = "";
+    let sex = "";
+    let dob = "";
+    let email = "";
+    let phoneNumber = "";
+    let address ={};
+    let streetName ="";
+    let city = "";
+    let state = "";
+    let zip = "";
+    let username = "";
+    let emergencyContactName = "";
+    let emergencyContactPhoneNumber = "";
+    try {
+        firstName = isValidName(updateInfo.firstName, 'First Name');
+        lastName = isValidName(updateInfo.lastName, 'Last Name');
+        sex = isValidSex(updateInfo.sex);
+        dob = isValidDOB(updateInfo.dob);
+        // console.log("checking phoneNumber in routes");
+        phoneNumber = isValidPhoneNumber(updateInfo.ph);
+        streetName = updateInfo.streetName;
+        city = updateInfo.city;
+        state = updateInfo.state;
+        zip = updateInfo.zip;
+        address = {
+          streetName: streetName,
+          city: city,
+          state: state,
+          zip: zip
+        };
+        address = isValidAddress(address);
+        email = isValidEmail(updateInfo.emailAddress);
+        username = isValidUsername(updateInfo.username);
+        const existingUsers = await userData.getAllUser();
+        /*check for existing similar usernames */
+        for (let i=0; i<existingUsers.length; i++){
+          if((existingUsers[i]['_id'].toString() != req.session.user.id)&&(existingUsers[i]['username'] == username)) {
+
+            throw "Error: This username is already taken. Try another!!!";};
+        };
+        emergencyContactName = isValidName(updateInfo.emergencyContactName,'Emergency Contact Name');
+        emergencyContactPhoneNumber = isValidPhoneNumber(updateInfo.emergencyContactPhoneNumber);
+      }catch(e){
+        return res.status(400).render('updateForm', {title: "Gym Brat", error: e, partial: 'updateForm'});
+      };
+    //update the user in db
+    try{
+      const userReturnObject = await userData.update(
+        xss(req.session.user.id),
+        xss(firstName),
+        xss(lastName),
+        xss(sex),
+        xss(dob),
+        xss(email),
+        xss(phoneNumber),
+        xss(address.streetName),
+        xss(address.city),
+        xss(address.state),
+        xss(address.zip),
+        xss(username),
+        xss(emergencyContactName),
+        xss(emergencyContactPhoneNumber)
+      );
+      if(!userReturnObject) {return res.status(500).json({error: "Internal Server Error"});};
+      return res.redirect('/user/userProfile');
+    }catch(e){
+      return res.status(400).render('updateForm', {title: "Gym Brat", error: e, partial: 'updateForm'});
+    };
+});
 
   router.route('/locations').get(async (req, res) => {
     try {

@@ -80,7 +80,7 @@ router.route('/addadmin').post(async (req, res) => {
         email = isValidEmail(signUpInfo.emailAddress);
         const existingUsers = await userAdminData.getAllUser();
         for (let i=0; i<existingUsers.length; i++){
-          if(existingUsers[i]['email'] == email) {accountCheck = true; throw "Error: This account already exists. Sign In here instead or create new account";};
+          if(existingUsers[i]['email'] == email) {accountCheck = true; throw "Error: This account already exists.";};
         };
         username = isValidUsername(signUpInfo.username);
         /*check for existing similar usernames */

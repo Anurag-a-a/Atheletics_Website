@@ -38,6 +38,7 @@ const saltRounds = 16;
 import {isValidName,
         isValidEmail,
         isValidPhoneNumber,
+        isValidAddress,
         isValidStreetName,
         isValidCity,
         isValidState,
@@ -248,12 +249,13 @@ export const update = async (
     dob,
     email,
     phoneNumber,
-    address,
+    st,
+    city,
+    state,
+    zip,
     username,
     emergencyContactName,
     emergencyContactPhoneNumber,
-    role,
-    membershipPlanDetails,
   ) => {
     id = isValidId(id);
     firstName = isValidName(firstName, 'firstName');
@@ -263,19 +265,19 @@ export const update = async (
     // console.log("in data update user checking email");
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
+    let address = {
+      streetName: st,
+      city: city,
+      state: state,
+      zip: zip
+    };
     address = isValidAddress(address);
     username = isValidUsername(username);
-//     hashedPassword = isValidpassword(hashedPassword);
-/* check how to validate password here, if password is not updated then the db will have hashed password so how to validate it*/
     emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
     emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
-    role = isValidRole(role);
-    membershipPlanDetails = isValidMembershipPlanDetails(membershipPlanDetails);
 
     const userCollection = await users();
-    const existingUser = await getUserbyId(id);
-    
-    
+        
     const updateUser = {
         firstName: firstName,
         lastName: lastName,
@@ -287,10 +289,6 @@ export const update = async (
         username: username,
         emergencyContactName: emergencyContactName,
         emergencyContactPhoneNumber: emergencyContactPhoneNumber,
-        role: role,
-        membershipPlanDetails: membershipPlanDetails,
-        MyAppointments: existingUser.MyAppointments,
-        MyReviews: existingUser.MyReviews,
     };
     const updatedInfo = await userCollection.findOneAndUpdate(
       {_id: new ObjectId(id)},
@@ -302,7 +300,7 @@ export const update = async (
     };
     updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
-    };//end update function
+};//end update function
   
 //update appointment list in user
 export const updateAppointment = async (
