@@ -11,16 +11,6 @@ import {isValidBranch,
   isValidCapacity
 } from '../validateData.js';
 
-router.route('/locations').get(async (req, res) => {
-  try {
-    const locations = await gymData.getAllGyms();
-    return res.render('locations', { title: 'Gym Brat', locations : locations });
-  } 
-  catch (e) {
-    return res.status(500).json({ error: e.message });
-  }
-});
-
 router.route('/gymDetails').get(async (req, res) => {
   try {
     const gymDetails = await gymData.getAllGyms();

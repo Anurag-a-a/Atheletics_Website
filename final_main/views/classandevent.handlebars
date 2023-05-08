@@ -14,16 +14,26 @@
         {{#each classes}}
         <li>
             <h2>{{this.className}}</h2>
-<input type="hidden" class="class_id" value="{{this._id}}">
-            {{#if this.slots}}
-            <ul>
-                {{#each this.slots}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
+                <input type="hidden" class="class_id" value="{{this._id}}">
+            <p>
+                Date : {{#if this.slots.Date}}
+                {{
+                    this.slots.Date
+                }}
+            </p>
+            {{else}}
+            <p>No Dates slots available.</p>
+            {{/if}}
+            <p>
+                Time: {{#if this.slots.timing}}
+                {{
+                    this.slots.timing
+                }}
+            </p>
             {{else}}
             <p>No time slots available.</p>
             {{/if}}
+            
 
             {{#if this.reviewsText}}
             <ul>
