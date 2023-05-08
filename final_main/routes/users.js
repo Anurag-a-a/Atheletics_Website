@@ -17,7 +17,7 @@ import {isValidName,
 import xss from 'xss';
 import session from 'express-session';
 
-router.route('/').get(middleware.rootMiddleware, async (req, res) => {
+router.route('/').get(middleware.rootMiddleware,async (req, res) => {
   return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
 
@@ -43,12 +43,12 @@ router.route('/membershipPlans').get(async (req, res) => {
 
 /* route for sign up page */
 router.route('/joinnow').get(middleware.signUpMiddleware,async (req, res) => {
-  console.log("renedered join now");
+  // console.log("renedered join now");
     return res.render('joinNow',{title: "Gym Brat", partial: 'signUpPartial'});
 });
 router.route('/joinnow').post(async (req, res) => {
     // validate inputs
-    console.log("triggered post join now");
+    // console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
         return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'signUpPartial'});
@@ -284,7 +284,7 @@ router.route('/signin').post(async (req, res) => {
 
 
 
-    router.route('/updatepassword').get(middleware.updatePasswordMiddleware,async(req, res) => {
+    router.route('/updatepassword').get(middleware.updateMiddleware,async(req, res) => {
       return res.render('updatePassword',{title: "Gym Brat",partial: 'updatePassword'})
 
     });
@@ -325,5 +325,25 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
       };
     });//end post updatePassword
+
+    //updateinfo
+    router.route('/updateinfo').get(middleware.updateMiddleware,async (req, res) => {
+      const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      return res.render('updateForm',{title: "Gym Brat",
+      firstName: theSessionUser.firstName,
+      lastName: theSessionUser.lastName,
+      sex: theSessionUser.sex,
+      dob: theSessionUser.dob,
+      username: theSessionUser.username,
+      ph: theSessionUser.phoneNumber,
+      streetName: theSessionUser.address.streetName,
+      city: theSessionUser.address.city,
+      state: theSessionUser.address.state,
+      zip: theSessionUser.address.zip,
+      en: theSessionUser.emergencyContactName,
+      eph: theSessionUser.emergencyContactPhoneNumber,
+      email: theSessionUser.email,
+      partial: 'updateForm'});
+  });
 
 export default router;
