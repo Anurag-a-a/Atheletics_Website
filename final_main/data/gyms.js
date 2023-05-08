@@ -274,3 +274,15 @@ const removeReviewdid = async (gymId,reviewId) => {
     
     return { ...reviewRemoval.value, deleted: true };
   }
+
+  export const getGymByBranch = async (branchName) => {
+    if (!branchName) throw "You must provide a branch name.";
+  
+    const gymCollection = await gyms();
+    const gym = await gymCollection.findOne({ branchName: branchName });
+  
+    if (!gym) throw `Gym with branch name "${branchName}" not found.`;
+  
+    gym._id = gym._id.toString();
+    return gym;
+  };
