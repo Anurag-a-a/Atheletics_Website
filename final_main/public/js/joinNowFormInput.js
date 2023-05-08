@@ -67,6 +67,8 @@
         if (typeof streetName != 'string') { throw "Error: streetName must be a string"; };
         streetName = streetName.trim();
         if (streetName.length === 0) { throw "Error: streetName cannot be empty"; };
+        let format = /^[A-Za-z0-9 ]*$/;
+        if (!format.test(streetName)) { throw "Error: street name cannot contain special characters"; };
         return streetName;
     };
     function validateCity(city){
@@ -74,6 +76,8 @@
         if (!(typeof city == 'string')) { throw "Error: city must be a string"; };
         city = city.trim();
         if (city.length === 0) { throw "Error: city cannot be empty"; };
+        let format = /^[A-Za-z0-9 ]*$/;
+        if (!format.test(city)) { throw "Error: city cannot contain special characters"; };
         return city;
     };
     function validateState(state){
@@ -81,6 +85,8 @@
         if (typeof state != 'string') { throw "Error: state must be a string"; };
         state = state.trim();
         if (state.length === 0) { throw "Error: state cannot be empty"; };
+        let format = /^[A-Za-z0-9 ]*$/;
+        if (!format.test(state)) { throw "Error: state cannot contain special characters"; };
         let list_of_states = [
             "alabama", "alaska", "arizona", "arkansas", "california", "colorado", "connecticut", "delaware", "florida",
             "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine",

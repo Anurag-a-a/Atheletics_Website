@@ -11,7 +11,8 @@ import {isValidName,
     isValidMembershipPlanDetails,
     isValidRole,
     isValidSex,
-    isValidDOB
+    isValidDOB,
+    isValidPostDOB
 } from '../validateData.js';
 import xss from 'xss';
 import session from 'express-session';
@@ -74,7 +75,9 @@ router.route('/joinnow').post(async (req, res) => {
         lastName = isValidName(signUpInfo.lastName, 'Last Name');
         password = isValidPassword(signUpInfo.passwordInput);
         sex = isValidSex(signUpInfo.sex);
-        dob = isValidDOB(signUpInfo.dob);
+        //2009-12-28
+
+        dob = isValidPostDOB(signUpInfo.dob);
         // console.log("checking phoneNumber in routes");
         phoneNumber = isValidPhoneNumber(signUpInfo.ph);
         streetName = signUpInfo.streetName;
@@ -89,6 +92,8 @@ router.route('/joinnow').post(async (req, res) => {
         };
         // console.log("validating address in route function");
         address = isValidAddress(address);
+        // console.log("POST address validation");
+        // console.log(address);
         email = isValidEmail(signUpInfo.emailAddress);
         const existingUsers = await userData.getAllUser();
         for (let i=0; i<existingUsers.length; i++){
@@ -115,7 +120,10 @@ router.route('/joinnow').post(async (req, res) => {
         xss(dob),
         xss(email),
         xss(phoneNumber),
-        xss(address),
+        xss(address.streetName),
+        xss(address.city),
+        xss(address.state),
+        xss(address.zip),
         xss(username),
         xss(password),
         xss(emergencyContactName),

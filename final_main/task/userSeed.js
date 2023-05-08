@@ -29,7 +29,7 @@ async function main() {
     let membershipPlanDetails = "Alpha";
     let user1 = undefined
     try {
-        user1 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
+        user1 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address.streetName,address.city,address.state,address.zip,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
         console.log(user1)
     }catch(e){
         console.log(e);
@@ -55,8 +55,8 @@ async function main() {
     	role = "User";
     	membershipPlanDetails = "Beta";
     
-        user2 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
-        console.log(user2)
+      user2 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address.streetName,address.city,address.state,address.zip,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
+      console.log(user2)
     }catch(e){
         console.log(e);
     };
@@ -81,8 +81,8 @@ async function main() {
     	role = "User";
     	membershipPlanDetails = "Omega";
     
-        let user3 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
-        console.log(user3)
+      let user3 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address.streetName,address.city,address.state,address.zip,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
+      console.log(user3)
     }catch(e){
         console.log(e);
     };
@@ -107,8 +107,8 @@ async function main() {
     	role = "admin";
     	membershipPlanDetails = "NA";
     
-        let user4 = await userData.createAdmin(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
-        console.log(user4)
+      let user4 = await userData.createAdmin(firstName,lastName,sex,dob,email,phoneNumber,address.streetName,address.city,address.state,address.zip,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,membershipPlanDetails);
+      console.log(user4)
     }catch(e){
         console.log(e);
     };

@@ -38,7 +38,10 @@ const saltRounds = 16;
 import {isValidName,
         isValidEmail,
         isValidPhoneNumber,
-        isValidAddress,
+        isValidStreetName,
+        isValidCity,
+        isValidState,
+        isValidZip,
         isValidUsername,
         isValidPassword,
         isValidMembershipPlanDetails,
@@ -46,7 +49,8 @@ import {isValidName,
         isValidId,
         isValidAction,
         isValidSex,
-        isValidDOB
+        isValidDOB,
+        isValidPostDOB
 } from '../validateData.js';
 
 //get a user provided the id.
@@ -67,7 +71,10 @@ export const createUser = async (
     dob,
     email,
     phoneNumber,
-    address,
+    streetName,
+    city,
+    state,
+    zip,
     username,
     password,
     emergencyContactName,
@@ -80,8 +87,16 @@ export const createUser = async (
     dob = isValidDOB(dob); //Format: MM/DD/YYYY
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
-    // console.log("validating address in data function");
-    address = isValidAddress(address);
+    streetName = isValidStreetName(streetName);
+    city = isValidCity(city);
+    state =  isValidState(state);
+    zip = isValidZip(zip);
+    let address = {
+      streetName: streetName,
+      city: city,
+      state: state,
+      zip: zip
+    };
     username = isValidUsername(username);
     password = isValidPassword(password);
     emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
