@@ -1,31 +1,4 @@
-// {
-//   _id: '841f83110b3a1eb1911a2ead',
-//   website: 'http://thegymbrats.com',
-//   address: {
-//     streetName: '815 E Hudson st',
-//     city: 'Hoboken',
-//     state: 'New Jersey',
-//     zipCode: '07305'
-//   },
-//  phoneNumber: ‘551-667-9876’,
-//  email: “thegymbrats@gmail.com
-//  overallRating: 4.8,
-//  reviewIds: [
-//     '61f83110b3a1eb1911a2ead',
-//     '61f83110b3a1eb1911a2eaa',
-//     '61f83110b3a1eb1911a2eac'
-//   ],
-//  classIds: [
-//     '41f83110b3a1eb1911a2ead',
-//     '41f83110b3a1eb1911a2eaa',
-//     '41f83110b3a1eb1911a2eac'
-//   ],
-//  maxCapacity: 40,
-// plan : 
-
-// } 
-
-import {gyms} from '../config/mongoCollections.js';
+import {gyms,users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import {isValidBranch,
         isValidEmail,
@@ -36,6 +9,7 @@ import {isValidBranch,
         isValidId,
         isValidCapacity
 } from '../validateData.js';
+
 
 export const createGym = async(
     branchName,
@@ -286,3 +260,25 @@ const removeReviewdid = async (gymId,reviewId) => {
     gym._id = gym._id.toString();
     return gym;
   };
+
+  export const checkIn = async (username) => {
+    username = isValidUsername(username);
+    const userCollection = await users();
+    const theUser = await userCollection.findOne({username: username});
+    if (theUser === null){throw "No user with that id";};
+    theUser._id = theUser._id.toString();
+    gymId = theUser.gym_id;
+    
+    let gymdetails = getGymById(gymId);
+    gymdetails.currentCapacity += 1; 
+    const updatedInfo = await Gym.findOneAndUpdate(
+      { _id: new ObjectId(_id) },
+      { $set: { currentCapacity: gymdetails.currentCapacity } },
+      { new: true }
+    );
+    if (!updatedInfo) {
+      throw 'Failed to update gym';
+    }
+    return updatedInfo;
+  };
+  
