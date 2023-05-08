@@ -115,17 +115,5 @@ form.addEventListener('submit', (event) => {
 
 
 
-  if (isValid) {
-    const formData = new FormData(form);
-    fetch('/gym/addGym', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => {
-        
-      })
-      .catch(error => {
-        
-      });
-  }
+
 });

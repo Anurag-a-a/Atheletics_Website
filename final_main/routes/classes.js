@@ -45,7 +45,6 @@ router.route('/createClass').get(async (req, res) => {
         });
     }
     
-    let ID_gen = "0";
     try {
       const classCreation = await classes.createClass(
         classData.className,
@@ -68,7 +67,7 @@ router.route('/createClass').get(async (req, res) => {
 router.route('/classDetails').get(async (req, res) => {
   try {
     let classDetails = await classes.getAllClass();
-    return res.render('classDetails', { title: 'UpdateClass',classes: classDetails});
+    return res.render('classDetails', { title: 'Class Details',classes: classDetails});
   } 
   catch (e) {
     return res.status(500).json({ error: e.message });
@@ -87,7 +86,19 @@ router.route('/updateClass/:id').get(async (req, res) => {
   }
 });
 
-router.route('/classUpdation/:id').post(async (req, res) => {
+router.route('/deleteClass/:id').get(async (req, res) => {
+  try {
+    const {id} = req.params;
+    let classDetails = await classes.deleteClassById(id);
+    return res.render('classDetails', { title: 'Class Details',classDetails: classDetails});
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+
+router.route('/updateClass/:id').post(async (req, res) => {
   try {
     req.params.id = isValidId( req.params.id )
   } 
@@ -122,10 +133,10 @@ router.route('/classUpdation/:id').post(async (req, res) => {
 
   try{
     classData.className = isValidClassName(classData.className);
-    classData.slots = isValidTimeSlot(classData.slots);
+    classData.Date = isValidTimeSlot({Date : classData.date,timing:classData.timings});
     classData.instructor = isValidName(classData.instructor);
     classData.description = isValidDescription(classData.description);
-    classData.classCapacity = isValidClassCapacity(classData.classCapacity);
+    classData.maxCapacity = isValidClassCapacity(classData.maxCapacity);
 
     if(classData.className === classDetails.className && classData.slots === classDetails.slots && classData.instructor === classDetails.instructor && classData.description === classDetails.description && classData.classCapacity === classDetails.classCapacity)
       {  throw `no fields to update`
@@ -143,10 +154,10 @@ router.route('/classUpdation/:id').post(async (req, res) => {
     const classUpdation = await classes.update(
       req.params.id,
       classData.className,
-      classData.slots,
+      {Date : classData.date,timing:classData.timings},
       classData.instructor,
       classData.description,
-      classData.classCapacity
+      classData.maxCapacity
     );
     
     return res

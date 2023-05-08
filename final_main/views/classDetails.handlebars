@@ -1,5 +1,7 @@
+<br><br><br>
+<div class=" classes">
+
 {{#each classes}}
-<div class=" location">
 
 <div>
 <p>
@@ -22,6 +24,16 @@
     <p>
         Max Population Density : {{ this.classCapacity  }}
     </p>
+
+    <form id="class-update-{{this._id}}" class="class-update-form" method="POST">
+      <button class="updatebtn" data-class-id="{{this._id}}" >Update Class Details</button>
+    </form>
+
+    <form id="class-delete-{{this._id}}" class="class-delete-form" method="POST">
+      <button class="deletebtn" data-class-id="{{this._id}}">Delete Class</button>
+    </form>
 </div>
     {{/each}}
     <a class="go_home_link" href="/">Go to Home Page</a><br>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="/public/js/updateDeleteClass.js"></script>

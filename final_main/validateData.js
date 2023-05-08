@@ -253,7 +253,7 @@ export const isValidCapacity = (capacity) => {
 export const isValidTimeSlot = (selectedTimeSlot) => {
     if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
     if (typeof selectedTimeSlot !== 'object') throw 'selectedTimeSlot must be an object';
-    const { Date, timing } = selectedTimeSlot[0];
+    const { Date, timing } = selectedTimeSlot;
 
     // Check date format
     const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
@@ -322,7 +322,7 @@ export const isValidCancelledOrNot = (cancelledOrNot) => {
 //validate class capacity
 export const isValidClassCapacity = (classCapacity) => {
     if (!classCapacity) { throw `Error: class capacity not given`; };
-    if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
+    if (!(typeof parseInt(classCapacity) == 'number')) { throw `Error: class capacity must be a number`; };
     if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
     if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
     return classCapacity;

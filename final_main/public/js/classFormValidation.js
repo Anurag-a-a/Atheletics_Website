@@ -1,11 +1,16 @@
-const form = document.getElementById('classCreation');
+
+let createForm = document.getElementById('classCreation');
 const classNameInput = document.getElementById('className');
 const date1Input = document.getElementById('date1');
 const timings1Input = document.getElementById('timings1');
 const instructorInput = document.getElementById('instructor');
 const descriptionInput = document.getElementById('description');
+const maxCapacityInput = document.getElementById('maxCapacity')
+let updateForm = document.querySelector('#classUpdation');
+const submitBtn = document.querySelector('#updateB');
+const classDetails = "{{classDetails}}";
 
-export const isValidClassName = (className) => {
+function isValidClassName (className) {
   if (!className) { throw `Error: class name not given`; };
   if (!(typeof className == 'string')) { throw `Error: class name must be a string`; };
   className = className.toLowerCase().trim().replace(/\s+/g, "");
@@ -13,7 +18,7 @@ export const isValidClassName = (className) => {
   return className;
 }
 
-export const isValidDescription = (description) => {
+function isValidDescription (description) {
   if (!description) { throw `Error: class description not given`; };
   if (!(typeof description == 'string')) { throw `Error: class description must be a string`; };
   description = description.trim();
@@ -21,17 +26,13 @@ export const isValidDescription = (description) => {
   return description;
 }
 
-export const isValidTimeSlot = (selectedTimeSlot) => {
-  if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
-  if (typeof selectedTimeSlot !== 'object') throw 'selectedTimeSlot must be an object';
-  const { Date, timing } = selectedTimeSlot;
-
-  // Check date format
+function isValidDate(Date){
   const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
   const trimmedDate = Date.trim();
   if (!dateFormat.test(trimmedDate)) throw 'Date must be in the format MM/DD/YYYY';
-
-  // Check timing format and constraints
+  return Date
+}
+function isValidTime(timing){
   const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
   const trimmedTiming = timing.trim();
   const match = trimmedTiming.match(timeFormat);
@@ -49,10 +50,10 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
   if (startHour > endHour || (startHour === endHour && startMinute >= endMinute)) {
       throw 'End time must be greater than start time';
   }
-  return { ...selectedTimeSlot, Date: trimmedDate, timing: trimmedTiming };
+  return timing
 }
 
-export const isValidClassCapacity = (classCapacity) => {
+function isValidClassCapacity  (classCapacity) {
   if (!classCapacity) { throw `Error: class capacity not given`; };
   if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
   if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
@@ -61,7 +62,7 @@ export const isValidClassCapacity = (classCapacity) => {
 }
 
 
-export const isValidName = (name, variable) => {
+function isValidName (name, variable) {
   if (!name) { throw `Error: ${variable} not given`; };
   if (!(typeof name == 'string')) { throw `Error: ${variable} must be a string`; };
   name = name.trim();
@@ -69,41 +70,36 @@ export const isValidName = (name, variable) => {
   return name;
 };
 
-form.addEventListener('submit', (event) => {
-  let isValid = true;
+createForm.addEventListener('submit', (event) => {
+  event.preventDefault();
   
-  if (classNameInput.value.trim() === '') {
-    alert('Please enter a name for the class.');
-    isValid = false;
+  const isValid = isValidClassName(classNameInput) &&
+                  isValidDate(dateInput) &&
+                  isValidTime(timings1Input) &&
+                  isValidInstructor(instructorInput) &&
+                  isValidDescription(descriptionInput) &&
+                  isValidClassCapacity(maxCapacityInput);
+
+  if (isValid) {
+    createForm.submit();
   }
-  
-  if (date1Input.value.trim() === '') {
-    alert('Please enter a valid date from current time.');
-    isValid = false;
-  } else {
-    const date1 = new Date(date1Input.value);
-    if (isNaN(date1.getTime())) {
-      alert('Please enter time for class that has max 2 hours slot.');
-      isValid = false;
-    }
-  }
-  
-  if (timings1Input.value.trim() === '') {
-    alert('Please enter timings for Date 1.');
-    isValid = false;
-  }
-  
-  if (instructorInput.value.trim() === '') {
-    alert('Please enter an instructor name.');
-    isValid = false;
-  }
-  
-  if (descriptionInput.value.trim() === '') {
-    alert('Please enter a description.');
-    isValid = false;
-  }
-  
-  if (!isValid) {
+});
+
+updateForm.addEventListener('update',(event)=>{
+  if(classNameInput == classDetails.className && date1Input == classDetails.slots.Date && timings1Input == classDetails.slots.timing && descriptionInput == classDetails.description && instructorInput == classDetails.instructor && maxCapacityInput == classDetails.maxCapacity)
+  {
     event.preventDefault();
+    alert('please update at least one field')
+    return
+  }
+
+  const isValid = isValidClassName(classNameInput) &&
+                  isValidDate(dateInput) &&
+                  isValidTime(timings1Input) &&
+                  isValidInstructor(instructorInput) &&
+                  isValidDescription(descriptionInput) &&
+                  isValidClassCapacity(maxCapacityInput);
+if (isValid) {
+  updateForm.submit();
   }
 });
