@@ -32,11 +32,15 @@ router.route('/createClass').get(async (req, res) => {
     }
   
     try {
+      let date1 = new Date(classData.date);
+      date1 = date1.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+      let time1 = classData.timings;
       classData.className = isValidClassName(classData.className);
-      classData.slots = isValidTimeSlot(classData.slots);
+      let slots = { Date: date1,timing : time1}; 
+      classData.slots = isValidTimeSlot(slots);
       classData.instructor = isValidName(classData.instructor);
       classData.description = isValidDescription(classData.description);
-      classData.classCapacity = isValidClassCapacity(classData.classCapacity);
+      classData.classCapacity = isValidClassCapacity(classData.maxCapacity);
     } catch (e) {
       return res
         .status(400)
@@ -79,6 +83,12 @@ router.route('/updateClass/:id').get(async (req, res) => {
   try {
     const {id} = req.params;
     let classDetails = await classes.getClassbyId(id);
+    let datefor = new Date(classDetails.slots.Date)
+    const year = datefor.getFullYear();
+    const month = datefor.getMonth() + 1;
+    const day = datefor.getDate();
+    datefor = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    classDetails.slots.Date = datefor;
     return res.render('classUpdateForm', { title: 'UpdateClass',classDetails: classDetails});
   } 
   catch (e) {
@@ -132,13 +142,15 @@ router.route('/updateClass/:id').post(async (req, res) => {
   }
 
   try{
+    let date1 = new Date(classData.date);
+    date1 = date1.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+    classData.slots = isValidTimeSlot({Date : date1,timing:classData.timings});
     classData.className = isValidClassName(classData.className);
-    classData.Date = isValidTimeSlot({Date : classData.date,timing:classData.timings});
     classData.instructor = isValidName(classData.instructor);
     classData.description = isValidDescription(classData.description);
     classData.maxCapacity = isValidClassCapacity(classData.maxCapacity);
-
-    if(classData.className === classDetails.className && classData.slots === classDetails.slots && classData.instructor === classDetails.instructor && classData.description === classDetails.description && classData.classCapacity === classDetails.classCapacity)
+    
+    if(classData.className == classDetails.className && new Date(classData.slots.Date).getTime() == new Date(classDetails.slots.Date).getTime() && classData.slots.timing == classDetails.slots.timing && classData.instructor == classDetails.instructor && classData.description == classDetails.description && classData.maxCapacity == classDetails.classCapacity)
       {  throw `no fields to update`
     }
   } 
