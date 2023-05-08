@@ -17,7 +17,7 @@ import {isValidName,
 import xss from 'xss';
 import session from 'express-session';
 
-router.route('/').get(middleware.landingPageMiddleware, async (req, res) => {
+router.route('/').get(middleware.rootMiddleware, async (req, res) => {
   return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
 
@@ -51,7 +51,7 @@ router.route('/joinnow').post(async (req, res) => {
     console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
-        return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: false});
+        return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'signUpPartial'});
     };
     let firstName = "";
     let lastName = "";
@@ -109,7 +109,7 @@ router.route('/joinnow').post(async (req, res) => {
         emergencyContactPhoneNumber = isValidPhoneNumber(signUpInfo.emergencyContactPhoneNumber);
         plan = isValidMembershipPlanDetails(signUpInfo.plan);
       }catch(e){
-        return res.status(400).render('joinNow', {title: "Gym Brat", error: e, partial: false});
+        return res.status(400).render('joinNow', {title: "Gym Brat", error: e, partial: 'signUpPartial'});
       };
     //create the user in db
     try{
@@ -133,7 +133,7 @@ router.route('/joinnow').post(async (req, res) => {
       if(!userReturnObject) {return res.status(500).json({error: "Internal Server Error"});};
       return res.render('signIn',{title: "Gym Brat" , partial: 'sigInPartial'});
     }catch(e){
-      return res.status(400).render('joinNow', {title: "Gym Brat",error: e, partial: false});
+      return res.status(400).render('joinNow', {title: "Gym Brat",error: e, partial: 'signUpPartial'});
     };
     //redirect to login page
 });//end join now post
@@ -145,7 +145,7 @@ router.route('/signin').get(middleware.signInMiddleware,async (req, res) => {
 router.route('/signin').post(async (req, res) => {
     let signinInfo = req.body;
     if(!signinInfo){
-        return res.status(400).render('signIn', {title: "Gym Brat", error: "Fill all the fields!!",partial: false});
+        return res.status(400).render('signIn', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'sigInPartial'});
     };
     let email = "";
     let password = "";
@@ -155,22 +155,22 @@ router.route('/signin').post(async (req, res) => {
         // console.log("passed all the input validation");
       }catch(e){
         // console.log("input error caught");
-        return res.status(400).render('signIn', {title: "Gym Brat", error: e,partial: false});
+        return res.status(400).render('signIn', {title: "Gym Brat", error: e,partial: 'sigInPartial'});
       };
       try{
         // console.log("Inside checking credentials");
         const userObject = await userData.checkUser(xss(email),xss(password));
-        if(!userObject) { return res.status(500).render('signIn', {title: "Gym Brat", error: "Internal Server Error",partial: false});};
+        if(!userObject) { return res.status(500).render('signIn', {title: "Gym Brat", error: "Internal Server Error",partial: 'sigInPartial'});};
         req.session.user = {
           id: userObject.id,
           role: userObject.role
         };
         // console.log(req.session.user);
         // console.log('/login session set',req.session.user);
-        if(req.session.user.role == 'admin') {res.redirect('/admin');}
+        if(req.session.user.role == 'admin') {res.redirect('/admin/adminhome');}
         else {res.redirect('/user/protectedUserHomePage');};        
       }catch(e){
-        return res.status(400).render('signIn', {title: "Gym Brat", error: e, partial: false});
+        return res.status(400).render('signIn', {title: "Gym Brat", error: e, partial: 'sigInPartial'});
       };
     });//end sign in post
 
@@ -228,7 +228,7 @@ router.route('/signin').post(async (req, res) => {
     router.route('/updateplan').post(async(req, res) => {
       let updatePlanInfo = req.body;
       if(!updatePlanInfo){
-        return res.status(400).render('updatePlan', {title: "Gym Brat", error: "Fill all the fields!!",partial: false});
+        return res.status(400).render('updatePlan', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'updatePlanPartial'});
       };
       let plan = "";
       let password = "";
@@ -238,7 +238,7 @@ router.route('/signin').post(async (req, res) => {
         // console.log("passed all the input validation");
       }catch(e){
         // console.log("Route updatePlan post input error caught");
-        return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: false});
+        return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: 'updatePlanPartial'});
       };
       try{
         // console.log("Inside checking credentials");
@@ -263,7 +263,7 @@ router.route('/signin').post(async (req, res) => {
           theuser.role,
           plan
           );
-          if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: false});}
+          if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: 'updatePlanPartial'});}
           return res.redirect('/user/userProfile');
         }
         else{
@@ -272,7 +272,7 @@ router.route('/signin').post(async (req, res) => {
         };
         
       }catch(e){
-        return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: false});
+        return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: 'updatePlanPartial'});
       };
 
     });
@@ -282,17 +282,48 @@ router.route('/signin').post(async (req, res) => {
       return res.redirect('/user');
     });
 
-    router.route('/renewplan').post(async(req, res) => {
-      //req.session.user.id
-      const theuser = await userData.getUserbyId(req.session.user.id);
-      if(!theuser){return res.status(500).json("Internal Server Error");};
-      const planRenewStatus = userData.renewPlan(req.session.user.id, theuser.membershipPlanDetails);
-      return res.json({planRenewStatus, renew: 'renewPlan'});
-    });
+
 
     router.route('/updatepassword').get(middleware.updatePasswordMiddleware,async(req, res) => {
-      return res.render('updatePassword',{title: "Gym Brat",partial: false})
+      return res.render('updatePassword',{title: "Gym Brat",partial: 'updatePassword'})
 
     });
+    router.route('/updatepassword').post(async(req, res) => {
+      let updatePasswordInfo = req.body;
+      if(!updatePasswordInfo){
+        return res.status(400).render('updatePassword', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'updatePassword'});
+      };
+
+      // let email = "";
+      let password = "";
+      let npassword = "";
+      let cpassword = "";
+      try {
+        password = isValidPassword(updatePasswordInfo.passwordInput);
+        npassword = isValidPassword(updatePasswordInfo.newpasswordInput);
+        cpassword = isValidPassword(updatePasswordInfo.cnewpasswordInput);
+      }catch(e){
+        return res.status(400).render('updatePassword', {title: "Gym Brat", error: e,partial: 'updatePassword'});
+      };
+      try{
+        const theuser = await userData.getUserbyId(req.session.user.id);
+        if(!theuser){return res.status(500).json("Internal Server Error");};
+        const userObject = await userData.checkUser(xss(theuser.email),xss(password));
+        if(!userObject) { return res.status(500).render('updatePassword', {title: "Gym Brat", error: "Internal Server Error",partial: 'updatePassword'});};            
+      }catch(e){
+        return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
+      };
+      try{
+        const result = userData.updatePassword(password,npassword);
+        if(result){
+          req.session.destroy();
+          return res.status(400).render('signIn', {title: "Gym Brat", partial: 'alertPasswordChange'});
+        }else{
+          throw "Error: failed to update password. Try again";
+        }
+      }catch(e){
+        return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
+      };
+    });//end post updatePassword
 
 export default router;

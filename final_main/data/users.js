@@ -148,7 +148,10 @@ export const createAdmin = async (
   dob,
   email,
   phoneNumber,
-  address,
+  streetName,
+  city,
+  state,
+  zip,
   username,
   password,
   emergencyContactName,
@@ -496,4 +499,38 @@ export const addReviewId = async (userId, reviewId) => {
 
   updatedInfo.value._id = updatedInfo.value._id.toString();
   return updatedInfo.value;
+};
+
+export const updatePassword = async (cpassword, npassword) => {
+  cpassword = isValidPassword(cpassword);
+  npassword = isValidPassword(npassword);
+  const userCollection = await users();
+  const userList = await getAllUser();
+  let comparePassword = false;
+  let id = "";
+  for(let i=0; i<userList.length; i++){
+    try {
+      comparePassword = await bcrypt.compare(cpassword, userList[i]['hashedPassword']);
+      // console.log(comparePassword)
+    }catch(e){
+      throw "Internal Server Error";
+    };
+    if(comparePassword){ id = userList[i]._id.toString(); break;};
+};//close for
+  if(!comparePassword){throw "Error: Current Password entered is wrong. Try Again";};
+  const hashedPassword = await bcrypt.hash(npassword, saltRounds);
+  const updatePasswordUser = {
+  hashedPassword: hashedPassword
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+  {_id: new ObjectId(id)},
+  {$set: updatePasswordUser},
+  {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update password';
+  };
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return true;
+  
 };

@@ -109,27 +109,7 @@ a:visited {
   tab-size: 4;
 }
 
-/* #location_link {
-    width:300px;        
-    position:fixed;
-    z-index:10;         
-    top:10px;
-    right:0px;
-}
-#signIn_link {
-    width:300px;        
-    position:fixed;
-    z-index:10;        
-    top:10px;
-    right:100px;
-}
-#joinNow_link {
-    width:300px;        
-    position:fixed;
-    z-index:10;         
-    top:10px;
-    right:200px;
-} */
+
 #gym_description{
   color:blueviolet;
   font-style: italic;
@@ -250,7 +230,7 @@ label {
   margin-bottom: 0.5rem;
 }
 
-input {
+/* input {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1.5rem;
@@ -258,8 +238,8 @@ input {
   border: none;
   background-color: #f2f2f2;
   font-size: 1.2rem;
-}
-
+} */
+/* 
 button {
   padding: 0.5rem 2rem;
   border-radius: 5px;
@@ -272,13 +252,17 @@ button {
 
 button:hover {
   background-color: #005fa3;
-}
+} */
 .gyms{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #f5f5f5;
+}
+
+#management_home{
+  text-align: center;
 }
 
 

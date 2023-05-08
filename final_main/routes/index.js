@@ -1,5 +1,6 @@
-
+import rootRoutes from './root.js';
 import userRoutes from './users.js';
+import adminRoutes from './admin.js';
 import gymRoutes from './gymDetails.js';
 import classRoutes from './classes.js';
 import reviewRoutes from './reviews.js';
@@ -9,7 +10,9 @@ import { loggingMiddleware } from '../middleware.js';
 import classandeventRoutes from './classandevent.js';
 const constructorMethod = (app) => {
   app.use(loggingMiddleware);
+  app.use('/',rootRoutes);
   app.use('/user', userRoutes);
+  app.use('/admin', adminRoutes);
   app.use('/gym', gymRoutes);
   app.use('/reviews', reviewRoutes);
   app.use('/myAppointments', appointmentRoutes);
