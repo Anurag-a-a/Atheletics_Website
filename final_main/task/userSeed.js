@@ -34,7 +34,7 @@ async function main() {
     }catch(e){
         console.log(e);
     };
-    
+    let user2 = undefined;
      try {
      	firstName = "Ron";
     	lastName = "Weasly";
@@ -55,7 +55,7 @@ async function main() {
     	role = "User";
     	membershipPlanDetails = "Beta";
     
-        let user2 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
+        user2 = await userData.createUser(firstName,lastName,sex,dob,email,phoneNumber,address,username,hashedPassword,emergencyContactName,emergencyContactPhoneNumber,role,membershipPlanDetails);
         console.log(user2)
     }catch(e){
         console.log(e);
@@ -113,7 +113,7 @@ async function main() {
         console.log(e);
     };
     
-let gym = undefined;
+    let gym = undefined;
 try{
   gym = await gymData.createGym( 'Hoboken', 'https://www.google.com',{ streetName: '815 E Hudson st',    city: 'Hoboken',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, "alpha", 'admin' ) ;
   console.log(`${gym.name} successfully created \n`,gym);   
@@ -124,7 +124,7 @@ catch(e){
 
 let class1 = undefined;
 try{
-  class1 = await classData.createClass('swim1', {Date: '06/13/2023', timing: '10:00 - 12:00'}, 'John','this is siwm class', 30) ;
+  class1 = await classData.createClass('swim1', {Date: '06/13/2023', timing: '10:00 - 12:00'}, 'John','this is siwm class', 30, [user1._id.toString()]) ;
   console.log(class1);   
 }
 catch(e){
@@ -133,7 +133,7 @@ catch(e){
 
 let class2 = undefined;
 try{
-  class2 = await classData.createClass('Yoga1', {Date: '07/18/2023', timing: '13:00 - 15:00'}, 'hill','Rewind, revive with this yoga session.', 30) ;
+  class2 = await classData.createClass('Yoga1', {Date: '07/18/2023', timing: '13:00 - 15:00'}, 'hill','Rewind, revive with this yoga session.', 30, [user1._id.toString()]) ;
   console.log(class2);   
 }
 catch(e){
@@ -151,7 +151,7 @@ catch(e){
 
 let class4 = undefined;
 try{
-  class4 = await classData.createClass('Yoga0', {Date: '04/19/2023', timing: '15:00 - 17:00'}, 'hill','Rewind, revive with this yoga session.', 30) ;
+  class4 = await classData.createClass('Yoga0', {Date: '04/19/2023', timing: '15:00 - 17:00'}, 'hill','Rewind, revive with this yoga session.', 30, [user1._id.toString()]) ;
   console.log(class3);   
 }
 catch(e){
@@ -176,7 +176,6 @@ try{
 catch(e){
    console.log(e)
 }
-console.log('appointment2:', appointment2);
 
 let appointment3 = undefined;
 try{
@@ -186,31 +185,46 @@ try{
 catch(e){
    console.log(e)
 }
+console.log('appointment2:', appointment2);
 
 await userData.updateAppointment(user1._id.toString(), appointment1._id.toString(), 'add').catch((error) => {
 	console.log('Error adding appointment1:', error);
-      });
+  });
 await userData.updateAppointment(user1._id.toString(), appointment2._id.toString(), 'add').catch((error) => {
 	console.log('Error adding appointment2:', error);
-      });
-await userData.updateAppointment(user1._id.toString(), appointment3._id.toString(), 'add').catch((error) => {
-	console.log('Error adding appointment1:', error);
   });
-
+await userData.updateAppointment(user1._id.toString(), appointment3._id.toString(), 'add').catch((error) => {
+	console.log('Error adding appointment3:', error);
+  });
+      
 let gymreview = undefined;
 try{
-  gymreview = await reviewData.addReview(gym._id.toString(), null,'The gym is good', 4);   
+  gymreview = await reviewData.addReview(gym._id.toString(), null,'The gym is not good', 4);   
   console.log(`a review for ${gymreview.gymId} successfully created`);  
-  let updateReview = await reviewData.updateReview(gymreview._id.toString(), gym._id.toString(),null,'The gym is not good', 4)
+  let updateReview = await reviewData.updateReview(gymreview._id.toString(), gym._id.toString(),null,'The gym is good', 4.6)
   console.log(`a review for ${updateReview._id} successfully updated`);
 }
 catch(e){
    console.log(e)
 }
+await userData.updateReview(user1._id.toString(), gymreview._id.toString(), 'add').catch((error) => {
+	console.log('Error adding gymreview:', error);
+  });
+let gymreview2 = undefined;
+try{
+  gymreview2 = await reviewData.addReview(gym._id.toString(), null,'The gym is good', 4.8);   
+  console.log(`a review for ${gymreview2.gymId} successfully created`);}
+catch(e){
+   console.log(e)
+}
+await userData.updateReview(user2._id.toString(), gymreview2._id.toString(), 'add').catch((error) => {
+	console.log('Error adding gymreview2:', error);
+  });
+
 
 let classreview = undefined;
 try{
-  classreview = await reviewData.addReview(gym._id.toString(), class1._id.toString(),'The class is good', 5);   
+  classreview = await reviewData.addReview(gym._id.toString(), class1._id.toString(),'The class is good');   
   console.log(`a review for ${classreview.classId} successfully created`);  
 }
 catch(e){
@@ -219,18 +233,21 @@ catch(e){
 
 let classreview2 = undefined;
 try{
-  classreview2 = await reviewData.addReview(gym._id.toString(), class2._id.toString(),'The class is good', 4.5);   
-  console.log(`a review for ${classreview.classId} successfully created`);  
+  classreview2 = await reviewData.addReview(gym._id.toString(), class2._id.toString(),'The class is good');   
+  console.log(`a review for ${classreview2.classId} successfully created`);  
 }
 catch(e){
-   console.log(e)
+  console.log(e)
 }
+await userData.updateReview(user1._id.toString(), classreview._id.toString(), 'add').catch((error) => {
+	console.log('Error adding classreview:', error);
+  });
+await userData.updateReview(user1._id.toString(), classreview2._id.toString(), 'add').catch((error) => {
+	console.log('Error adding classreview2:', error);
+  });
 
-    await closeConnection();
+  await closeConnection();
 
 };//end of main
 
-main();
-
-    
-    
+main();    

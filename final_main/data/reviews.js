@@ -35,10 +35,10 @@ const getReviewById = async (reviewId) => {
   return review;
 }
 
-const addReview = async (gymId, classId, reviewText, rating) => {
+const addReview = async (gymId, classId, reviewText, rating = null) => {
   gymId = isValidId(gymId);
   reviewText = isValidreviewText(reviewText);
-  rating = isValidRating(rating);
+
   const reviewCollection = await reviews();
   const gymCollection = await gyms();
   const classCollection = await classes();
@@ -48,46 +48,48 @@ const addReview = async (gymId, classId, reviewText, rating) => {
   if (classId !== null) {
     classId = isValidId(classId);
     query.classId = classId;
+  } else {
+    rating = isValidRating(rating);
   }
 
-  // Check if user has already reviewed the gym or class
-  let existingReview = await reviewCollection.findOne(query);
-  
-  if (existingReview !== null) {
-    throw 'You have already reviewed this ' + (classId ? 'class' : 'gym');
-  } else {
+  // let existingReview = await reviewCollection.findOne(query);
+
+  // if (existingReview !== null) {
+  //   throw 'You have already reviewed this ' + (classId ? 'class' : 'gym');
+  // } else {
     let newReview = {
       gymId: gymId,
       classId: classId,
-      reviewText: reviewText,
-      rating: rating
+      reviewText: reviewText
+    };
+
+    if (!classId) {
+      newReview.rating = rating;
     }
 
     const newInsertInfo = await reviewCollection.insertOne(newReview);
     if (!newInsertInfo.acknowledged || !newInsertInfo.insertedId) throw 'Insert failed!';
     const newId = newInsertInfo.insertedId.toString();
 
-    // Update the gym or class with the new review ID and overallRating
     if (classId) {
       const classToUpdate = await classCollection.findOne({ _id: new ObjectId(classId) });
       const updatedReviewIds = [...classToUpdate.reviewIds, newId];
 
-      const classReviews = await reviewCollection.find({ _id: { $in: updatedReviewIds.map(id => new ObjectId(id)) } }).toArray();
-      const averageRating = classReviews.reduce((sum, review) => sum + review.rating, 0) / updatedReviewIds.length;
-
       await classCollection.updateOne(
         { _id: new ObjectId(classId) },
         {
-          $set: { reviewIds: updatedReviewIds, overallRating: averageRating }
+          $set: { reviewIds: updatedReviewIds }
         }
       );
     } else {
       const gymToUpdate = await gymCollection.findOne({ _id: new ObjectId(gymId) });
       const updatedReviewIds = [...gymToUpdate.reviewIds, newId];
 
-      const gymReviews = await reviewCollection.find({ _id: { $in: updatedReviewIds.map(id => new ObjectId(id)) } }).toArray();
-      const averageRating = gymReviews.reduce((sum, review) => sum + review.rating, 0) / updatedReviewIds.length;
-
+      const gymReviews = await reviewCollection.find({ gymId: gymId, classId: null }).toArray();
+      const filteredGymReviews = gymReviews.filter((review) => gymToUpdate.reviewIds.includes(review._id.toString()));
+      const totalRating = filteredGymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) + parseFloat(rating);
+      const averageRating = parseFloat((totalRating / (filteredGymReviews.length + 1)).toFixed(1));
+    
       await gymCollection.updateOne(
         { _id: new ObjectId(gymId) },
         {
@@ -95,12 +97,11 @@ const addReview = async (gymId, classId, reviewText, rating) => {
         }
       );
     }
-
     const addedReview = await getReviewById(newId);
     addedReview._id = addedReview._id.toString();
     return addedReview;
   }
-}
+// }
 
 const removeReview = async (reviewId) => {
   reviewId = isValidId(reviewId);
@@ -112,19 +113,25 @@ const removeReview = async (reviewId) => {
 
 }
 
-const updateReview = async (reviewId, gymId, classId, reviewText, rating) => {
+const updateReview = async (reviewId, gymId, classId, reviewText, rating = null) => {
   reviewId = isValidId(reviewId);
-  gymId = isValidId(gymId);
   reviewText = isValidreviewText(reviewText);
-  rating = isValidRating(rating);
 
   const reviewUpdateInfo = {
-    gymId: gymId,
-    reviewText: reviewText,
-    rating: rating
+    reviewText: reviewText
   };
 
-  if (classId !== null) {
+  if (gymId) {
+    gymId = isValidId(gymId);
+    reviewUpdateInfo.gymId = gymId;
+
+    if (rating !== null) {
+      rating = isValidRating(rating);
+      reviewUpdateInfo.rating = rating;
+    }
+  }
+
+  if (classId) {
     classId = isValidId(classId);
     reviewUpdateInfo.classId = classId;
   }
@@ -132,6 +139,9 @@ const updateReview = async (reviewId, gymId, classId, reviewText, rating) => {
   const reviewCollection = await reviews();
   const gymCollection = await gyms();
   const classCollection = await classes();
+
+  const currentReview = await reviewCollection.findOne({ _id: new ObjectId(reviewId) });
+  const previousRating = parseFloat(currentReview.rating);
 
   const updatedInfo = await reviewCollection.findOneAndUpdate(
     { _id: new ObjectId(reviewId) },
@@ -142,23 +152,14 @@ const updateReview = async (reviewId, gymId, classId, reviewText, rating) => {
   if (updatedInfo.lastErrorObject.n === 0)
     throw `Error: Update failed, could not find a review with id of ${reviewId}`;
 
-  // Update the gym or class overallRating
-  if (classId) {
-    const classToUpdate = await classCollection.findOne({ _id: new ObjectId(classId) });
-    const classReviews = await reviewCollection.find({ classId: classId }).toArray();
-    const averageRating = classReviews.reduce((sum, review) => sum + review.rating, 0) / classReviews.length;
-
-    await classCollection.updateOne(
-      { _id: new ObjectId(classId) },
-      {
-        $set: { overallRating: averageRating }
-      }
-    );
-  } else {
+  // Update the gym overallRating only if the rating is provided for the gym
+  if (gymId && rating) {
     const gymToUpdate = await gymCollection.findOne({ _id: new ObjectId(gymId) });
     const gymReviews = await reviewCollection.find({ gymId: gymId }).toArray();
-    const averageRating = gymReviews.reduce((sum, review) => sum + review.rating, 0) / gymReviews.length;
-
+    const filteredGymReviews = gymReviews.filter((review) => gymToUpdate.reviewIds.includes(review._id.toString()));
+    const totalRating = filteredGymReviews.reduce((sum, review) => sum + parseFloat(review.rating), 0);
+    const averageRating = parseFloat((totalRating / filteredGymReviews.length).toFixed(1));
+  
     await gymCollection.updateOne(
       { _id: new ObjectId(gymId) },
       {
@@ -194,11 +195,19 @@ const getReviewByGymIdAndClassId = async (gymId, classId) => {
   }));
 };
 
+const getReviewsByIds = async (ids) => {
+  const reviewCollection = await reviews();
+  const objectIdList = ids.map(id => new ObjectId(id));
+  const foundReviews = await reviewCollection.find({ _id: { $in: objectIdList }, classId: null }).toArray();
+  return foundReviews;
+};
+
 export {
   getReviewById,
   getAllReviews,
   addReview,
   removeReview,
   updateReview,
-  getReviewByGymIdAndClassId
+  getReviewByGymIdAndClassId,
+  getReviewsByIds
 }

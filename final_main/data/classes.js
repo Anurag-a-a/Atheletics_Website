@@ -55,7 +55,7 @@ export const createClass = async (
     description = isValidDescription(description);
     classCapacity = isValidClassCapacity(classCapacity);
     let registeredUsers = [];
-    let reviews = [];
+    let reviewIds = [];
 
     const classCollection = await classes();
     const existingClass = await getAllClass();
@@ -69,7 +69,9 @@ export const createClass = async (
         slots: slots,
         instructor: instructor,
         description: description,
-        classCapacity: classCapacity
+        classCapacity: classCapacity,
+        registeredUsers: [],
+        reviewIds: [],
     }
 
     const insertInfo = await classCollection.insertOne(newUser);
@@ -160,17 +162,17 @@ export const updateRegisteredUsers = async (
     const classCollection = await classes();
     const theClass = await getClassbyId(id);
 
-    let CurrentRegisteredList = theClass.RegisteredUsersId;
-    if (!CurrentRegisteredList.includes(RegisteredUsersId)) { throw `Error: No such registered for ${theClass.className} ` };
+    let currentRegisteredList = theClass.registeredUsers; // Change this line
+    if (!currentRegisteredList.includes(RegisteredUsersId)) { throw `Error: No such registered for ${theClass.className} ` };
     let newRegisterList = [];
     if (action == 'delete') {
-        for (let i = 0; i < CurrentRegisteredList.length; i++) {
-            if (CurrentRegisteredList[i] != RegisteredUsersId) {
-                newRegisterList.push(CurrentRegisteredList[i]);
+        for (let i = 0; i < currentRegisteredList.length; i++) {
+            if (currentRegisteredList[i] != RegisteredUsersId) {
+                newRegisterList.push(currentRegisteredList[i]);
             };
         };
     } else {
-        newRegisterList = CurrentRegisteredList;
+        newRegisterList = currentRegisteredList;
         newRegisterList.push(RegisteredUsersId);
     };
     let registrations = newRegisterList;
@@ -191,6 +193,7 @@ export const updateRegisteredUsers = async (
     return updatedInfo.value;
 };
 
+
 export const updateReview = async (
     id,
     reviewId,
@@ -203,23 +206,22 @@ export const updateReview = async (
     const classCollection = await classes();
     const theClass = await getClassbyId(id);
 
-    let CurrentReviewList = theClass.reviewId;
-    if (!CurrentReviewList.includes(reviewId)) { throw `Error: No such appointment for ${theClass.className} ` };
-    let newReviewList = [];
-    if (action == 'delete') {
-        for (let i = 0; i < CurrentReviewList.length; i++) {
-            if (CurrentReviewList[i] != reviewId) {
-                newReviewList.push(CurrentReviewList[i]);
-            };
-        }
-    } else {
-        newReviewList = CurrentReviewList;
-        newReviewList.push(reviewId);
-    };
+    let CurrentReviewList = theClass.reviewIds;
 
-    let reviews = newReviewList;
+    if (action === 'delete' && !CurrentReviewList.includes(reviewId)) {
+        throw `Error: No such review for ${theClass.className}`;
+    }
+
+    let newReviewList = [...CurrentReviewList];
+
+    if (action === 'delete') {
+        newReviewList = newReviewList.filter(rId => rId !== reviewId);
+    } else if (!CurrentReviewList.includes(reviewId)) {
+        newReviewList.push(reviewId);
+    }
+
     let updateUser = {
-        reviews: reviews,
+        reviewIds: newReviewList,
     };
 
     const updatedInfo = await classCollection.findOneAndUpdate(
@@ -234,3 +236,22 @@ export const updateReview = async (
     updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
 };
+
+export const addReviewId = async (userId, reviewId) => {
+    userId = isValidId(userId);
+    reviewId = isValidId(reviewId);
+  
+    const classCollection = await classes();
+    const updatedInfo = await classCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $addToSet: { reviewIds: reviewId } },
+      { returnDocument: 'after' }
+    );
+  
+    if (updatedInfo.lastErrorObject.n === 0) {
+      throw 'Failed to update MyReviews';
+    }
+  
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+  };

@@ -1,9 +1,44 @@
-<form action="/reviews/add" method="POST">
-  <input type="text" name="gymId" placeholder="Gym ID">
-  <input type="text" name="classId" placeholder="Class ID">
-  <input type="text" name="reviewText" placeholder="Review Text">
-  <input type="number" name="rating" placeholder="Rating (1-5)">
+<br>
+<br>
+<br>
+<a class="go_home_link" href="/myReviews">Back to My Reviews Page</a>
+<br>
+<form action="/myReviews/add" method="POST">
+  <label for="gymId">Gym Branch:</label>
+  <select name="gymId" id="gymId" required>
+    <option value="">Select a gym branch</option>
+    {{#each branches}}
+      <option value="{{this._id}}">{{this.branchName}}</option>
+    {{/each}}
+  </select>
+
+  <label for="reviewText">Review Text:</label>
+  <input type="text" name="reviewText" id="reviewText" required>
+
+  <div id="ratingDiv">
+    <label for="rating">Rating (1-5):</label>
+    <input type="number" name="rating" id="rating" placeholder="Rating (1-5)" min="1" max="5" step="0.1" required>
+  </div>
+
   <button type="submit">Add Review</button>
 </form>
 
-<a href="/">Back to Reviews</a>
+<script>
+  const classSelectElement = document.getElementById('classId');
+  const ratingDiv = document.getElementById('ratingDiv');
+  const ratingInput = document.getElementById('rating');
+
+  function updateRatingVisibility() {
+    if (classSelectElement.value) {
+      ratingDiv.style.display = 'none';
+      ratingInput.removeAttribute('required');
+    } else {
+      ratingDiv.style.display = 'block';
+      ratingInput.setAttribute('required', '');
+    }
+  }
+
+  classSelectElement.addEventListener('change', updateRatingVisibility);
+
+  updateRatingVisibility();
+</script>
