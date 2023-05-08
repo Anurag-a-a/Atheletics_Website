@@ -1,5 +1,6 @@
 import {Router} from 'express';
 const router = Router();
+import * as userData from '../data/users.js';
 import * as gymData from '../data/gyms.js';
 import {isValidBranch,
   isValidEmail,
@@ -8,7 +9,9 @@ import {isValidBranch,
   isValidWebsite,
   isValidId,
   isValidRole,
-  isValidCapacity
+  isValidCapacity,
+  isValidName,
+  isValidUsername
 } from '../validateData.js';
 
 router.route('/gymDetails').get(async (req, res) => {
@@ -30,6 +33,62 @@ router.route('/addGym').get(async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
+
+router.route('/checkIn').get(async (req, res) => {
+  try {
+    
+    return res.render('gymCheckIn', { title: 'Gym Brat'.currentCapacity});
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+router.route('/checkIn').post(async (req, res) => {
+  try {
+    let checkIn = req.body;
+    if (!checkIn || Object.keys(checkIn).length === 0) {
+        
+      return res
+        .status(400)
+        .json({
+          error: 'There are no fields in the request body'
+        });
+    }
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+
+  try {
+    checkIn.userName = isValidUsername(checkIn.userName);
+  } 
+  catch (e) {
+    return res
+      .status(400)
+      .json({
+        error: e
+      });
+  }
+  try {
+    const gymCheckIn = await userData.checkIn(
+      checkIn.userName)
+
+      if(!gymCheckIn)
+    {
+      throw 'username is not valid'
+    }
+      return res
+      .status(200)
+      .json(gymCheckIn);
+    } 
+    catch (e) {
+      return res.status(400).json({ error: e });
+    }
+
+
+});
+
 
 router.route('/addGym').post(async(req,res) => {
   let gymInfo = req.body;

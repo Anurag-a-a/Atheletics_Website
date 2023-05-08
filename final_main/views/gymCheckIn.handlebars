@@ -1,7 +1,14 @@
-<h1>location</h1>
-Enter userName to Check In
-<input type="text">
+<h1>Check In</h1>
 
-<button>
-    checkIn
-</button>
+<form id="checkin-form" class=" checkin">
+Enter userName to Check In
+
+    <input type="text" name="username">
+
+    <button type="submit">
+        checkIn
+    </button>
+    
+
+    <p>Current population: <span id="current-population">{{currentCapacity}}</span></p>
+</form>

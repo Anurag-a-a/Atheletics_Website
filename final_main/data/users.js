@@ -1,38 +1,7 @@
-/*
-{
-  _id: '641f83110b3a1eb1911a2ead',
-  firstName: 'Harry',
-  lastName: 'Potter',
-  sex: 'Male',
-  dob: 07/31/1996,
-  email: 'harrypotter@gmail.com',
-  phoneNumber: '551-221-5876',
-  address: {
-    streetName: '1234 NW Bobcat Lane',
-    city: 'Hoboken',
-    state: 'New Jersey',
-    zipCode: '07305'
-  },
-  hashedPassword: '$2a$08$XdvNkfdNIL8F8xsuIUeSbNOFgK0M0iV5HOskfVn7.PWncShU.O',
-  emergencyContactName: 'James Potter',
-  emergencyContactPhoneNumber: '551-221-5875',
-  MyAppointments: [
-    '41f83110b3a1eb1911a2ead',
-    '41f83110b3a1eb1911a2eaa',
-    '41f83110b3a1eb1911a2eac'
-  ],
-  MyReviews: [
-    '61f83110b3a1eb1911a2ead',
-    '61f83110b3a1eb1911a2eaa',
-    '61f83110b3a1eb1911a2eac'
-  ],
-  membershipPlanDetails: 'alpha',
-  role: ‘user’
-}
-*/
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import * as bcrypt from 'bcrypt';
+
 const saltRounds = 16;
 
 import {isValidName,
@@ -55,6 +24,8 @@ import {isValidName,
 } from '../validateData.js';
 
 //get a user provided the id.
+
+
 export const getUserbyId = async (id) => {
     id = isValidId(id);
     const userCollection = await users();
