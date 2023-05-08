@@ -2,6 +2,7 @@ import {Router} from 'express';
 const router = Router();
 import * as userData from '../data/users.js';
 import * as middleware from '../middleware.js';
+import * as gymData from '../data/gyms.js';
 import {isValidName,
     isValidEmail,
     isValidPhoneNumber,
@@ -345,5 +346,16 @@ router.route('/signin').post(async (req, res) => {
       email: theSessionUser.email,
       partial: 'updateForm'});
   });
+
+  router.route('/locations').get(async (req, res) => {
+    try {
+      const locations = await gymData.getAllGyms();
+      return res.render('locations', { title: 'Gym Brat', locations : locations });
+    } 
+    catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  });
+  
 
 export default router;
