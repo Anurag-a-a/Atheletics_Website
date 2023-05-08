@@ -17,7 +17,7 @@ import {isValidName,
 import xss from 'xss';
 import session from 'express-session';
 
-router.route('/').get(middleware.landingPageMiddleware, async (req, res) => {
+router.route('/').get(middleware.rootMiddleware, async (req, res) => {
   return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
 
@@ -167,7 +167,7 @@ router.route('/signin').post(async (req, res) => {
         };
         // console.log(req.session.user);
         // console.log('/login session set',req.session.user);
-        if(req.session.user.role == 'admin') {res.redirect('/admin');}
+        if(req.session.user.role == 'admin') {res.redirect('/admin/adminhome');}
         else {res.redirect('/user/protectedUserHomePage');};        
       }catch(e){
         return res.status(400).render('signIn', {title: "Gym Brat", error: e, partial: 'sigInPartial'});

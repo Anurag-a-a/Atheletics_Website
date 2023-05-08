@@ -7,24 +7,33 @@ export const loggingMiddleware = (req, res, next) => {
   next();  
 }
 
+export const rootMiddleware = (req, res, next) => {
+  if (req.session.user) {
+      if (req.session.user.role === 'admin') {
+        return res.redirect('/admin/adminhome');
+      } else if (req.session.user.role === 'user') {
+        return res.redirect('/user/protectedUserHomePage');
+      }
+  }
+  if(req.url === '/') return res.redirect('/user/landingpage');
+  next();
+};
+
 export const landingPageMiddleware = (req, res, next) => {
-if (req.session.user) {
-    if (req.session.user.role === 'admin') {
-      return res.redirect('/user/admin');
-    } else if (req.session.user.role === 'user') {
-      return res.redirect('/user/protectedUserHomePage');
-    }
-}
-// console.log(req.path)
-// console.log(req.url)
-if(req.url === '/') return res.redirect('/user/landingpage');
-next();
-}
+  if (req.session.user) {
+      if (req.session.user.role === 'admin') {
+        return res.redirect('/admin/adminhome');
+      } else if (req.session.user.role === 'user') {
+        return res.redirect('/user/protectedUserHomePage');
+      }
+  }
+  next();
+  };
 
 export const signInMiddleware = (req, res, next) => {
   if (req.session.user) {
       if (req.session.user.role === 'admin') {
-        return res.redirect('/user/admin');
+        return res.redirect('/admin/adminhome');
       } else if (req.session.user.role === 'user') {
         return res.redirect('/user/protectedUserHomePage');
       }
@@ -36,7 +45,7 @@ export const signInMiddleware = (req, res, next) => {
 export const signUpMiddleware = (req, res, next) => {
 if (req.session.user) {
     if (req.session.user.role === 'admin') {
-      return res.redirect('/user/admin');
+      return res.redirect('/admin/adminhome');
     } else if (req.session.user.role === 'user') {
       return res.redirect('/user/protectedUserHomePage');
     }
@@ -50,7 +59,13 @@ if (!req.session.user) {
   return res.redirect('/user/signIn');
 };
 next();
-}
+};
+export const adminHomePageMiddleware = (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/user/signIn');
+  };
+  next();
+};
 
 export const userProfilePageMiddleware = (req, res, next) => {
 if (!req.session.user) {
