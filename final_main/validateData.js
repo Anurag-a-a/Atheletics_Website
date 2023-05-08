@@ -283,7 +283,7 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
     if (!selectedTimeSlot) throw 'You must provide a selectedTimeSlot object';
     if (typeof selectedTimeSlot !== 'object') throw 'selectedTimeSlot must be an object';
     const { Date, timing } = selectedTimeSlot;
-
+    
     // Check date format
     const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
     const trimmedDate = Date.trim();
@@ -307,7 +307,7 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
     if (startHour > endHour || (startHour === endHour && startMinute >= endMinute)) {
         throw 'End time must be greater than start time';
     }
-    return { ...selectedTimeSlot, Date: trimmedDate, timing: trimmedTiming };
+    return { Date: trimmedDate, timing: trimmedTiming };
 }
 
 //validate className

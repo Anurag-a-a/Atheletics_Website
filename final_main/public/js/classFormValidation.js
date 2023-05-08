@@ -1,15 +1,3 @@
-
-let createForm = document.getElementById('classCreation');
-const classNameInput = document.getElementById('className');
-const date1Input = document.getElementById('date1');
-const timings1Input = document.getElementById('timings1');
-const instructorInput = document.getElementById('instructor');
-const descriptionInput = document.getElementById('description');
-const maxCapacityInput = document.getElementById('maxCapacity')
-let updateForm = document.querySelector('#classUpdation');
-const submitBtn = document.querySelector('#updateB');
-const classDetails = "{{classDetails}}";
-
 function isValidClassName (className) {
   if (!className) { throw `Error: class name not given`; };
   if (!(typeof className == 'string')) { throw `Error: class name must be a string`; };
@@ -17,6 +5,24 @@ function isValidClassName (className) {
   if (className.length === 0) { throw `Error: class name cannot be an empty string or string with just spaces`; };
   return className;
 }
+
+function isValidClassCapacity  (classCapacity) {
+  if (!classCapacity) { throw `Error: class capacity not given`; };
+  if (!(typeof parseInt(classCapacity) == 'number')) { throw `Error: class capacity must be a number`; };
+  if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
+  if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
+  return classCapacity;
+}
+
+
+function isValidName (name, variable) {
+  if (!name) { throw `Error: ${variable} not given`; };
+  if (!(typeof name == 'string')) { throw `Error: ${variable} must be a string`; };
+  name = name.trim();
+  if (name.length === 0) { throw `Error: ${variable} cannot be an empty string or string with just spaces`; };
+  return name;
+};
+
 
 function isValidDescription (description) {
   if (!description) { throw `Error: class description not given`; };
@@ -26,11 +32,16 @@ function isValidDescription (description) {
   return description;
 }
 
-function isValidDate(Date){
+function isValidDate(Date1){
   const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
-  const trimmedDate = Date.trim();
+  const trimmedDate = Date1.trim();
   if (!dateFormat.test(trimmedDate)) throw 'Date must be in the format MM/DD/YYYY';
-  return Date
+  const currentDate = new Date();
+  
+  if (trimmedDate <= currentDate) {
+    throw 'Date must me greater than todays Date'
+  }
+  return Date1;
 }
 function isValidTime(timing){
   const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
@@ -53,53 +64,87 @@ function isValidTime(timing){
   return timing
 }
 
-function isValidClassCapacity  (classCapacity) {
-  if (!classCapacity) { throw `Error: class capacity not given`; };
-  if (!(typeof classCapacity == 'number')) { throw `Error: class capacity must be a number`; };
-  if (isNaN(classCapacity)) { throw `Error: class capacity must be a number`; };
-  if (classCapacity < 0 || classCapacity > 100) { throw 'Error: class capacity is over range or lower range'; };
-  return classCapacity;
-}
+
+let createForm = document.getElementById('classCreation');
+if(createForm) {
+  let classNameInput = document.getElementById('className');
+  let date1Input = document.getElementById('date1');
+  let timings1Input = document.getElementById('timings1');
+  let timings2Input = document.getElementById('timings2');
+  let instructorInput = document.getElementById('instructor');
+  let descriptionInput = document.getElementById('description');
+  let maxCapacityInput = document.getElementById('maxCapacity');
+  let errorContainer = document.getElementById('error-container');
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
 
-function isValidName (name, variable) {
-  if (!name) { throw `Error: ${variable} not given`; };
-  if (!(typeof name == 'string')) { throw `Error: ${variable} must be a string`; };
-  name = name.trim();
-  if (name.length === 0) { throw `Error: ${variable} cannot be an empty string or string with just spaces`; };
-  return name;
+  createForm.addEventListener('submit', (event) => {
+      // event.preventDefault();
+      const validInputsList = [];
+      try {
+          className = isValidClassName(classNameInput.value);
+          let dateInput = new Date(date1Input.value);
+          dateInput = dateInput.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+          dateInput = isValidDate(dateInput);
+          timings1Input = isValidTime(timings1Input.value);
+          if(timings2Input.value)
+            {
+              timings2Input = isValidTime(timings2Input.value);
+            }
+          instructorInput = isValidClassName(instructorInput.value);
+          descriptionInput = isValidDescription(descriptionInput.value);
+          maxCapacityInput = isValidClassCapacity(maxCapacityInput.value);          
+          errorContainer.style.display = 'none';
+
+      }catch(e){
+          event.preventDefault();
+          const message = typeof e === 'string' ? e : e.message;
+          errorTextElement.textContent = e;
+          errorContainer.style.display = 'block';
+          errorContainer.classList.remove('hidden');
+      };//close try-catch block
+  });//close the eventListener
+};//close if(formSignIn)
+
+
+let updateForm = document.querySelector('#classUpdation');
+if(updateForm) {
+  let classDetails = "{{classDetails}}";
+
+  let classNameInput = document.getElementById('className');
+  let date1Input = document.getElementById('date1');
+  let timings1Input = document.getElementById('timings1');
+  let timings2Input = document.getElementById('timings2');
+  let instructorInput = document.getElementById('instructor');
+  let descriptionInput = document.getElementById('description');
+  let maxCapacityInput = document.getElementById('maxCapacity');
+  let errorContainer = document.getElementById('error-container');
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
+
+
+  updateForm.addEventListener('submit', (event) => {
+      const validInputsList = [];
+      try {
+        className = isValidClassName(classNameInput.value);
+        let dateInput = new Date(date1Input.value);
+        dateInput = dateInput.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+        dateInput = isValidDate(dateInput);
+        timings1Input = isValidTime(timings1Input.value);
+        if(timings2Input.value)
+          {
+            timings2Input = isValidTime(timings2Input.value);
+          }
+        instructorInput = isValidClassName(instructorInput.value);
+        descriptionInput = isValidDescription(descriptionInput.value);
+        maxCapacityInput = isValidClassCapacity(maxCapacityInput.value);          
+        errorContainer.style.display = 'none';
+        
+      }catch(e){
+          event.preventDefault();
+          const message = typeof e === 'string' ? e : e.message;
+          errorTextElement.textContent = e;
+          errorContainer.style.display = 'block';
+          errorContainer.classList.remove('hidden');
+      };
+  });
 };
-
-createForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  
-  const isValid = isValidClassName(classNameInput) &&
-                  isValidDate(dateInput) &&
-                  isValidTime(timings1Input) &&
-                  isValidInstructor(instructorInput) &&
-                  isValidDescription(descriptionInput) &&
-                  isValidClassCapacity(maxCapacityInput);
-
-  if (isValid) {
-    createForm.submit();
-  }
-});
-
-updateForm.addEventListener('update',(event)=>{
-  if(classNameInput == classDetails.className && date1Input == classDetails.slots.Date && timings1Input == classDetails.slots.timing && descriptionInput == classDetails.description && instructorInput == classDetails.instructor && maxCapacityInput == classDetails.maxCapacity)
-  {
-    event.preventDefault();
-    alert('please update at least one field')
-    return
-  }
-
-  const isValid = isValidClassName(classNameInput) &&
-                  isValidDate(dateInput) &&
-                  isValidTime(timings1Input) &&
-                  isValidInstructor(instructorInput) &&
-                  isValidDescription(descriptionInput) &&
-                  isValidClassCapacity(maxCapacityInput);
-if (isValid) {
-  updateForm.submit();
-  }
-});

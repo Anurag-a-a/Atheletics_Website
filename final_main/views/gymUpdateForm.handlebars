@@ -30,6 +30,14 @@
     <input type="number" id="maxCapacity" name="maxCapacity" value="{{gym.maxCapacity}}" required><br>
 
     <input type="submit" value="updateGym">
+            {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+        {{/if}}    
+
 </form>
 
 </div>
