@@ -162,7 +162,14 @@ export const createAdmin = async (
   email = isValidEmail(email);
   phoneNumber = isValidPhoneNumber(phoneNumber);
   // console.log("validating address in data function");
-  address = isValidAddress(address);
+  state =  isValidState(state);
+  zip = isValidZip(zip);
+  let address = {
+      streetName: streetName,
+      city: city,
+      state: state,
+      zip: zip
+  };
   username = isValidUsername(username);
   password = isValidPassword(password);
   emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
