@@ -5,6 +5,13 @@
     <a href="/user/membershipPlans">Want to see our exclusive plans. Click here!</a>
     <p>Fill up the details below to join the gym membership</p>
     <h1>Sign Up</h1>
+     {{#if error }}
+            <div class="form-group">
+                <div class="alert alert-danger">
+                    <p>{{ error }} </p>
+                </div>
+            </div>
+    {{/if}}
     <form id ="joinNow-form" method="POST" action="/user/joinnow">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
@@ -30,7 +37,7 @@
         </div>
         <br>
         <label for="dob">Enter your date of birth: </label>
-        <input id ="dob" type="text" name="dob" placeholder="MM/DD/YYYY"/>
+        <input id ="dob" type="date" max="2010-12-31" name="dob" placeholder="MM/DD/YYYY"/>
         <div class="form-group hidden" id="error-container4">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
@@ -115,12 +122,6 @@
         <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
         <br>    
     </form>
-    {{#if error }}
-            <div class="form-group">
-                <div class="alert alert-danger">
-                    <p>{{ error }} </p>
-                </div>
-            </div>
-    {{/if}}
+   
     <hr>
 </main>

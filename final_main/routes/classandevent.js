@@ -46,7 +46,7 @@ router
             await processData();
             res.render('classandevent', { classes: data });
         } catch (e) {
-            res.status(500).json({ error: error });
+            res.status(500).json({ error: e });
             return;
         }
     })
