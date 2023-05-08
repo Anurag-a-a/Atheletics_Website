@@ -46,8 +46,6 @@ export const isValidUsername = (username) => {
 //validate phoneNumber
 
 export const isValidPhoneNumber = (phoneNumber) => {
-    // console.log("In validateData.js file phone number check");
-    // console.log(phoneNumber);
     if (!phoneNumber) { throw "Error: no phoneNumber provided"; };
     if (!(typeof phoneNumber == 'string')) { throw "Error: phoneNumber must be a string"; };
     phoneNumber = phoneNumber.trim();
@@ -69,10 +67,7 @@ export const isValidAddress = (address) => {
             zipCode: '07305'
       }
     */
-    // console.log(address);
     if (!address) { throw "Error: no address provided"; };
-    console.log(address);
-    console.log(typeof(address));
     let isObjectResult = (typeof address == 'object') && (address != null) && (!Array.isArray(address));
     if (!(isObjectResult)) { throw "Error: address must be an object"; };
     if (address.length == 0) { throw "Error:Invalid address"; };
@@ -204,7 +199,7 @@ export const isValidSex = (sex) => {
     if (!(typeof sex == 'string')) { throw "Error: sex must be a string"; };
     sex = sex.trim().toLowerCase();
     if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
-    // console.log(sex);
+
     if(!(['male','female','non-binary','prefer-not-to-say'].includes(sex))) { throw "Error: Invalid sex" };
     return sex;
 
@@ -213,7 +208,7 @@ export const isValidSex = (sex) => {
 //validate dob
 //not implemented to validate the date ie. days and month relation and also leap years.
 export const isValidDOB = (dob) => {
-    // console.log(dob);
+
     if (!dob) { throw "Error: no date of birth provided"; };
     if (!(typeof dob == 'string')) { throw "Error: date of birth must be a string"; };
     dob = dob.trim();
@@ -233,7 +228,7 @@ export const isValidPostDOB = (dob) => {
     if (!dob) { throw "Error: no date of birth provided"; };
     if (!(typeof dob == 'string')) { throw "Error: date of birth must be a string"; };
     dob = dob.trim();
-    // console.log(dob);
+    
     if (dob.length != 10) { throw "Error: Invalid date of birth"; };
     // let format = /^(0?[1-9]|1[0-2])[\-](0?[1-9]|[1-2][0-9]|3[01])[\-]\d{4}$/;
     let format = /^\d{4}[\-](0?[1-9]|1[0-2])[\-](0?[1-9]|[1-2][0-9]|3[01])$/;
@@ -241,11 +236,9 @@ export const isValidPostDOB = (dob) => {
     let year  = Number(dob.slice(0, 2));
     let month  = Number(dob.slice(3, 5));
     let day  = Number(dob.slice(6));
-    // console.log(month); console.log(day); console.log(year);
     if ((day < 1) || (day > 31) || (month < 1) || (month > 12) || (year < 0) || (year > 2010)) { throw "Error: Invalid date"; };
     if (year > 2010) { throw "Error: User needs to be age 13 and above to sign up"; };
     dob = `${dob.slice(5,7)}/${dob.slice(8)}/${dob.slice(0,4)}`;
-    // console.log(dob);
     return dob;
 };
 
@@ -270,10 +263,10 @@ export const isValidRating = (rating) => {
 }
 
 export const isValidCapacity = (capacity) => {
-    if (!capacity) throw 'You must provide a rating';
-    if (typeof parseInt(capacity) !== 'number') throw 'yrating must be a number'
-    if (capacity < 0 || capacity > 100 || (!Number.isInteger(capacity * 10) && !Number.isInteger(capacity))) {
-        throw 'rating must between 0-100 and rating must be integer or one decimal place float';
+    if (!capacity) throw 'You must provide a capacity';
+    if (typeof parseInt(capacity) !== 'number') throw 'capacity must be a number'
+    if (capacity < 0 || capacity > 200 ) {
+        throw 'Capacity must between 0-200';
     }
     return capacity;
 }

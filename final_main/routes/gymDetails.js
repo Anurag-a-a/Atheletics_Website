@@ -24,7 +24,7 @@ router.route('/locations').get(async (req, res) => {
 router.route('/gymDetails').get(async (req, res) => {
   try {
     const gymDetails = await gymData.getAllGyms();
-    return res.render('locations', { title: 'Gym Brat', locations : gymDetails });
+    return res.render('allGyms', { title: 'Gym Brat', gyms : gymDetails });
   } 
   catch (e) {
     return res.status(500).json({ error: e.message });
@@ -34,7 +34,6 @@ router.route('/gymDetails').get(async (req, res) => {
 
 router.route('/addGym').get(async (req, res) => {
   try {
-    const locations = await gymData.getAllGyms();
     return res.render('gymCreateForm', { title: 'Gym Brat'});
   } 
   catch (e) {
@@ -54,13 +53,14 @@ router.route('/addGym').post(async(req,res) => {
   }
 
   try {
+      gymInfo.address = {streetName: gymInfo.streetName, city: gymInfo.city, state: gymInfo.state, zip:gymInfo.zipCode}
       gymInfo.branchName = isValidBranch(gymInfo.branchName);
       gymInfo.website = isValidWebsite(gymInfo.website);
       gymInfo.address = isValidAddress(gymInfo.address);
       gymInfo.phoneNumber = isValidPhoneNumber(gymInfo.phoneNumber);
       gymInfo.email = isValidEmail(gymInfo.email);
       gymInfo.maxCapacity = isValidCapacity(gymInfo.maxCapacity);
-      gymInfo.role = isValidRole(gymInfo.role);
+      gymInfo.role= 'admin';
     } 
     catch (e) {
       return res
@@ -91,6 +91,17 @@ router.route('/addGym').post(async(req,res) => {
 
 })
 
+router.route('/updateGym/:id').get(async (req, res) => {
+  try {
+    const {id} = req.params;
+    let gymDetails = await gymData.getGymById(id);
+    return res.render('gymUpdateForm', { title: 'UpdateGym',gym: gymDetails});
+  } 
+  catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
 router.route('/updateGym/:id').post(async(req,res) => {
   try {
     req.params.id = isValidId( req.params.id )
@@ -116,13 +127,14 @@ router.route('/updateGym/:id').post(async(req,res) => {
 
     try {
       req.params.id = req.params.id
+      gymInfo.address = {streetName: gymInfo.streetName, city: gymInfo.city, state: gymInfo.state, zip:gymInfo.zipCode}
       gymInfo.branchName = isValidBranch(gymInfo.branchName);
       gymInfo.website = isValidWebsite(gymInfo.website);
       gymInfo.address = isValidAddress(gymInfo.address);
       gymInfo.phoneNumber = isValidPhoneNumber(gymInfo.phoneNumber);
       gymInfo.email = isValidEmail(gymInfo.email);
       gymInfo.maxCapacity = isValidCapacity(gymInfo.maxCapacity);
-      gymInfo.role = isValidRole(gymInfo.role);
+      gymInfo.role = 'admin';
     } 
     catch (e) {
       return res

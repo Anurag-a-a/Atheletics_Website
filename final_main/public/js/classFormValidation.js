@@ -70,7 +70,6 @@ if(createForm) {
   let classNameInput = document.getElementById('className');
   let date1Input = document.getElementById('date1');
   let timings1Input = document.getElementById('timings1');
-  let timings2Input = document.getElementById('timings2');
   let instructorInput = document.getElementById('instructor');
   let descriptionInput = document.getElementById('description');
   let maxCapacityInput = document.getElementById('maxCapacity');
@@ -79,18 +78,13 @@ if(createForm) {
 
 
   createForm.addEventListener('submit', (event) => {
-      // event.preventDefault();
-      const validInputsList = [];
+      
       try {
           className = isValidClassName(classNameInput.value);
           let dateInput = new Date(date1Input.value);
           dateInput = dateInput.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
           dateInput = isValidDate(dateInput);
           timings1Input = isValidTime(timings1Input.value);
-          if(timings2Input.value)
-            {
-              timings2Input = isValidTime(timings2Input.value);
-            }
           instructorInput = isValidClassName(instructorInput.value);
           descriptionInput = isValidDescription(descriptionInput.value);
           maxCapacityInput = isValidClassCapacity(maxCapacityInput.value);          
@@ -102,19 +96,17 @@ if(createForm) {
           errorTextElement.textContent = e;
           errorContainer.style.display = 'block';
           errorContainer.classList.remove('hidden');
-      };//close try-catch block
-  });//close the eventListener
-};//close if(formSignIn)
+      };
+  });
+};
 
 
 let updateForm = document.querySelector('#classUpdation');
 if(updateForm) {
-  let classDetails = "{{classDetails}}";
 
   let classNameInput = document.getElementById('className');
   let date1Input = document.getElementById('date1');
   let timings1Input = document.getElementById('timings1');
-  let timings2Input = document.getElementById('timings2');
   let instructorInput = document.getElementById('instructor');
   let descriptionInput = document.getElementById('description');
   let maxCapacityInput = document.getElementById('maxCapacity');
@@ -123,17 +115,12 @@ if(updateForm) {
 
 
   updateForm.addEventListener('submit', (event) => {
-      const validInputsList = [];
       try {
         className = isValidClassName(classNameInput.value);
         let dateInput = new Date(date1Input.value);
         dateInput = dateInput.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
         dateInput = isValidDate(dateInput);
         timings1Input = isValidTime(timings1Input.value);
-        if(timings2Input.value)
-          {
-            timings2Input = isValidTime(timings2Input.value);
-          }
         instructorInput = isValidClassName(instructorInput.value);
         descriptionInput = isValidDescription(descriptionInput.value);
         maxCapacityInput = isValidClassCapacity(maxCapacityInput.value);          
