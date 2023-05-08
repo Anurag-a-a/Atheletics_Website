@@ -43,8 +43,8 @@ router
               }));
               console.log(data);
             }
-            await processData();
-            res.render('classandevent', { classes: data });
+            //await processData();
+            res.render('classandevent', { classes: allClass });
         } catch (e) {
             res.status(500).json({ error: e });
             return;
