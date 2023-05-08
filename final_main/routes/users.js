@@ -17,7 +17,7 @@ import {isValidName,
 import xss from 'xss';
 import session from 'express-session';
 
-router.route('/').get(middleware.rootMiddleware, async (req, res) => {
+router.route('/').get(middleware.rootMiddleware,async (req, res) => {
   return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
 
@@ -43,12 +43,12 @@ router.route('/membershipPlans').get(async (req, res) => {
 
 /* route for sign up page */
 router.route('/joinnow').get(middleware.signUpMiddleware,async (req, res) => {
-  console.log("renedered join now");
+  // console.log("renedered join now");
     return res.render('joinNow',{title: "Gym Brat", partial: 'signUpPartial'});
 });
 router.route('/joinnow').post(async (req, res) => {
     // validate inputs
-    console.log("triggered post join now");
+    // console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
         return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'signUpPartial'});

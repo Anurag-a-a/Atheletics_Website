@@ -52,7 +52,18 @@ if (req.session.user) {
 }
 if(req.url === '/') return res.redirect('/user');
 next();
-}
+};
+export const adminAddMiddleware = (req, res, next) => {
+  if (req.session.user) {
+      if (req.session.user.role === 'admin') {
+        return res.redirect('/admin/adminhome');
+      } else if (req.session.user.role === 'user') {
+        return res.redirect('/user/protectedUserHomePage');
+      }
+  }
+  if(req.url === '/') return res.redirect('/user');
+  next();
+};
 
 export const userHomePageMiddleware = (req, res, next) => {
 if (!req.session.user) {
