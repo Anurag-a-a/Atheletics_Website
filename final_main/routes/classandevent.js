@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import { classData } from "../data/index.js";
-import { appointmentData } from "../data/index.js";
+import { appointmentData, reviewData, gymData } from "../data/index.js";
 import { ensureAuthenticated } from '../middleware.js';
 import { userData } from '../data/index.js';
 
@@ -96,7 +96,7 @@ router
 
     router.route('/reviews_add').post(ensureAuthenticated, async (req, res) => {
       try {
-          const branchName = 'Hoboken';
+          const branchName = 'Union City';
           const gym = await gymData.getGymByBranch(branchName);
           const gymId = gym._id.toString();
 
