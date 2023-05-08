@@ -86,7 +86,7 @@ export const createUser = async (
     };
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+    let gym = "hoboken";
     newUser = {
         firstName: firstName,
         lastName: lastName,
@@ -103,7 +103,8 @@ export const createUser = async (
         membershipPlanDetails: membershipPlanDetails,
         MyAppointments: MyAppointments,
         MyReviews: MyReviews,
-        joinedPlanDate: joinedPlanDate
+        joinedPlanDate: joinedPlanDate,
+        gym: gym
     }; 
       const insertInfo = await userCollection.insertOne(newUser);
       if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create user';};
@@ -150,6 +151,7 @@ export const createAdmin = async (
   emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
   emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
   let newAdmin = {};
+  let joinedPlanDate = new Date();
   const userCollection = await users();
   const existingUsers = await getAllUser();
   /*check for existing similar usernames */
@@ -172,7 +174,9 @@ export const createAdmin = async (
       emergencyContactName: emergencyContactName,
       emergencyContactPhoneNumber: emergencyContactPhoneNumber,
       role: 'admin',
-      membershipPlanDetails: 'na'
+      membershipPlanDetails: 'na',
+      joinedPlanDate: joinedPlanDate,
+      gym: 'hoboken'
   }; 
     const insertInfo = await userCollection.insertOne(newAdmin);
     if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create admin';};

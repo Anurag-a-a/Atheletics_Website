@@ -184,12 +184,13 @@ router.route('/signin').post(async (req, res) => {
 
     router.route('/userProfile').get(middleware.userProfilePageMiddleware, async (req, res) => {
       const theSessionUser = await userData.getUserbyId(req.session.user.id);
-      var month = theSessionUser.joinedPlanDate.getUTCMonth() + 1; //months from 1-12
-      var day = theSessionUser.joinedPlanDate.getUTCDate();
-      var year = theSessionUser.joinedPlanDate.getUTCFullYear() + 1; 
+      var month = theSessionUser?.joinedPlanDate?.getUTCMonth() + 1; //months from 1-12
+      var day = theSessionUser?.joinedPlanDate?.getUTCDate();
+      var year = theSessionUser?.joinedPlanDate?.getUTCFullYear() + 1; 
       const expire = `${month}/${day}/${year}`;
       let ph = `${theSessionUser.phoneNumber.slice(0,3)}-${theSessionUser.phoneNumber.slice(3,6)}-${theSessionUser.phoneNumber.slice(6)}`;
       let eph = `${theSessionUser.emergencyContactPhoneNumber.slice(0,3)}-${theSessionUser.emergencyContactPhoneNumber.slice(3,6)}-${theSessionUser.emergencyContactPhoneNumber.slice(6)}`;
+      if(req.session.user.role === 'user'){
       return res.render('userProfile',{
         title: "Gym Brat", 
         firstName: theSessionUser.firstName, 
@@ -206,8 +207,28 @@ router.route('/signin').post(async (req, res) => {
         eName: theSessionUser.emergencyContactName,
         ePh: eph,
         plan: theSessionUser.membershipPlanDetails,
-        expire: expire
+        expire: expire,
+        user: true
        });
+      }else{
+        return res.render('userProfile',{
+          title: "Gym Brat", 
+          firstName: theSessionUser.firstName, 
+          lastName: theSessionUser.lastName, 
+          username: theSessionUser.username,
+          sex: theSessionUser.sex,
+          dob: theSessionUser.dob,
+          email: theSessionUser.emailAddress,
+          ph: ph,
+          st: theSessionUser.address.streetName,
+          city: theSessionUser.address.city,
+          state: theSessionUser.address.state,
+          zip: theSessionUser.address.zip,
+          eName: theSessionUser.emergencyContactName,
+          ePh: eph,
+          user: false
+         });
+      };
     });
 
     router.route('/updateplan').get(middleware.updatePlanMiddleware,async (req, res) => {
@@ -422,12 +443,26 @@ router.route('/signin').post(async (req, res) => {
     }catch(e){
       return res.status(400).render('updateForm', {title: "Gym Brat", error: e, partial: 'updateForm'});
     };
-});
+});//end post updateForm
 
   router.route('/locations').get(async (req, res) => {
     try {
       const locations = await gymData.getAllGyms();
       return res.render('locations', { title: 'Gym Brat', locations : locations });
+    } 
+    catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  });
+
+  router.route('/error').get(async (req, res) => {
+      return res.render('error', { title: 'Gym Brat'});
+  });
+
+  router.route('/userlist').get(middleware.userListMiddleware,async (req, res) => {
+    try {
+      const userList = await userData.getAllUser();
+      return res.render('userlist', { title: 'Gym Brat', user : userList });
     } 
     catch (e) {
       return res.status(500).json({ error: e.message });

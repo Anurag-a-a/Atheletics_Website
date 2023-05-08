@@ -22,9 +22,12 @@
     <p>Name: {{eName}}</p>
     <p>Phone Number: {{ePh}}</p>
 
-    <h2>Gym Membership Plan</h2>
-    <p>{{plan}}</p>
-    <p>You current plan will expire on: {{expire}}</p>
-    <a href='/user/updateplan'><button id="plan_update_button">Modify Plan</button></a>
+    {{#if user}}
+        <h2>Gym Membership Plan</h2>
+        <p>{{plan}}</p>
+        <p>You current plan will expire on: {{expire}}</p>
+        <a href='/user/updateplan'><button id="plan_update_button">Modify Plan</button></a>
+    {{/if}}
+   
 </main>
 
