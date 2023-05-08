@@ -1,7 +1,7 @@
-//client side validation codes for sign in forms
+
 
 ( function () {
-    // console.log("here in client side script")
+ 
 
     function validatePassword(password){
         if (!password) { throw "Error: no password provided"; };
@@ -36,13 +36,14 @@
         const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
         
 
-        formSignIn.addEventListener('submit', (event) => {
+        formUpdatePassword.addEventListener('submit', (event) => {
             // event.preventDefault();
             try {
                 // console.log("inside client side validation");
                 errorContainer.classList.add('hidden');
                 const passwordString = validatePassword(password.value);
-                const npasswordString = 
+                const npasswordString = validatePassword(npassword.value);
+                const cnpasswordString = validateSecondPassword(npasswordString,cnpassword.value);
                 errorContainer.style.display = 'none';
 
             }catch(e){
@@ -51,12 +52,7 @@
                 errorTextElement.textContent = e;
                 errorContainer.style.display = 'block';
                 errorContainer.classList.remove('hidden');
-                if(validInputsList.length == 0) { formSignIn.reset();} 
-                else {
-                  
-                    var f = formSignIn.elements;
-                    f["passwordInput"].value = "";
-                };
+                formUpdatePassword.reset();
             };//close try-catch block
         });//close the eventListener
     };//close if(formSignIn)
