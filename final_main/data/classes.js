@@ -54,6 +54,7 @@ export const createClass = async (
     instructor = isValidName(instructor);
     description = isValidDescription(description);
     classCapacity = isValidClassCapacity(classCapacity);
+    let active = true;
     let registeredUsers = [];
     let reviewIds = [];
 
@@ -64,7 +65,7 @@ export const createClass = async (
 
     // }
 
-    let newUser = {
+    let newClass = {
         className: className,
         slots: slots,
         instructor: instructor,
@@ -72,12 +73,13 @@ export const createClass = async (
         classCapacity: classCapacity,
         registeredUsers: [],
         reviewIds: [],
+        active : active,
     }
 
-    const insertInfo = await classCollection.insertOne(newUser);
+    const insertInfo = await classCollection.insertOne(newClass);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) { throw 'Error: Could not create user'; };
     const newId = insertInfo.insertedId.toString();
-    const newClass = await getClassbyId(newId);
+    newClass = await getClassbyId(newId);
     return newClass;
 }
 
@@ -255,3 +257,32 @@ export const addReviewId = async (userId, reviewId) => {
     updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
   };
+export const deleteClassById = async (
+    id,
+    role
+) => {
+    id = isValidId(id);
+    role = isValidId(role);
+    if( role !== 'admin')
+    {
+        throw 'Deletion not allowed for this role'
+    }
+    const theClass = await getClassbyId(id);
+    if(!theClass)
+    {
+        throw 'no Class found with this Id'
+    }
+
+    const updateClass = await classCollection.findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: updateUser },
+        { returnDocument: 'after' }
+    );
+
+    if (updatedInfo.lastErrorObject.n === 0) {
+        throw 'Failed to update reviews';
+    }
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+    return updatedInfo.value;
+};
+

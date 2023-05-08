@@ -1,7 +1,14 @@
-//client side validation codes for sign in forms
-
 ( function () {
     // console.log("here in client side script")
+    function validateEmail(email){
+        if(!email){throw "Error: no email provided";};
+        if(!(typeof email == 'string')){throw "Error: email must be a string";};
+        email = email.trim().toLowerCase();
+        if(email.length === 0){throw "Error: Email cannot be an empty string or string with just spaces";};
+        if(!(/^(?!.*\.\.)+([^.]+[A-Za-z0-9_.! @\\#"()$%&'*+/=?^`{|}~-])+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]{2,3})*$/.test(email)))
+        {throw "Error: Invalid Email";};
+        return email;
+    };
 
     function validatePassword(password){
         if (!password) { throw "Error: no password provided"; };
@@ -20,30 +27,25 @@
     
         return password;
     };
-    function validatePlan(plan){
-        if (!plan) { throw "Error: You must select a Plan"; };
-        if (!(typeof plan == 'string')) { throw "Error: plan must be a string"; };
-        plan = plan.trim().toLowerCase();
-        if (plan.length === 0) { throw "Error: plan cannot be an empty string or string with just spaces"; };
-        if (!(["alpha", "beta", "omega","na","renew"].includes(plan))) { throw "Error: Invalid plan"; };
-        return plan;
-    };
 
-    const updatePlanForm = document.getElementById('updatePlan-form');
+    const formSignIn = document.getElementById('signIn-form');
     // console.log("here in client side script")
-    if(updatePlanForm) {
+    if(formSignIn) {
         //get the Element object with the specified id
+        alert("Password successfully updated. Login again");
+        const email = document.getElementById('emailAddress');
         const password = document.getElementById('passwordInput');
-        const plan = document.getElementById('plan');
         const errorContainer = document.getElementById('error-container');
         const errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
-        updatePlanForm.addEventListener('submit', (event) => {
+        formSignIn.addEventListener('submit', (event) => {
             // event.preventDefault();
+            const validInputsList = [];
             try {
-                // console.log("inside client side validation");
+                console.log("inside client side validation");
                 errorContainer.classList.add('hidden');
-                const planString = validatePlan(plan.value);
+                const emailString = validateEmail(email.value);
+                validInputsList.push(emailString);
                 const passwordString = validatePassword(password.value);
                 errorContainer.style.display = 'none';
 
@@ -53,7 +55,13 @@
                 errorTextElement.textContent = e;
                 errorContainer.style.display = 'block';
                 errorContainer.classList.remove('hidden');
-                updatePlanForm.reset();
+                if(validInputsList.length == 0) { formSignIn.reset();} 
+                else {
+                    /*below two lines of code reference from:
+                      https://stackoverflow.com/questions/40531459/clear-a-single-form-field-in-html */
+                    var f = formSignIn.elements;
+                    f["passwordInput"].value = "";
+                };
             };//close try-catch block
         });//close the eventListener
     };//close if(formSignIn)

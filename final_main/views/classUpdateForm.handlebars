@@ -1,19 +1,28 @@
+<div class = "classes">
 <h1>Update Class</h1>
-	<form id="classUpdation" method="POST" action="gym/updateClass">
+	<form id="classUpdation" method="POST" class = "classes-form">
 		<label for="className">Class Name:</label>
-		<input type="text" id="className" name="className" required value="{{className}}"><br><br>
+		<input type="text" id="className" name="className" required value="{{classDetails.className}}"><br><br>
 
 		<label for="date1">Date 1:</label>
-		<input type="date" id="date" name="date" required value="{{	date}}" ><br><br>
+		<input type="text" id="date" name="date" required value="{{	classDetails.slots.Date}}" ><br><br>
 
 		<label for="timings1">Timings 1:</label>
-		<input type="text" id="timings" name="timings" required value = "{{ timing }}"><br><br>
+		<input type="text" id="timings" name="timings" required value = "{{ classDetails.slots.timing }}"><br><br>
 
 		<label for="instructor">Instructor:</label>
-		<input type="text" id="instructor" name="instructor" required value = " {{ instructor }} "><br><br>
+		<input type="text" id="instructor" name="instructor" required value = " {{ classDetails.instructor }} "><br><br>
 
 		<label for="description">Description:</label>
-		<textarea id="description" name="description" required value= " {{ description }} "></textarea><br><br>
+		<input id="description" name="description" required value= " {{ classDetails.description }} "></input><br><br>
 
-		<button type="submit" value = "updateClass">Update Class</button>
-	</form>
+		<label for="maxCapacity">Max Capacity:</label>
+		<input id="maxCapacity" name="maxCapacity" required value= " {{ classDetails.classCapacity }} "></input><br><br>
+
+		<button type="submit" id = "updateB"value = "updateClass">Update Class</button>
+	</form>	
+</div>
+    <a class="classes_link" href="/class/classDetails">back to all classes</a>
+	<a class="go_home_link" href="/">Go to Home Page</a><br>
+
+<script src="/public/js/classFormValidation.js"></script>

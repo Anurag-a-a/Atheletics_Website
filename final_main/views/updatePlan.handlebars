@@ -1,13 +1,14 @@
 <main>
     <br><br>
-    <a class="go_home_link" href="/protectedUserHomePage">Home</a><br>
+    <a class="go_home_link" href="/user/protectedUserHomePage">Home</a><br>
     <h1>Update plan</h1>
-    <form id ="updatePlan-form" method="POST" action="/updateplan">
+    <form id ="updatePlan-form" method="POST" action="/user/updateplan">
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
             <option selected="selected" value="alpha">Alpha</option>
             <option value="beta">Beta</option>
             <option value="omega">Omega</option>
+            <option value="renew">Renew current plan</option>
         </select>
         <div class="form-group hidden" id="error-container15">
         <div class="alert alert-danger text-goes-here"></div>
@@ -30,5 +31,24 @@
         {{/if}}    
     </form>
     <hr>
-    <a href="/membershipPlans">See Plan Details</a>
+    <a href="/user/membershipPlans">See Plan Details</a>
+
+    <div id = "plans-container">
+        <p>Current plan details</p>
+        <div class="plan">
+            {{#if alpha}}
+                <p>Alpha</p>
+                <p>some details of alpha...</p>
+            {{/if}}
+            {{#if beta}}
+                <p>Beta</p>
+                <p>some details of beta...</p>
+            {{/if}}
+            {{#if omega}}
+                <p>Omega</p>
+                <p>some details of omega...</p>
+            {{/if}}
+         </div>
+
+    </div>
 </main>

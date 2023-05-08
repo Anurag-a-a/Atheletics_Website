@@ -1,5 +1,6 @@
+<div class = "classes">
 <h1>Create Event</h1>
-	<form id="classCreation" method="POST" action="gym/addClass">
+	<form id="classCreation" method="POST" class="classes-form" action="gym/addClass">
 		<label for="className">Class Name:</label>
 		<input type="text" id="className" name="className" required><br><br>
 
@@ -7,13 +8,25 @@
 		<input type="date" id="date" name="date" required><br><br>
 
 		<label for="timings1">Timings:</label>
-		<input type="text" id="timings" name="timings" required><br><br>
-
+		<input type="text" id="timings1" name="timings1" required><br><br>
+		
+		<label for="timings2">Timings</label>
+		<input type="text" id = "timings2" name = "timings2"><br><br>
+		
 		<label for="instructor">Instructor:</label>
 		<input type="text" id="instructor" name="instructor" required><br><br>
 
 		<label for="description">Description:</label>
-		<textarea id="description" name="description" required></textarea><br><br>
+		<input id="description" name="description" required></input><br><br>
+
+		<label for="maxCapacity">Class Capacity:</label>
+		<input id="maxCapacity" name="maxCapacity" required></input><br><br>
 
 		<input type="submit" value="addClass">Create Class</button>
 	</form>
+</div>
+
+    <a class="classes_link" href="/class/classDetails">back to all classes</a>
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
+
+	<script src="/public/js/classFormValidation.js"></script>

@@ -1,10 +1,7 @@
 <main class="main">
     <br>
-    <a class="go_home_link" href="/user">Go to Home Page</a><br>
-    <a href="/user/signin">Already a member. Click here to sign In</a><br>
-    <a href="/user/membershipPlans">Want to see our exclusive plans. Click here!</a>
-    <p>Fill up the details below to join the gym membership</p>
-    <h1>Sign Up</h1>
+    <a class="go_home_link" href="/admin/adminhome">Home Page</a><br>
+    <p>Fill up the details below to add admin user</p>
      {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -12,7 +9,7 @@
                 </div>
             </div>
     {{/if}}
-    <form id ="joinNow-form" method="POST" action="/user/joinnow">
+    <form id ="joinNow-form" method="POST" action="/admin/addadmin">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
         <div class="form-group hidden" id="error-container1">
@@ -99,9 +96,7 @@
         <br>
         <label for="plan">Choose your Plan: </label>
         <select name="plan" id="plan">
-            <option selected="selected" value="alpha">Alpha</option>
-            <option value="beta">Beta</option>
-            <option value="omega">Omega</option>
+            <option selected="selected" value="na">NA</option>
         </select>
         <div class="form-group hidden" id="error-container15">
         <div class="alert alert-danger text-goes-here"></div>

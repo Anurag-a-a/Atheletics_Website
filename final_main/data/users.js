@@ -38,7 +38,10 @@ const saltRounds = 16;
 import {isValidName,
         isValidEmail,
         isValidPhoneNumber,
-        isValidAddress,
+        isValidStreetName,
+        isValidCity,
+        isValidState,
+        isValidZip,
         isValidUsername,
         isValidPassword,
         isValidMembershipPlanDetails,
@@ -46,7 +49,8 @@ import {isValidName,
         isValidId,
         isValidAction,
         isValidSex,
-        isValidDOB
+        isValidDOB,
+        isValidPostDOB
 } from '../validateData.js';
 
 //get a user provided the id.
@@ -67,7 +71,10 @@ export const createUser = async (
     dob,
     email,
     phoneNumber,
-    address,
+    streetName,
+    city,
+    state,
+    zip,
     username,
     password,
     emergencyContactName,
@@ -80,8 +87,16 @@ export const createUser = async (
     dob = isValidDOB(dob); //Format: MM/DD/YYYY
     email = isValidEmail(email);
     phoneNumber = isValidPhoneNumber(phoneNumber);
-    // console.log("validating address in data function");
-    address = isValidAddress(address);
+    streetName = isValidStreetName(streetName);
+    city = isValidCity(city);
+    state =  isValidState(state);
+    zip = isValidZip(zip);
+    let address = {
+      streetName: streetName,
+      city: city,
+      state: state,
+      zip: zip
+    };
     username = isValidUsername(username);
     password = isValidPassword(password);
     emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
@@ -123,6 +138,75 @@ export const createUser = async (
       const newId = insertInfo.insertedId.toString();
       const user = await getUserbyId(newId);
       return user;
+
+};
+
+export const createAdmin = async (
+  firstName,
+  lastName,
+  sex,
+  dob,
+  email,
+  phoneNumber,
+  streetName,
+  city,
+  state,
+  zip,
+  username,
+  password,
+  emergencyContactName,
+  emergencyContactPhoneNumber,
+  membershipPlanDetails 
+) => {
+  firstName = isValidName(firstName, 'firstName');
+  lastName = isValidName(lastName, 'lastName');
+  sex = isValidSex(sex);
+  dob = isValidDOB(dob); //Format: MM/DD/YYYY
+  email = isValidEmail(email);
+  phoneNumber = isValidPhoneNumber(phoneNumber);
+  // console.log("validating address in data function");
+  state =  isValidState(state);
+  zip = isValidZip(zip);
+  let address = {
+      streetName: streetName,
+      city: city,
+      state: state,
+      zip: zip
+  };
+  username = isValidUsername(username);
+  password = isValidPassword(password);
+  emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
+  emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
+  let newAdmin = {};
+  const userCollection = await users();
+  const existingUsers = await getAllUser();
+  /*check for existing similar usernames */
+  for (let i=0; i<existingUsers.length; i++){
+    if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
+  };
+  
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  newAdmin = {
+      firstName: firstName,
+      lastName: lastName,
+      sex: sex,
+      dob: dob,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      username: username,
+      hashedPassword: hashedPassword,
+      emergencyContactName: emergencyContactName,
+      emergencyContactPhoneNumber: emergencyContactPhoneNumber,
+      role: 'admin',
+      membershipPlanDetails: 'na'
+  }; 
+    const insertInfo = await userCollection.insertOne(newAdmin);
+    if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create admin';};
+    const newId = insertInfo.insertedId.toString();
+    const adminUser = await getUserbyId(newId);
+    return adminUser;
 
 };
 
@@ -372,6 +456,29 @@ export const checkUser = async (emailAddress, password) => {
   
 };
 
+export const renewPlan = async (id) => {
+  
+  id = isValidId(id);
+  const userCollection = await users();
+  const theuser = await getUserbyId(id);
+  if(!theuser){throw "Internal Server Error";};
+  let joinedPlanDate = new Date();
+  const updateUser ={
+    joinedPlanDate: joinedPlanDate
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(id)},
+    {$set: updateUser},
+    {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update Appointments';
+  }
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
+};
+
+
 export const addReviewId = async (userId, reviewId) => {
   userId = isValidId(userId);
   reviewId = isValidId(reviewId);
@@ -392,4 +499,38 @@ export const addReviewId = async (userId, reviewId) => {
 
   updatedInfo.value._id = updatedInfo.value._id.toString();
   return updatedInfo.value;
+};
+
+export const updatePassword = async (cpassword, npassword) => {
+  cpassword = isValidPassword(cpassword);
+  npassword = isValidPassword(npassword);
+  const userCollection = await users();
+  const userList = await getAllUser();
+  let comparePassword = false;
+  let id = "";
+  for(let i=0; i<userList.length; i++){
+    try {
+      comparePassword = await bcrypt.compare(cpassword, userList[i]['hashedPassword']);
+      // console.log(comparePassword)
+    }catch(e){
+      throw "Internal Server Error";
+    };
+    if(comparePassword){ id = userList[i]._id.toString(); break;};
+};//close for
+  if(!comparePassword){throw "Error: Current Password entered is wrong. Try Again";};
+  const hashedPassword = await bcrypt.hash(npassword, saltRounds);
+  const updatePasswordUser = {
+  hashedPassword: hashedPassword
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+  {_id: new ObjectId(id)},
+  {$set: updatePasswordUser},
+  {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update password';
+  };
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return true;
+  
 };
