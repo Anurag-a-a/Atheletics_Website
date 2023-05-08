@@ -1,0 +1,21 @@
+<main>
+    <br><br>
+    <a class="go_home_link" href="/admin/adminhome">Home</a><br>
+    <h2>Users currently in the system</h2><br><br>
+    {{#each user}}
+        {{#if (eqUser this.role 'user')}}
+            <h3>{{this.firstName}} {{this.lastName}}</h3>
+            <p>{{this.sex}}</p>
+            <p>{{this.dob}}</p>
+            <p>{{this.email}}</p>
+            <p>{{this.phoneNumber}}</p>
+            <p>{{this.address}}</p>
+            <p>{{this.username}}</p>
+            <p>{{this.emergencyContactName}}</p>
+            <p>{{this.emergencyContactPhoneNumber}}</p>
+            <p>{{this.membershipPlanDetails}}</p>
+            <p>{{this.joinedPlanDate}}</p>
+        {{/if}}
+    {{/each}}
+        
+</main>
