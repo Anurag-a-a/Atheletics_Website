@@ -26,7 +26,7 @@ router.route('/adminhome').get(middleware.adminHomePageMiddleware,async (req, re
     return res.render('adminHomePage',{title: "Gym Brat",firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, partial: false});
 });
 
-router.route('/addadmin').get(async (req, res) => {
+router.route('/addadmin').get(middleware.adminHomePageMiddleware,async (req, res) => {
     return res.render('addadmin',{title: "Gym Brat", partial: 'signUpPartial'});  
 });
 router.route('/addadmin').post(async (req, res) => {

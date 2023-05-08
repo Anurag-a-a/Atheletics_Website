@@ -24,10 +24,10 @@ const handlebarsInstance = exphbs.create({
       if (typeof spacing === 'number')
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
       return new Handlebars.SafeString(JSON.stringify(obj));
+    },
+    eqUser: (val) => {
+        if(val == 'user') {return true;}
     }
-    // eqSignIn: (val) => {
-    //     if(val == 'signIn') {return true;}
-    // },
     
   },
   partialsDir: ['views/partials/']
