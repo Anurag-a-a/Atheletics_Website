@@ -53,8 +53,7 @@
                 errorContainer.classList.remove('hidden');
                 if(validInputsList.length == 0) { formSignIn.reset();} 
                 else {
-                    /*below two lines of code reference from:
-                      https://stackoverflow.com/questions/40531459/clear-a-single-form-field-in-html */
+                  
                     var f = formSignIn.elements;
                     f["passwordInput"].value = "";
                 };

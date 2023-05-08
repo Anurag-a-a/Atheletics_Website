@@ -126,6 +126,65 @@ export const createUser = async (
 
 };
 
+export const createAdmin = async (
+  firstName,
+  lastName,
+  sex,
+  dob,
+  email,
+  phoneNumber,
+  address,
+  username,
+  password,
+  emergencyContactName,
+  emergencyContactPhoneNumber,
+  membershipPlanDetails 
+) => {
+  firstName = isValidName(firstName, 'firstName');
+  lastName = isValidName(lastName, 'lastName');
+  sex = isValidSex(sex);
+  dob = isValidDOB(dob); //Format: MM/DD/YYYY
+  email = isValidEmail(email);
+  phoneNumber = isValidPhoneNumber(phoneNumber);
+  // console.log("validating address in data function");
+  address = isValidAddress(address);
+  username = isValidUsername(username);
+  password = isValidPassword(password);
+  emergencyContactName = isValidName(emergencyContactName,'emergencyContactName');
+  emergencyContactPhoneNumber = isValidPhoneNumber(emergencyContactPhoneNumber);
+  let newAdmin = {};
+  const userCollection = await users();
+  const existingUsers = await getAllUser();
+  /*check for existing similar usernames */
+  for (let i=0; i<existingUsers.length; i++){
+    if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
+  };
+  
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  newAdmin = {
+      firstName: firstName,
+      lastName: lastName,
+      sex: sex,
+      dob: dob,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      username: username,
+      hashedPassword: hashedPassword,
+      emergencyContactName: emergencyContactName,
+      emergencyContactPhoneNumber: emergencyContactPhoneNumber,
+      role: 'admin',
+      membershipPlanDetails: 'na'
+  }; 
+    const insertInfo = await userCollection.insertOne(newAdmin);
+    if(!insertInfo.acknowledged || !insertInfo.insertedId){throw 'Error: Could not create admin';};
+    const newId = insertInfo.insertedId.toString();
+    const adminUser = await getUserbyId(newId);
+    return adminUser;
+
+};
+
 //get all the users in the database
 
 export const getAllUser = async () => {
