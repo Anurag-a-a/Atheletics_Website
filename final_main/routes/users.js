@@ -284,7 +284,7 @@ router.route('/signin').post(async (req, res) => {
 
 
 
-    router.route('/updatepassword').get(middleware.updatePasswordMiddleware,async(req, res) => {
+    router.route('/updatepassword').get(middleware.updateMiddleware,async(req, res) => {
       return res.render('updatePassword',{title: "Gym Brat",partial: 'updatePassword'})
 
     });
@@ -325,5 +325,25 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
       };
     });//end post updatePassword
+
+    //updateinfo
+    router.route('/updateinfo').get(middleware.updateMiddleware,async (req, res) => {
+      const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      return res.render('updateForm',{title: "Gym Brat",
+      firstName: theSessionUser.firstName,
+      lastName: theSessionUser.lastName,
+      sex: theSessionUser.sex,
+      dob: theSessionUser.dob,
+      username: theSessionUser.username,
+      ph: theSessionUser.phoneNumber,
+      streetName: theSessionUser.address.streetName,
+      city: theSessionUser.address.city,
+      state: theSessionUser.address.state,
+      zip: theSessionUser.address.zip,
+      en: theSessionUser.emergencyContactName,
+      eph: theSessionUser.emergencyContactPhoneNumber,
+      email: theSessionUser.email,
+      partial: 'updateForm'});
+  });
 
 export default router;
