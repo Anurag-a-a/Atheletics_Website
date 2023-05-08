@@ -166,16 +166,20 @@ export const updateGym = async(
     gym.reviewIds = gym.reviewIds;
     gym.overallRating = gym.overallRating;
     gym.currentCapacity = gym.currentCapacity;
-    const updateInfo = await gymsCollection.replaceOne(
+    const updatedInfo = await gymsCollection.findOneAndUpdate(
       { _id: new ObjectId(_id) },
-      gym
-    );
+      { $set: gym },
+      { returnDocument: 'after' }
+    )
 
-    if (updateInfo.modifiedCount === 0) {
-      throw new Error('Could not update gym');
+    if (updatedInfo.lastErrorObject.n === 0) {
+      throw 'Failed to update class';
     }
 
-    return gym;
+    updatedInfo.value._id = updatedInfo.value._id.toString();
+
+
+    return updatedInfo.value;
   } catch (err) {
     console.log(err);
     throw err;

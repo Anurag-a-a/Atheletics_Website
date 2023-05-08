@@ -1,5 +1,5 @@
 <div class = "gyms">
-<form action="/gym/updateGym" id="gymUpdation" method="post">
+<form id="gymUpdation" method="post" class = "classes-form">
     <label for="branchName">Branch Name:</label><br>
     <input type="text" id="branchName" name="branchName" value="{{gym.branchName}}" required><br>
 
@@ -18,7 +18,7 @@
     <textarea id="state" name="state" placeholder="Enter State" required>{{gym.address.state}}</textarea><br>
 
     <label for="zipCode">Zip Code:</label>
-    <input type="text" id="zipCode" name="zipCode" value="{{gym.address.zipcode}}" required><br>
+    <input type="text" id="zipCode" name="zipCode" value="{{gym.address.zip}}" required><br>
 
     <label for="phoneNumber">Phone Number:</label><br>
     <input type="tel" id="phoneNumber" name="phoneNumber" value="{{gym.phoneNumber}}" required><br>
@@ -29,7 +29,7 @@
     <label for="maxCapacity">Max Population Density:</label><br>
     <input type="number" id="maxCapacity" name="maxCapacity" value="{{gym.maxCapacity}}" required><br>
 
-    <input type="submit" value="updateGym">
+    <input type="submit" id = "updateB"value="updateGym">
             {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -39,5 +39,11 @@
         {{/if}}    
 
 </form>
-
 </div>
+<div class="navigation">
+    <a class="classes_link" href="/gym/gymDetails">back to all classes</a>
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
+</div>
+
+
+	<script src="/public/js/gymFormValidation.js"></script>

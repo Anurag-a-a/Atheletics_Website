@@ -1,16 +1,4 @@
-const form = document.querySelector('form');
-const branchName = form.querySelector('#branchName');
-const website = form.querySelector('#website');
-const streetName = form.querySelector('#streetName');
-const city = form.querySelector('#city');
-const state = form.querySelector('#state');
-const zipCode = form.querySelector('#zipCode');
-const phoneNumber = form.querySelector('#phoneNumber');
-const email = form.querySelector('#email');
-const maxCapacity = form.querySelector('#maxCapacity');
-
-
-const isValidBranch = (branchName) => {
+function isValidBranch (branchName) {
   if (!branchName) { throw "Error: no branchName provided"; };
   if (!(typeof branchName == 'string')) { throw "Error: branchName must be a string"; };
   branchName = branchName.trim();
@@ -20,7 +8,7 @@ const isValidBranch = (branchName) => {
 };
 
 //validate email
-const isValidEmail = (email) => {
+function isValidEmail (email) {
   if(!email){throw "Error: no email provided";};
   if(!(typeof email == 'string')){throw "Error: email must be a string";};
   email = email.trim().toLowerCase();
@@ -87,7 +75,7 @@ function validateZipcode(zipCode) {
   return zipCode;
 };
 
-const isValidWebsite= (website) => {
+function isValidWebsite (website) {
   if (!website) { throw "Error: no website provided"; };
   if (!(typeof website == 'string')) { throw "Error: website must be a string"; };
   website = website.trim();
@@ -98,22 +86,87 @@ const isValidWebsite= (website) => {
 
 };
 
-const isValidCapacity = (capacity) => {
+function isValidCapacity (capacity) {
   if (!capacity) throw 'You must provide a rating';
-  if (typeof capacity !== 'number') throw 'yrating must be a number'
-  if (capacity < 0 || capacity > 100 || (!Number.isInteger(capacity * 10) && !Number.isInteger(capacity))) {
-      throw 'rating must between 0-5 and rating must be integer or one decimal place float';
+  if (typeof parseInt(capacity) !== 'number') throw 'Capacity must be a number'
+  if (capacity < 0 || capacity > 200 ) {
+      throw 'Capacity must between 1-200';
   }
   return capacity;
 }
 
+let createForm = document.getElementById('gymCreation');
+if(createForm) {
+  let branchNameInput = form.querySelector('#branchName');
+  let websiteInput = form.querySelector('#website');
+  let streetNameInput = form.querySelector('#streetName');
+  let cityInput = form.querySelector('#city');
+  let stateInput = form.querySelector('#state');
+  let zipCodeInput = form.querySelector('#zipCode');
+  let phoneNumberInput = form.querySelector('#phoneNumber');
+  let emailInput = form.querySelector('#email');
+  let maxCapacityInput = form.querySelector('#maxCapacity');
+  let errorContainer = document.getElementById('error-container');
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
-form.addEventListener('submit', (event) => {
-//  event.preventDefault();
 
-  let isValid = true;
+createForm.addEventListener('submit', (event) => {
+  try {
+        branchNameInput = isValidBranch(branchNameInput.value);
+        websiteInput = isValidWebsite(websiteInput.value);
+        streetNameInput = validateStreetName(streetNameInput.value);
+        cityInput = validateCity(cityInput.value);
+        stateInput = validateState(stateInput.value);
+        zipCodeInput = validateZipcode(zipCodeInput.value);
+        phoneNumberInput = validatePhoneNumber(phoneNumberInput.value);
+        emailInput = isValidEmail(emailInput.value);
+        maxCapacityInput = isValidCapacity(maxCapacityInput.value);          
+        errorContainer.style.display = 'none';
+      }
+      catch(e){
+          event.preventDefault();
+          const message = typeof e === 'string' ? e : e.message;
+          errorTextElement.textContent = e;
+          errorContainer.style.display = 'block';
+          errorContainer.classList.remove('hidden');
+      };
+  });
+};
 
 
+let updateForm = document.querySelector('#gymUpdation');
+if(updateForm) {
+  let branchNameInput = updateForm.querySelector('#branchName');
+  let websiteInput = updateForm.querySelector('#website');
+  let streetNameInput = updateForm.querySelector('#streetName');
+  let cityInput = updateForm.querySelector('#city');
+  let stateInput = updateForm.querySelector('#state');
+  let zipCodeInput = updateForm.querySelector('#zipCode');
+  let phoneNumberInput = updateForm.querySelector('#phoneNumber');
+  let emailInput = updateForm.querySelector('#email');
+  let maxCapacityInput = updateForm.querySelector('#maxCapacity');  let errorContainer = document.getElementById('error-container');
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
 
 
-});
+  updateForm.addEventListener('submit', (event) => {
+      try {
+        branchNameInput = isValidBranch(branchNameInput.value);
+        websiteInput = isValidWebsite(websiteInput.value);
+        streetNameInput = validateStreetName(streetNameInput.value);
+        cityInput = validateCity(cityInput.value);
+        stateInput = validateState(stateInput.value);
+        zipCodeInput = validateZipcode(zipCodeInput.value);
+        phoneNumberInput = validatePhoneNumber(phoneNumberInput.value);
+        emailInput = isValidEmail(emailInput.value);
+        maxCapacityInput = isValidCapacity(maxCapacityInput.value);          
+        errorContainer.style.display = 'none';
+        
+      }catch(e){
+          event.preventDefault();
+          const message = typeof e === 'string' ? e : e.message;
+          errorTextElement.textContent = e;
+          errorContainer.style.display = 'block';
+          errorContainer.classList.remove('hidden');
+      };
+  });
+};
