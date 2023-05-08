@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node ./task/gymseed.js"
+    "seed": "node ./task/userSeed.js"
   },
   "author": "Anurag Athwale, Cong Guo, Hanlu Zhang, Nimmikrishna Babu",
   "license": "ISC",
@@ -19,7 +19,7 @@
     "express-handlebars": "^7.0.7",
     "express-session": "^1.17.3",
     "handlebars": "^4.7.7",
-    "mongodb": "^5.2.0",
+    "mongodb": "^5.4.0",
     "xss": "^1.0.14"
   }
 }
