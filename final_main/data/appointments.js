@@ -8,6 +8,7 @@
 import {appointments} from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 import {isValidId, isValidCancelledOrNot, isValidTimeSlot} from "../validateData.js";
+import { getClassbyId } from "./classes.js";
 
 const getAllAppointments = async () => {
   const appointmentCollection = await appointments();
@@ -29,30 +30,40 @@ const getAppointmentById = async (appointmentId) => {
   return appointment;
 }
 
-const addAppointment = async (classId, selectedTimeSlot, cancelledOrNot) => {
+const getAppointmentId = async(classId,userId) =>{
+  classId = isValidId(classId);
+  userId = isValidId(userId);
+  const appointmentCollection = await appointments();
+  let appointment = await appointmentCollection.findOne({classId: classId,userId:userId});
+  if (!appointment) throw 'Error: appointment not found';
+  appointment._id = appointment._id.toString();
+  return appointment;
+}
+
+const addAppointment = async (userId,classId, selectedTimeSlot, cancelledOrNot) => {
   classId = isValidId(classId);
   selectedTimeSlot = isValidTimeSlot(selectedTimeSlot);
   cancelledOrNot = isValidCancelledOrNot(cancelledOrNot);
 
-  const appointmentCollection = await appointments();
 
   // Check if the time slot is available for the given class
-  const existingAppointment = await appointmentCollection.findOne({
-    classId: classId,
-    selectedTimeSlot: selectedTimeSlot,
-    cancelledOrNot: false,
-  });
-
-  if (existingAppointment) {
+  let capacityCheck = getClassbyId(classId);
+  if (!capacityCheck) {
     throw 'This time slot has already been booked for this class';
   }
 
+  if(capacityCheck.currentCapacity >capacityCheck.maxCapacity)
+  {
+    throw 'no More Registrations Possible for this class try after some time if slots are empty'
+  }
   let newAppointment = {
+    userId:userId,
     classId: classId,
     selectedTimeSlot: selectedTimeSlot,
     cancelledOrNot: cancelledOrNot,
   };
 
+  let appointmentCollection = await appointments();
   const newInsertInfo = await appointmentCollection.insertOne(newAppointment);
   if (!newInsertInfo.acknowledged || !newInsertInfo.insertedId)
     throw 'Insert failed!';
@@ -118,5 +129,6 @@ export {
   getAllAppointments,
   addAppointment,
   removeAppointment,
-  updateAppointmentPut
+  updateAppointmentPut,
+  getAppointmentId
 }

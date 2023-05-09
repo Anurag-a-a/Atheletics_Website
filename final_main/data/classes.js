@@ -1,25 +1,3 @@
-// {
-//   _id: '61f83110b3a1eb1911a2ead',
-//   className: 'Yoga',
-//   slots: [
-//     { Date: '26 May 2023', timings: [Array] },
-//     { Date: '27 May 2023', timings: [Array] }
-//   ],
-//   instructor: 'John Hill',
-//   description: 'Rewind, revive with this yoga session.',
-//   registeredUsers: [
-//     '61f83110b3a1eb1911a2ead',
-//     '61f83110b3a1eb1911a2eaa',
-//     '61f83110b3a1eb1911a2eac'
-//   ],
-//   reviews: [
-//     '41f83110b3a1eb1911a2ead',
-//     '41f83110b3a1eb1911a2eaa',
-//     '41f83110b3a1eb1911a2eac'
-//   ],
-//   classCapacity: 20
-// }
-
 import { classes } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import {
@@ -30,7 +8,10 @@ import {
     isValidId,
     isValidTimeSlot,
     isValidName,
+    isValidRole,
 } from '../validateData.js';
+import { getUserbyId,updateAppointment } from './users.js';
+import { getAppointmentId,removeAppointment } from './appointments.js';
 
 //get a class provided the id
 export const getClassbyId = async (id) => {
@@ -55,8 +36,6 @@ export const createClass = async (
     description = isValidDescription(description);
     classCapacity = isValidClassCapacity(classCapacity);
     let active = true;
-    let registeredUsers = [];
-    let reviewIds = [];
 
     const classCollection = await classes();
     const existingClass = await getAllClass();
@@ -71,8 +50,8 @@ export const createClass = async (
         instructor: instructor,
         description: description,
         classCapacity: classCapacity,
-        registeredUsers: [],
-        reviewIds: [],
+        registeredUsers: registeredUsers,
+        reviewIds: reviewIds,
         active : active,
     }
 
@@ -261,12 +240,10 @@ export const addReviewId = async (userId, reviewId) => {
     updatedInfo.value._id = updatedInfo.value._id.toString();
     return updatedInfo.value;
   };
-export const deleteClassById = async (
-    id,
-    role
-) => {
+
+export const deleteClassById = async (id,role) => {
     id = isValidId(id);
-    role = isValidId(role);
+    role = isValidRole(role);
     if( role !== 'admin')
     {
         throw 'Deletion not allowed for this role'
@@ -277,16 +254,37 @@ export const deleteClassById = async (
         throw 'no Class found with this Id'
     }
 
-    const updateClass = await classCollection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
-        { $set: updateUser },
-        { returnDocument: 'after' }
-    );
+    let users = theClass.registeredUsers;
+    for (let user of users)
+    {
+        
+        let appointmentId = await getAppointmentId(id,user)
 
-    if (updatedInfo.lastErrorObject.n === 0) {
-        throw 'Failed to update reviews';
+        let action = "delete";
+        let deleteStatus = updateAppointment(  user,
+            appointmentId._id,
+            action);
+        if(!deleteStatus)
+        {
+            throw 'appointment Deletion from user not successful'
+        }
+
+        deleteStatus = removeAppointment(appointmentId._id);
+        if(!deleteStatus.deleted)
+        {
+            throw 'appointment Deletion from user not successful'
+        }
+
     }
-    updatedInfo.value._id = updatedInfo.value._id.toString();
-    return updatedInfo.value;
+    let classCollection = await classes()
+    const deletionInfo = await classCollection.findOneAndDelete({
+        _id: new ObjectId(id)
+      });
+    
+      if (deletionInfo.lastErrorObject.n === 0) {
+        throw `Could not delete user with id of ${id}`;
+      }
+    let classDetails = getAllClass(); 
+    return classDetails;
 };
 

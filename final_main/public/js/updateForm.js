@@ -102,7 +102,6 @@
         if (!(typeof sex == 'string')) { throw "Error: sex must be a string"; };
         sex = sex.trim().toLowerCase();
         if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
-        console.log(sex);
         if(!(['male','female','non-binary','prefer-not-to-say'].includes(sex))) { throw "Error: Invalid sex" };
         return sex;
     };
@@ -211,8 +210,6 @@
             try{
                 errorContainer4.classList.add('hidden');
                 errorContainer4.style.display = 'none';
-                // console.log(document.getElementById('dob').value)
-                // console.log(typeof(document.getElementById('dob').value));
                 const dob = validateDob(document.getElementById('dob').value);
 
             }catch(e){
