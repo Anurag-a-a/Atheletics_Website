@@ -37,19 +37,15 @@ router
 
       // Get the user's reviews
       const user = await userData.getUserbyId(req.user.id);
-      console.log('User in the request:', req.user);
       const userReviews = user.MyReviews;
-      console.log(userReviews);
       const reviewedGymIds = new Set();
 
-      // Find which gyms the user has already reviewed
       for (const reviewId of userReviews) {
         const review = await reviewData.getReviewById(reviewId.toString());
         if (review.classId === null) {
           reviewedGymIds.add(review.gymId.toString());
         }
       }
-      console.log(reviewedGymIds);
 
       res.render('reviews_add', { branches: allBranches, reviewedGymIds: Array.from(reviewedGymIds) });
     } catch (error) {
@@ -59,17 +55,10 @@ router
   .post(middleware.reviewMiddleware, async (req, res) => {
     try {
       const { gymId, reviewText, rating } = req.body;
-      console.log(gymId);
-      console.log(reviewText);
-      console.log(rating);
       const parsedRating = parseFloat(rating);
   
-      // Check if the user has already reviewed this gym
-      console.log('User in the request:', req.user);
       const user = await userData.getUserbyId(req.user.id);
-      console.log(user);
       const userReviews = user.MyReviews;
-      console.log(userReviews)
       let hasReviewedGym = false;
   
       for (const reviewId of userReviews) {

@@ -119,18 +119,14 @@
         if (!(typeof sex == 'string')) { throw "Error: sex must be a string"; };
         sex = sex.trim().toLowerCase();
         if (sex.length === 0) { throw "Error: sex cannot be an empty string or string with just spaces"; };
-        console.log(sex);
         if(!(['male','female','non-binary','prefer-not-to-say'].includes(sex))) { throw "Error: Invalid sex" };
         return sex;
     };
 
     function validateDob(dob){
-        // console.log(dob);
-        // console.log(typeof(dob));
         if (!dob) { throw "Error: no date of birth provided"; };
         if (!(typeof dob == 'string')) { throw "Error: date of birth must be a string"; };
         dob = dob.trim();
-        console.log(dob);
         if (dob.length != 10) { throw "Error: Invalid date of birth"; };
         // let format = /^(0?[1-9]|1[0-2])[\-](0?[1-9]|[1-2][0-9]|3[01])[\-]\d{4}$/;
         let format = /^\d{4}[\-](0?[1-9]|1[0-2])[\-](0?[1-9]|[1-2][0-9]|3[01])$/;
@@ -138,7 +134,6 @@
         let year  = Number(dob.slice(0, 2));
         let month  = Number(dob.slice(3, 5));
         let day  = Number(dob.slice(6));
-        // console.log(month); console.log(day); console.log(year);
         if ((day < 1) || (day > 31) || (month < 1) || (month > 12) || (year < 0) || (year > 2010)) { throw "Error: Invalid date"; };
         if (year > 2010) { throw "Error: User needs to be age 13 and above to sign up"; };
         // dob = `${dob.slice(0,2)}/${dob.slice(3,5)}/${dob.slice(6)}`;
@@ -260,8 +255,6 @@
             try{
                 errorContainer4.classList.add('hidden');
                 errorContainer4.style.display = 'none';
-                // console.log(document.getElementById('dob').value)
-                // console.log(typeof(document.getElementById('dob').value));
                 const dob = validateDob(document.getElementById('dob').value);
 
             }catch(e){

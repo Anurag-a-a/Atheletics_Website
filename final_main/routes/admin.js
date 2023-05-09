@@ -31,7 +31,6 @@ router.route('/addadmin').get(middleware.userRestrictMiddleware,async (req, res)
 });
 router.route('/addadmin').post(async (req, res) => {
     // validate inputs
-    // console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
         return res.status(400).render('addadmin', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'signUpPartial'});
@@ -61,7 +60,6 @@ router.route('/addadmin').post(async (req, res) => {
         //2009-12-28
 
         dob = isValidPostDOB(signUpInfo.dob);
-        // console.log("checking phoneNumber in routes");
         phoneNumber = isValidPhoneNumber(signUpInfo.ph);
         streetName = signUpInfo.streetName;
         city = signUpInfo.city;
@@ -73,10 +71,7 @@ router.route('/addadmin').post(async (req, res) => {
           state: state,
           zip: zip
         };
-        // console.log("validating address in route function");
         address = isValidAddress(address);
-        // console.log("POST address validation");
-        // console.log(address);
         email = isValidEmail(signUpInfo.emailAddress);
         const existingUsers = await userAdminData.getAllUser();
         for (let i=0; i<existingUsers.length; i++){
@@ -88,7 +83,6 @@ router.route('/addadmin').post(async (req, res) => {
           if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
         };
         emergencyContactName = isValidName(signUpInfo.emergencyContactName,'Emergency Contact Name');
-        // console.log("checking emergency phoneNumber in routes");
         emergencyContactPhoneNumber = isValidPhoneNumber(signUpInfo.emergencyContactPhoneNumber);
         plan = isValidMembershipPlanDetails(signUpInfo.plan);
       }catch(e){

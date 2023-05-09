@@ -1,7 +1,6 @@
 //client side validation codes for sign in forms
 
 ( function () {
-    // console.log("here in client side script")
     function validateEmail(email){
         if(!email){throw "Error: no email provided";};
         if(!(typeof email == 'string')){throw "Error: email must be a string";};
@@ -31,7 +30,6 @@
     };
 
     const formSignIn = document.getElementById('signIn-form');
-    // console.log("here in client side script")
     if(formSignIn) {
         //get the Element object with the specified id
         const email = document.getElementById('emailAddress');
@@ -43,7 +41,6 @@
             // event.preventDefault();
             const validInputsList = [];
             try {
-                console.log("inside client side validation");
                 errorContainer.classList.add('hidden');
                 const emailString = validateEmail(email.value);
                 validInputsList.push(emailString);

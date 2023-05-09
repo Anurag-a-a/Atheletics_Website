@@ -97,14 +97,14 @@ router.route('/updateClass/:id').get(middleware.userRestrictMiddleware,async (re
   }
 });
 
-router.route('/deleteClass/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
+router.route('/deleteClass/:id').delete(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
-    let classDetails = await classes.deleteClassById(id);
+    let classDetails = await classes.deleteClassById(id,'admin');
     return res.render('classDetails', { title: 'Class Details',classDetails: classDetails});
   } 
   catch (e) {
-    return res.status(500).json({ error: e.message });
+    return res.status(500).json({ error: 'Failed to delete class.' });
   }
 });
 
