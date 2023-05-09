@@ -23,9 +23,6 @@ import {isValidName,
         isValidPostDOB
 } from '../validateData.js';
 
-//get a user provided the id.
-
-
 export const getUserbyId = async (id) => {
     id = isValidId(id);
     const userCollection = await users();

@@ -37,8 +37,9 @@ router.route('/addGym').get(middleware.userRestrictMiddleware,async (req, res) =
 
 router.route('/checkIn').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
-    
-    return res.render('gymCheckIn', { title: 'Gym Brat'.currentCapacity});
+    let branchName = "Hoboken"
+    let gymDetails = await gymData.getGymByBranch(branchName);
+    return res.render('gymCheckIn', { title: 'Gym Brat', currentCapacity : gymDetails.currentCapacity});
   } 
   catch (e) {
     return res.status(500).json({ error: e.message });
@@ -46,9 +47,10 @@ router.route('/checkIn').get(middleware.userRestrictMiddleware,async (req, res) 
 });
 
 router.route('/checkIn').post(async (req, res) => {
+  let userName = req.body.username;
+
   try {
-    let checkIn = req.body;
-    if (!checkIn || Object.keys(checkIn).length === 0) {
+    if (!userName || Object.keys(userName).length === 0) {
         
       return res
         .status(400)
@@ -62,7 +64,7 @@ router.route('/checkIn').post(async (req, res) => {
   }
 
   try {
-    checkIn.userName = isValidUsername(checkIn.userName);
+    userName = isValidUsername(userName);
   } 
   catch (e) {
     return res
@@ -72,8 +74,7 @@ router.route('/checkIn').post(async (req, res) => {
       });
   }
   try {
-    const gymCheckIn = await userData.checkIn(
-      checkIn.userName)
+    const gymCheckIn = await gymData.checkIn(userName)
 
       if(!gymCheckIn)
     {
