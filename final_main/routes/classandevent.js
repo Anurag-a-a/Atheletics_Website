@@ -118,7 +118,7 @@ router
             return res.json({ success: false, message: 'You have already reviewed this class' });
           }
   
-          const newReview = await reviewData.addReview(gymId, classId, reviewText);
+          const newReview = await reviewData.addReview(gymId, classId, xss(reviewText));
           if (!newReview) {
               console.error('Error: newReview is null');
               throw 'Failed to create a new review';
