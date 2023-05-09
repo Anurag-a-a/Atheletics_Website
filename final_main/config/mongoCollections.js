@@ -16,6 +16,7 @@ const getCollectionFn = (collection) => {
 // Note: You will need to change the code below to have the collection required by the assignment!
 export const users = getCollectionFn('users');
 export const reviews = getCollectionFn('reviews');
+export const attendance = getCollectionFn('attendance');
 export const gyms = getCollectionFn('gyms');
 export const classes = getCollectionFn('classes');
 export const appointments = getCollectionFn('appointments');

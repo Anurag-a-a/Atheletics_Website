@@ -41,9 +41,8 @@ router
                 }
                 return item;
               }));
-              console.log(data);
             }
-            await processData();
+            data = await processData();
             res.render('classandevent', { classes: allClass });
         } catch (e) {
             res.status(500).json({ error: e });
