@@ -199,7 +199,7 @@ router.route('/signin').post(async (req, res) => {
         username: theSessionUser.username,
         sex: theSessionUser.sex,
         dob: theSessionUser.dob,
-        email: theSessionUser.emailAddress,
+        email: theSessionUser.email,
         ph: ph,
         st: theSessionUser.address.streetName,
         city: theSessionUser.address.city,
@@ -219,7 +219,7 @@ router.route('/signin').post(async (req, res) => {
           username: theSessionUser.username,
           sex: theSessionUser.sex,
           dob: theSessionUser.dob,
-          email: theSessionUser.emailAddress,
+          email: theSessionUser.email,
           ph: ph,
           st: theSessionUser.address.streetName,
           city: theSessionUser.address.city,
@@ -272,20 +272,7 @@ router.route('/signin').post(async (req, res) => {
         const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).json("Internal Server Error");};
         if(updatePlanInfo.plan != 'renew') {
-          const updateUser = await userData.update(theuser._id.toString(),
-          theuser.firstName,
-          theuser.lastName,
-          theuser.sex,
-          theuser.dob,
-          theuser.email,
-          theuser.phoneNumber,
-          theuser.address,
-          theuser.username,
-          theuser.emergencyContactName,
-          theuser.emergencyContactPhoneNumber,
-          theuser.role,
-          plan
-          );
+          const updateUser = await userData.updatePlan(theuser._id.toString(),plan);
           if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: 'updatePlanPartial'});}
           return res.redirect('/user/userProfile');
         }
@@ -337,7 +324,7 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
       };
       try{
-        const result = userData.updatePassword(password,npassword);
+        const result = userData.updatePassword(req.session.user.id,npassword);
         if(result){
           req.session.destroy();
           return res.status(400).render('signIn', {title: "Gym Brat", partial: 'alertPasswordChange'});

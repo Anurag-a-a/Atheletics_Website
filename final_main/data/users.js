@@ -447,6 +447,26 @@ export const renewPlan = async (id) => {
   updatedInfo.value._id = updatedInfo.value._id.toString();
   return updatedInfo.value;
 };
+export const updatePlan = async (id,plan) => {
+  id = isValidId(id);
+  plan = isValidMembershipPlanDetails(plan);
+  const userCollection = await users();
+      
+  const updateUser = {
+      membershipPlanDetails: plan,
+      joinedPlanDate: new Date()
+  };
+  const updatedInfo = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(id)},
+    {$set: updateUser},
+    {returnDocument: 'after'}
+  );
+  if (updatedInfo.lastErrorObject.n === 0) {
+    throw 'Failed to update user';
+  };
+  updatedInfo.value._id = updatedInfo.value._id.toString();
+  return updatedInfo.value;
+};
 
 
 export const addReviewId = async (userId, reviewId) => {
@@ -471,23 +491,11 @@ export const addReviewId = async (userId, reviewId) => {
   return updatedInfo.value;
 };
 
-export const updatePassword = async (cpassword, npassword) => {
-  cpassword = isValidPassword(cpassword);
+export const updatePassword = async (id,npassword) => {
+  id = isValidId(id);
   npassword = isValidPassword(npassword);
   const userCollection = await users();
   const userList = await getAllUser();
-  let comparePassword = false;
-  let id = "";
-  for(let i=0; i<userList.length; i++){
-    try {
-      comparePassword = await bcrypt.compare(cpassword, userList[i]['hashedPassword']);
-      // console.log(comparePassword)
-    }catch(e){
-      throw "Internal Server Error";
-    };
-    if(comparePassword){ id = userList[i]._id.toString(); break;};
-};//close for
-  if(!comparePassword){throw "Error: Current Password entered is wrong. Try Again";};
   const hashedPassword = await bcrypt.hash(npassword, saltRounds);
   const updatePasswordUser = {
   hashedPassword: hashedPassword
