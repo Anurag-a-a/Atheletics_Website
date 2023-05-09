@@ -178,7 +178,7 @@ async function main() {
 
   let appointment1 = undefined;
   try {
-    appointment1 = await appointmentData.addAppointment(class1._id.toString(), { Date: '06/13/2023', timing: '10:00 - 12:00' }, false);
+    appointment1 = await appointmentData.addAppointment(class1._id.toString(), { Date: '05/09/2023', timing: '10:00 - 12:00' }, false);
     console.log(`an appointment for ${appointment1.classId} successfully created`);
   }
   catch (e) {
@@ -188,7 +188,7 @@ async function main() {
 
   let appointment2 = undefined;
   try {
-    appointment2 = await appointmentData.addAppointment(class2._id.toString(), { Date: '07/18/2023', timing: '13:00 - 15:00' }, false);
+    appointment2 = await appointmentData.addAppointment(class2._id.toString(), { Date: '05/18/2023', timing: '13:00 - 15:00' }, false);
     console.log(`an appointment for ${appointment2.classId} successfully created`);
   }
   catch (e) {
@@ -197,7 +197,7 @@ async function main() {
 
   let appointment3 = undefined;
   try {
-    appointment3 = await appointmentData.addAppointment(class4._id.toString(), { Date: '04/19/2023', timing: '15:00 - 17:00' }, false);
+    appointment3 = await appointmentData.addAppointment(class4._id.toString(), { Date: '06/19/2023', timing: '15:00 - 17:00' }, false);
     console.log(`an appointment for ${appointment3.classId} successfully created`);
   }
   catch (e) {
