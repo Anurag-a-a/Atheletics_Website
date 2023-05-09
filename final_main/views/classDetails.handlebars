@@ -1,11 +1,14 @@
 <br><br><br>
+<div class="navigation">
+    <a class="go_home_link" href="/admin/adminHome">Home Page</a><br>
+</div>
 <div class=" classes">
 
 {{#each classes}}
 
-<div>
+<div class="detailscont cls-detail">
 <p>
-    <h2>
+    <h2 class="class-name">
         {{  this.className  }}
     </h2>
 </p>
@@ -26,17 +29,14 @@
     </p>
 
     <form id="class-update-{{this._id}}" class="class-update-form" method="POST">
-      <button class="updatebtn" data-class-id="{{this._id}}" >Update Class Details</button>
+      <button class="det-updatebtn" data-class-id="{{this._id}}" >Update Class Details</button>
     </form>
 
     <form id="class-delete-{{this._id}}" class="class-delete-form" method="POST">
-      <button class="deletebtn" data-class-id="{{this._id}}">Delete Class</button>
+      <button class="det-deletebtn" data-class-id="{{this._id}}">Delete Class</button>
     </form>
 </div>
     {{/each}}
-<div class="navigation">
-    <a class="go_home_link" href="/">Go to Home Page</a><br>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/public/js/updateDeleteClass.js"></script>

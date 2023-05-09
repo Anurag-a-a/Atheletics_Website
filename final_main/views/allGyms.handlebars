@@ -1,12 +1,12 @@
 <br><br>
-<a class="go_home_link" href="/admin/adminhome">Go to Home Page</a><br>
-<div class=" location">
+<a class="go_home_link" href="/admin/adminhome">Home Page</a><br>
+<div class="  gyms gym-detail ">
     {{#each gyms}}
-    <h2>
+    <h2 class="gym-name">
         {{  this.BranchName  }}
     </h2>
 
-    <div>
+    <div class=" form-cont">
         <p>
             Website: 
             <a href="">
@@ -50,10 +50,11 @@
         <p>
             Overall Rating: {{  this.overallRating   }}
         </p>
-    </div>
     <form id="gym-update-{{this._id}}" class="gym-update-form" method="POST">
-      <button class="updatebtn" data-gym-id="{{this._id}}" >Update Gym Details</button>
+      <button class="det-updatebtn" data-gym-id="{{this._id}}" >Update Gym Details</button>
     </form>
+
+    </div>
 
     {{/each}}
 </div>

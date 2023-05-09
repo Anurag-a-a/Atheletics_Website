@@ -1,14 +1,17 @@
 <main>
     <br><br>
-    <a class="go_home_link" href="/user/protectedUserHomePage">Home</a><br>
-    <a href='/user/updateinfo'><button id="update_info">Edit Info</button></a>
-    <a href='/user/updatepassword'><button id="update_password">Change Password</button></a>
+    <a class="go_home_link" href="/user/protectedUserHomePage">Home Page</a><br>
+    <a href='/user/updateinfo'><button id="update_info" class="Info">Edit Info</button></a>
+    <a href='/user/updatepassword'><button  class = "Info" id="update_password">Change Password</button></a>
+    <div class="prof">
+    <div class="prof-cont">
     <h2>Personal Info</h2>
     <h3>{{firstName}} {{lastName}}</h3>
     <p>Username: {{username}}</p>
     <p>{{sex}}</p>
     <p>{{dob}}</p>
-    
+    </div>
+    <div class="prof-cont">
     <h2>Contact Info</h2>
     <p>Email Address: {{email}}</p>
     <p>Phone Number: {{ph}}</p>
@@ -17,17 +20,18 @@
     <p> {{city}}</p>
     <p> {{state}}</p>
     <p> {{zip}}</p>
-
+</div>
+<div class="prof-cont">
     <h2>Emergency Contact Info</h2>
     <p>Name: {{eName}}</p>
     <p>Phone Number: {{ePh}}</p>
-
+</div>
     {{#if user}}
         <h2>Gym Membership Plan</h2>
         <p>{{plan}}</p>
         <p>You current plan will expire on: {{expire}}</p>
         <a href='/user/updateplan'><button id="plan_update_button">Modify Plan</button></a>
     {{/if}}
-   
+</div>   
 </main>
 

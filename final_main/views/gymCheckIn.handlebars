@@ -1,21 +1,24 @@
+<div class = "gyms">
 <h1>Check In</h1>
-
+<div class = "form-cont">
 <form id="checkin-form" class=" checkin" method = "POST">
-Enter userName to Check In
+Enter username to Check In
 
     <input type="text" id="username" name="username">
 
-    <button type="submit">
-        checkIn
+    <button type="submit" class="clickbutton">
+        Check In
     </button>
     
 
-    <p>Current population: <span id="current-population">{{currentCapacity}}</span></p>
+    <p class="gym-detail">Current population: <span id="current-population">{{currentCapacity}}</span></p>
 
     <div class="navigation">
-        <a class="go_home_link" href="/admin/adminhome">Go to Home Page</a>
+        <a class="go_home_link" href="/admin/adminhome">Home Page</a>
     </div>
 
 </form>
+</div>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="/public/js/userCheckIn.js"></script>
