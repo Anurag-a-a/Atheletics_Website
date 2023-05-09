@@ -21,12 +21,12 @@ router.route('/').get(middleware.landingPageMiddleware, async (req, res) => {
   return res.json({error: 'YOU SHOULD NOT BE HERE!'});
 });
 
-router.route('/adminhome').get(middleware.adminHomePageMiddleware,async (req, res) => {
+router.route('/adminhome').get(middleware.userRestrictMiddleware,async (req, res) => {
     const theSessionUser = await userAdminData.getUserbyId(req.session.user.id);
     return res.render('adminHomePage',{title: "Gym Brat",firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, partial: false});
 });
 
-router.route('/addadmin').get(middleware.adminHomePageMiddleware,async (req, res) => {
+router.route('/addadmin').get(middleware.userRestrictMiddleware,async (req, res) => {
     return res.render('addadmin',{title: "Gym Brat", partial: 'signUpPartial'});  
 });
 router.route('/addadmin').post(async (req, res) => {

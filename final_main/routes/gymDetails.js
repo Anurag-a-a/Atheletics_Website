@@ -1,6 +1,7 @@
 import {Router} from 'express';
 const router = Router();
 import * as userData from '../data/users.js';
+import * as middleware from '../middleware.js';
 import * as gymData from '../data/gyms.js';
 import {isValidBranch,
   isValidEmail,
@@ -25,7 +26,7 @@ router.route('/gymDetails').get(async (req, res) => {
 });
 
 
-router.route('/addGym').get(async (req, res) => {
+router.route('/addGym').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     return res.render('gymCreateForm', { title: 'Gym Brat'});
   } 
@@ -34,7 +35,7 @@ router.route('/addGym').get(async (req, res) => {
   }
 });
 
-router.route('/checkIn').get(async (req, res) => {
+router.route('/checkIn').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     
     return res.render('gymCheckIn', { title: 'Gym Brat'.currentCapacity});
@@ -90,7 +91,7 @@ router.route('/checkIn').post(async (req, res) => {
 });
 
 
-router.route('/addGym').post(async(req,res) => {
+router.route('/addGym').post(middleware.userRestrictMiddleware,async(req,res) => {
   let gymInfo = req.body;
   if (!gymInfo || Object.keys(gymInfo).length === 0) {
       
@@ -140,7 +141,7 @@ router.route('/addGym').post(async(req,res) => {
 
 })
 
-router.route('/updateGym/:id').get(async (req, res) => {
+router.route('/updateGym/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
     let gymDetails = await gymData.getGymById(id);
