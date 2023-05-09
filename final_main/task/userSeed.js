@@ -8,6 +8,9 @@ import * as appointmentData from '../data/appointments.js';
 async function main() {
   const db = await dbConnection();
   //await db.dropDatabase();
+ 
+   
+  /* create users and admin */
 
   let firstName = "Harry";
   let lastName = "Potter";
@@ -113,14 +116,68 @@ async function main() {
     console.log(e);
   };
 
+  //admin user
+  try {
+    firstName = "Admin";
+    lastName = "Admin";
+    sex = "Female";
+    dob = "01/20/1980";
+    email = "admin@gmail.com";
+    phoneNumber = "1231231234";
+    address = {
+      streetName: '1234 NW Bobcat Lane',
+      city: 'Hoboken',
+      state: 'New Jersey',
+      zip: '07305'
+    };
+    username = "admin",
+      hashedPassword = "Admin@12345";
+    emergencyContactName = "Admin";
+    emergencyContactPhoneNumber = "1231231234";
+    role = "admin";
+    membershipPlanDetails = "NA";
+
+    let user5 = await userData.createAdmin(firstName, lastName, sex, dob, email, phoneNumber, address.streetName, address.city, address.state, address.zip, username, hashedPassword, emergencyContactName, emergencyContactPhoneNumber, membershipPlanDetails);
+    // console.log(user4)
+  } catch (e) {
+    console.log(e);
+  };
+
+  /* create gyms */
+
   let gym = undefined;
   try {
-    gym = await gymData.createGym('Union City', 'https://www.union.com', { streetName: '815 E Hudson st', city: 'Union City', state: 'New Jersey', zip: '07305' }, '5513445955', 'anu14298@gmail.com', 70, 'admin');
+    gym = await gymData.createGym('Union City', 'https://www.gymbrat.com', { streetName: '815 E Hudson st', city: 'Union City', state: 'New Jersey', zip: '07305' }, '5513445955', 'gymbrat@gmail.com', 70, 'admin');
     console.log(`${gym.name} successfully created \n`, gym);
   }
   catch (e) {
     console.log("Gym creation had error mighgt be gym is already present in the database: ", e)
+  };
+
+  try {
+    gym = await gymData.createGym('Hoboken', 'https://www.gymbrat.com', { streetName: 'Washington st', city: 'Hoboken', state: 'New Jersey', zip: '07306' }, '5513445956', 'gymbrat@gmail.com', 80, 'admin');
+    console.log(`${gym.name} successfully created \n`, gym);
   }
+  catch (e) {
+    console.log("Gym creation had error mighgt be gym is already present in the database: ", e)
+  };
+
+  try {
+    gym = await gymData.createGym('Jersy Heights', 'https://www.gymbrat.com', { streetName: '1207 Allen st', city: 'Jersy Heights', state: 'New Jersey', zip: '07307' }, '5513445957', 'gymbrat@gmail.com', 50, 'admin');
+    console.log(`${gym.name} successfully created \n`, gym);
+  }
+  catch (e) {
+    console.log("Gym creation had error mighgt be gym is already present in the database: ", e)
+  };
+  try {
+    gym = await gymData.createGym('Journal Square', 'https://www.gymbrat.com', { streetName: '897 Ferry st', city: 'Journal Square', state: 'New Jersey', zip: '07308' }, '5513445958', 'gymbrat@gmail.com', 50, 'admin');
+    console.log(`${gym.name} successfully created \n`, gym);
+  }
+  catch (e) {
+    console.log("Gym creation had error mighgt be gym is already present in the database: ", e)
+  };
+
+  /* create classes */
 
   let class1 = undefined;
   try {
@@ -129,7 +186,7 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
   let class2 = undefined;
   try {
@@ -138,7 +195,7 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
   let class3 = undefined;
   try {
@@ -147,7 +204,7 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
   let class4 = undefined;
   try {
@@ -156,7 +213,7 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
   let class5 = undefined;
   try {
@@ -165,7 +222,7 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
   let class6 = undefined;
   try {
@@ -174,11 +231,17 @@ async function main() {
   }
   catch (e) {
     console.log(e)
-  }
+  };
 
+  /* create appointments */
+  const existingUsers = await userData.getAllUser();
+  const existingClasses = await classData.getAllClass();
   let appointment1 = undefined;
   try {
-    appointment1 = await appointmentData.addAppointment(user1._id.toString(), class1._id.toString(), { Date: '05/09/2023', timing: '10:00 - 12:00' }, false);
+    
+    let user1Id =  existingUsers[0]._id.toString();
+    let class1Id = existingClasses[0]._id.toString();
+    appointment1 = await appointmentData.addAppointment(user1Id, class1Id,{ Date: '05/09/2023', timing: '10:00 - 12:00' }, false);
     console.log(`an appointment for ${appointment1.classId} successfully created`);
   }
   catch (e) {
@@ -188,7 +251,7 @@ async function main() {
 
   let appointment2 = undefined;
   try {
-    appointment2 = await appointmentData.addAppointment(user1._id.toString(), class2._id.toString(), { Date: '05/18/2023', timing: '13:00 - 15:00' }, false);
+    appointment2 = await appointmentData.addAppointment(class2._id.toString(), { Date: '05/18/2023', timing: '13:00 - 15:00' }, false);
     console.log(`an appointment for ${appointment2.classId} successfully created`);
   }
   catch (e) {
@@ -197,83 +260,88 @@ async function main() {
 
   let appointment3 = undefined;
   try {
-    appointment3 = await appointmentData.addAppointment(user1._id.toString(),class4._id.toString(), { Date: '06/19/2023', timing: '15:00 - 17:00' }, false);
+    appointment3 = await appointmentData.addAppointment(class4._id.toString(), { Date: '06/19/2023', timing: '15:00 - 17:00' }, false);
     console.log(`an appointment for ${appointment3.classId} successfully created`);
   }
   catch (e) {
     console.log(e)
   }
-  console.log('appointment2:', appointment2);
 
-  await userData.updateAppointment(user1._id.toString(), appointment1._id.toString(), 'add').catch((error) => {
-    console.log('Error adding appointment1:', error);
-  });
-  await userData.updateAppointment(user1._id.toString(), appointment2._id.toString(), 'add').catch((error) => {
-    console.log('Error adding appointment2:', error);
-  });
-  await userData.updateAppointment(user1._id.toString(), appointment3._id.toString(), 'add').catch((error) => {
-    console.log('Error adding appointment3:', error);
-  });
-
-  await classData.updateRegisteredUsers(appointment1.classId.toString(),user1._id.toString(),'add').catch((error) => {
-    console.log('Error adding appointment1:', error);  
-  });
-  await classData.updateRegisteredUsers(appointment2.classId.toString(),user1._id.toString(),'add').catch((error) => {
-    console.log('Error adding appointment2:', error);  
-  });
-  await classData.updateRegisteredUsers(appointment3.classId.toString(),user1._id.toString(),'add').catch((error) => {
-    console.log('Error adding appointment3:', error);  
-  });
-
-  let gymreview = undefined;
+  const gyms = await gymData.getAllGyms();  
+  let gymreview1 = undefined;
   try {
-    gymreview = await reviewData.addReview(gym._id.toString(), null, 'The gym is not good', 4);
+    gymreview1 = await reviewData.addReview(gyms[0]._id.toString(), null, 'The gym is not good', 4);
     console.log(`a review for ${gymreview.gymId} successfully created`);
     let updateReview = await reviewData.updateReview(gymreview._id.toString(), gym._id.toString(), null, 'The gym is good', 4.6)
     console.log(`a review for ${updateReview._id} successfully updated`);
   }
   catch (e) {
     console.log(e)
-  }
-  await userData.updateReview(user1._id.toString(), gymreview._id.toString(), 'add').catch((error) => {
-    console.log('Error adding gymreview:', error);
-  });
+  };
+  
   let gymreview2 = undefined;
   try {
-    gymreview2 = await reviewData.addReview(gym._id.toString(), null, 'The gym is good', 4.8);
+    gymreview2 = await reviewData.addReview(gyms[1]._id.toString(), null, 'The gym is good', 4.8);
     console.log(`a review for ${gymreview2.gymId} successfully created`);
   }
   catch (e) {
     console.log(e)
+  };
+  try {
+    gymreview2 = await reviewData.addReview(gyms[1]._id.toString(), null, 'Facility are good. Nice staff', 4.5);
+    console.log(`a review for ${gymreview2.gymId} successfully created`);
   }
-  await userData.updateReview(user2._id.toString(), gymreview2._id.toString(), 'add').catch((error) => {
-    console.log('Error adding gymreview2:', error);
-  });
+  catch (e) {
+    console.log(e)
+  };
+  try {
+    gymreview2 = await reviewData.addReview(gyms[1]._id.toString(), null, 'It is a pleasant place to burn fat', 4.0);
+    console.log(`a review for ${gymreview2.gymId} successfully created`);
+  }
+  catch (e) {
+    console.log(e)
+  };
+  try {
+    gymreview2 = await reviewData.addReview(gyms[2]._id.toString(), null, 'Good', 4.0);
+    console.log(`a review for ${gymreview2.gymId} successfully created`);
+  }
+  catch (e) {
+    console.log(e)
+  };
+  try {
+    gymreview2 = await reviewData.addReview(gyms[3]._id.toString(), null, 'Okay. Can be better', 3.5);
+    console.log(`a review for ${gymreview2.gymId} successfully created`);
+  }
+  catch (e) {
+    console.log(e)
+  };
+  try {
+    gymreview2 = await reviewData.addReview(gyms[3]._id.toString(), null, 'Broken equipments', 3.0);
+    console.log(`a review for ${gymreview2.gymId} successfully created`);
+  }
+  catch (e) {
+    console.log(e)
+  };
+  
 
 
   let classreview = undefined;
   try {
-    classreview = await reviewData.addReview(gym._id.toString(), class1._id.toString(), 'The class is good');
+    classreview = await reviewData.addReview(gyms[0]._id.toString(), existingClasses[0]._id.toString(), 'The class is good');
     console.log(`a review for ${classreview.classId} successfully created`);
   }
   catch (e) {
     console.log(e)
-  }
-
-  let classreview2 = undefined;
+  };
   try {
-    classreview2 = await reviewData.addReview(gym._id.toString(), class2._id.toString(), 'The class is good');
-    console.log(`a review for ${classreview2.classId} successfully created`);
+    classreview = await reviewData.addReview(gyms[1]._id.toString(), existingClasses[1]._id.toString(), 'The class is good');
+    console.log(`a review for ${classreview.classId} successfully created`);
   }
   catch (e) {
     console.log(e)
-  }
-  await userData.updateReview(user1._id.toString(), classreview._id.toString(), 'add').catch((error) => {
-    console.log('Error adding classreview:', error);
-  });
-  await userData.updateReview(user1._id.toString(), classreview2._id.toString(), 'add').catch((error) => {
-    console.log('Error adding classreview2:', error);
-  });
+  };
+
+ 
 
   await closeConnection();
 
