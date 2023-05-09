@@ -47,6 +47,8 @@
             <p>No reviews.</p>
             {{/if}}
         </li>
+        <if condition="$error">
+        <div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
         <button class="add_class_review" data-class-id="{{this._id}}">add reviews</button>
         {{/each}}
     </ul>
