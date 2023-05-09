@@ -1,7 +1,9 @@
 <br>
 <br>
 <br>
-<a class="go_home_link" href="/user/protectedUserHomePage">Back to User Home Page</a><br>
+<a class="go_home_link" href="/user/protectedUserHomePage">Home Page</a><br>
+    <a href="/myAppointments/add">Register for classes</a>
+
 <br>
 <a href="/myAppointments">Go to My Appointment</a>
 <br>
@@ -14,11 +16,11 @@
         {{#each classes}}
         <li>
             <h2>{{this.className}}</h2>
-                <input type="hidden" class="class_id" value="{{this._id}}">
+            <input type="hidden" class="class_id" value="{{this._id}}">
             <p>
                 Date : {{#if this.slots.Date}}
                 {{
-                    this.slots.Date
+                this.slots.Date
                 }}
             </p>
             {{else}}
@@ -27,15 +29,15 @@
             <p>
                 Time: {{#if this.slots.timing}}
                 {{
-                    this.slots.timing
+                this.slots.timing
                 }}
             </p>
             {{else}}
             <p>No time slots available.</p>
             {{/if}}
-            
 
-            {{#if this.reviewsText}}
+
+            Reviews: {{#if this.reviewsText}}
             <ul>
                 {{#each this.reviewsText}}
                 <li>{{this}}</li>
@@ -45,14 +47,13 @@
             <p>No reviews.</p>
             {{/if}}
         </li>
-    <button class="add_class_review" data-class-id="{{this._id}}">add reviews</button>
+        <button class="add_class_review" data-class-id="{{this._id}}">add reviews</button>
         {{/each}}
     </ul>
 
     {{else}}
     <p>No classes available.</p>
     {{/if}}
-    <a href="/myAppointments/add">Click here to register for classes</a>
 
 
 </div>

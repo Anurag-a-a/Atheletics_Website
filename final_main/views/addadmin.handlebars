@@ -1,8 +1,7 @@
-<main class="main">
     <br>
     <a class="go_home_link" href="/admin/adminhome">Home Page</a><br>
     <div class=" classes">
-    <p>Fill up the details below to add admin user</p>
+    <h2>Fill up the details below to add admin user</h2>
      {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -13,13 +12,13 @@
     <div class="form-cont">
     <form id ="joinNow-form" method="POST" action="/admin/addadmin">
         <label for="firstName">Enter you first name: </label>
-        <input id ="firstName" type="text" name="firstName"/>
+        <input id ="firstName" type="text" placeholder="First Name" name="firstName">
         <div class="form-group hidden" id="error-container1">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="lastName">Enter you last name: </label>
-        <input id ="lastName" type="text" name="lastName"/>
+        <input id ="lastName" type="text" placeholder="Last Name" name="lastName">
         <div class="form-group hidden" id="error-container2">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
@@ -36,62 +35,62 @@
         </div>
         <br>
         <label for="dob">Enter your date of birth: </label>
-        <input id ="dob" type="date" max="2010-12-31" name="dob" placeholder="MM/DD/YYYY"/>
+        <input id ="dob" type="date" max="2010-12-31" name="dob" >
         <div class="form-group hidden" id="error-container4">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="emailAddress">Enter you email address: </label>
-        <input id ="emailAddress" type="email" name="emailAddress"/>
+        <input id ="emailAddress" type="email" placeholder="abc@def.ghi" name="emailAddress">
         <div class="form-group hidden" id="error-container5">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="username">Enter your username: </label>
-        <input id ="username" type="text" name="username"/>
+        <input id ="username" type="text" name="username">
         <div class="form-group hidden" id="error-container11">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="ph">Enter your phone number: </label>
-        <input id ="ph" type="text" name="ph"/>
+        <input id ="ph" type="text" placeholder="0123456789" name="ph">
         <div class="form-group hidden" id="error-container6">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <p>Enter your address: </p>
         <label for="streetName" class = "tab">StreetName: </label>
-        <input id ="streetName" type="text" name="streetName" class = "tab"/>
+        <input id ="streetName" type="text" placeholder="Street Name" name="streetName" class = "tab">
         <div class="form-group hidden" id="error-container7">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="city" class = "tab">City: </label>
-        <input id ="city" type="text" name="city" class = "tab"/>
+        <input id ="city" type="text" name="city" placeholder="City" class = "tab">
         <div class="form-group hidden" id="error-container8">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="state" class = "tab">State: </label>
-        <input id ="state" type="text" name="state" class = "tab"/>
+        <input id ="state" type="text" name="state" placeholder="State" class = "tab">
         <div class="form-group hidden" id="error-container9">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="zip" class = "tab">ZipCode: </label>
-        <input id ="zip" type="text" name="zip" class = "tab"/>
+        <input id ="zip" type="text" name="zip" placeholder="00000" class = "tab">
         <div class="form-group hidden" id="error-container10">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="emergencyContactName">Enter your Emergency Contact Name: </label>
-        <input id ="emergencyContactName" type="text" name="emergencyContactName"/>
+        <input id ="emergencyContactName" placeholder="Name" type="text" name="emergencyContactName">
         <div class="form-group hidden" id="error-container12">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="emergencyContactPhoneNumber">Enter your Emergency Contact's Phone number: </label>
-        <input id ="emergencyContactPhoneNumber" type="text" name="emergencyContactPhoneNumber"/>
+        <input id ="emergencyContactPhoneNumber" placeholder="0123456789" type="text" name="emergencyContactPhoneNumber">
         <div class="form-group hidden" id="error-container13">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
@@ -105,20 +104,19 @@
         </div>
         <br>
         <label for="passwordInput">Enter your password: </label>
-        <input id ="passwordInput" type="password" name="passwordInput"/>
+        <input id ="passwordInput" type="password" name="passwordInput">
         <div class="form-group hidden" id="error-container16">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>
         <label for="confirmPasswordInput">Confirm password: </label>
-        <input id ="confirmPasswordInput" type="password" name="confirmPasswordInput"/>
+        <input id ="confirmPasswordInput" type="password" name="confirmPasswordInput">
         <div class="form-group hidden" id="error-container17">
         <div class="alert alert-danger text-goes-here"></div>
         </div>
         <br>        
-        <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
+        <input id="submit" class="clickbutton" type="submit" value="Sign Up">
         <br>    
     </form>
     </div>
-</div>   
-</main>
+</div>

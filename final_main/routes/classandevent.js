@@ -21,21 +21,16 @@ router
                     }
                 }
             })
-            console.log(allClass);
             //get all reviewText from review data
             let result = null;
             let data = null;
             async function processData() {
               data = await Promise.all(allClass.map(async item => {
                 item.reviewsText = [];
-                console.log(item);
                 let reviews = item.reviewIds;
-                console.log(reviews);
                 if (reviews.length !== 0) {
                   await Promise.all(reviews.map(async i => {
-                    console.log(i);
                     const text = await reviewData.getReviewById(i);
-                    console.log(text.reviewText);
                     item.reviewsText.push(text.reviewText);
                   }))
                 }
@@ -51,7 +46,6 @@ router
     })
     .post(ensureAuthenticated, async (req, res) => {
         try {
-            console.log('User in the request:', req.user);
             const { classId, selectedTimeSlot } = req.body;
 
             const regex = /^(\d{2}\/\d{2}\/\d{4}) (\d{2}:\d{2}) - (\d{2}:\d{2})$/;
@@ -92,7 +86,6 @@ router
             res.status(500).json({ error: error.toString() });
         }
     });
-
     router.route('/reviews_add').post(ensureAuthenticated, async (req, res) => {
       try {
           const branchName = 'Union City';
@@ -121,8 +114,8 @@ router
               }
           }
   
-          if (hasReviewed) {
-              throw 'You have already reviewed this class';
+          if (hasReviewed === true) {
+            return res.json({ success: false, message: 'You have already reviewed this class' });
           }
   
           const newReview = await reviewData.addReview(gymId, classId, reviewText);
@@ -132,9 +125,11 @@ router
           }
           console.log(newReview);
           await userData.addReviewId(user._id.toString(), newReview._id.toString());
-          return res.json({ added: true });
+        req.session.forceReload = true;
+        res.status(200).json({ success: true, redirect: '/classandevent' });
+
       } catch (error) {
-          res.status(500).json({ error: error.toString() });
+        res.status(500).json({ success: false, message: error.toString() });
       }
   });
 // router.get('/add', ensureAuthenticated, (req, res) => {

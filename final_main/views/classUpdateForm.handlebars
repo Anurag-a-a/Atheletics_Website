@@ -1,25 +1,33 @@
+
+<br><br><br>
+<div class="navigation">
+    <a class="classes_link" href="/class/classDetails">All Classes</a>
+    <a class="go_home_link" href="/admin/adminHome">Home Page</a><br>
+</div>
+
 <div class = "classes">
 <h1>Update Class</h1>
+<div class="form-cont">
 	<form id="classUpdation" method="POST" class = "classes-form">
 		<label for="className">Class Name:</label>
-		<input type="text" id="className" name="className" required value="{{classDetails.className}}"></input><br><br>
+		<input type="text" id="className" placeholder="Name of the Class" name="className" required value="{{classDetails.className}}"><br><br>
 
 		<label for="date1">Date 1:</label>
-		<input type="date" id="date1" name="date" required value="{{	classDetails.slots.Date}}" ></input><br><br>
+		<input type="date" id="date1" name="date" required value="{{	classDetails.slots.Date}}" ><br><br>
 
 		<label for="timings1">Timings 1:</label>
-		<input type="text" id="timings1" name="timings" required value = "{{ classDetails.slots.timing }}"></input><br><br>
+		<input type="text" id="timings1" name="timings" placeholder="HH:MM - HH:MM" required value = "{{ classDetails.slots.timing }}"><br><br>
 
 		<label for="instructor">Instructor:</label>
-		<input type="text" id="instructor" name="instructor" required value = " {{ classDetails.instructor }} "></input><br><br>
+		<input type="text" id="instructor" name="instructor" placeholder="Name of Instructor" required value = " {{ classDetails.instructor }} "><br><br>
 
 		<label for="description">Description:</label>
-		<input id="description" name="description" required value= " {{ classDetails.description }} "></input><br><br>
+		<input id="description" name="description" placeholder="Description of Class" required value= " {{ classDetails.description }} "><br><br>
 
 		<label for="maxCapacity">Max Capacity:</label>
-		<input id="maxCapacity" name="maxCapacity" required value= " {{ classDetails.classCapacity }} "></input><br><br>
+		<input id="maxCapacity" name="maxCapacity" placeholder="0-200" required value= " {{ classDetails.classCapacity }} "><br><br>
 
-		<input type="submit" id = "updateB"value = "updateClass">Update Class</button>
+		<input type="submit" id = "updateB" value = "updateClass" class="clickbutton">
 	        {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -30,10 +38,6 @@
 
 	</form>	
 </div>
-
-<div class="navigation">
-    <a class="classes_link" href="/class/classDetails">back to all classes</a>
-    <a class="go_home_link" href="/">Go to Home Page</a><br>
 </div>
 
 <script src="/public/js/classFormValidation.js"></script>

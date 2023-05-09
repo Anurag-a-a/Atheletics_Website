@@ -86,7 +86,6 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
   }
 }).post(ensureAuthenticated, async (req, res) => {
   try {
-    console.log('User in the request:', req.user);
     const { classId, selectedTimeSlot, cancelledOrNot } = req.body;
 
     const regex = /^(\d{2}\/\d{2}\/\d{4}) (\d{2}:\d{2}) - (\d{2}:\d{2})$/;
@@ -116,10 +115,10 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
         appointment.selectedTimeSlot.timing === selectedTimeSlotObj.timing &&
         !appointment.cancelledOrNot
       ) {
-        throw new Error('This time slot has already been booked for this class by the user');
+        return res.status(400).render('appointments_add', {error: 'This time slot has already been booked' });
       }
     }
-    const newAppointment = await appointmentData.addAppointment(classId, selectedTimeSlotObj, cancelledOrNot);
+    const newAppointment = await appointmentData.addAppointment(req.user.id,classId, selectedTimeSlotObj, cancelledOrNot);
     await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
     await classData.updateRegisteredUsers(classId, req.user.id, 'add');
     req.session.forceReload = true;

@@ -44,12 +44,10 @@ router.route('/membershipPlans').get(async (req, res) => {
 
 /* route for sign up page */
 router.route('/joinnow').get(middleware.signUpMiddleware,async (req, res) => {
-  // console.log("renedered join now");
     return res.render('joinNow',{title: "Gym Brat", partial: 'signUpPartial'});
 });
 router.route('/joinnow').post(async (req, res) => {
     // validate inputs
-    // console.log("triggered post join now");
     let signUpInfo = req.body;
     if(!signUpInfo){
         return res.status(400).render('joinNow', {title: "Gym Brat", error: "Fill all the fields!!",partial: 'signUpPartial'});
@@ -79,7 +77,6 @@ router.route('/joinnow').post(async (req, res) => {
         //2009-12-28
 
         dob = isValidPostDOB(signUpInfo.dob);
-        // console.log("checking phoneNumber in routes");
         phoneNumber = isValidPhoneNumber(signUpInfo.ph);
         streetName = signUpInfo.streetName;
         city = signUpInfo.city;
@@ -91,10 +88,7 @@ router.route('/joinnow').post(async (req, res) => {
           state: state,
           zip: zip
         };
-        // console.log("validating address in route function");
         address = isValidAddress(address);
-        // console.log("POST address validation");
-        // console.log(address);
         email = isValidEmail(signUpInfo.emailAddress);
         const existingUsers = await userData.getAllUser();
         for (let i=0; i<existingUsers.length; i++){
@@ -106,7 +100,6 @@ router.route('/joinnow').post(async (req, res) => {
           if(existingUsers[i]['username'] == username) {throw "Error: This username is already taken. Try another!!!";};
         };
         emergencyContactName = isValidName(signUpInfo.emergencyContactName,'Emergency Contact Name');
-        // console.log("checking emergency phoneNumber in routes");
         emergencyContactPhoneNumber = isValidPhoneNumber(signUpInfo.emergencyContactPhoneNumber);
         plan = isValidMembershipPlanDetails(signUpInfo.plan);
       }catch(e){
@@ -153,22 +146,17 @@ router.route('/signin').post(async (req, res) => {
     try {
         email = isValidEmail(signinInfo.emailAddress);
         password = isValidPassword(signinInfo.passwordInput);
-        // console.log("passed all the input validation");
       }catch(e){
-        // console.log("input error caught");
         return res.status(400).render('signIn', {title: "Gym Brat", error: e,partial: 'sigInPartial'});
       };
       try{
-        // console.log("Inside checking credentials");
         const userObject = await userData.checkUser(xss(email),xss(password));
         if(!userObject) { return res.status(500).render('signIn', {title: "Gym Brat", error: "Internal Server Error",partial: 'sigInPartial'});};
         req.session.user = {
           id: userObject.id,
           role: userObject.role
         };
-        // console.log(req.session.user);
-        // console.log('/login session set',req.session.user);
-        if(req.session.user.role == 'admin') {res.redirect('/admin/adminhome');}
+       if(req.session.user.role == 'admin') {res.redirect('/admin/adminhome');}
         else {res.redirect('/user/protectedUserHomePage');};        
       }catch(e){
         return res.status(400).render('signIn', {title: "Gym Brat", error: e, partial: 'sigInPartial'});
@@ -177,7 +165,6 @@ router.route('/signin').post(async (req, res) => {
 
     router.route('/protectedUserHomePage').get(middleware.userHomePageMiddleware, async (req, res) => {
         //code here for Getting the main page of the gym
-        // console.log(req.session.user);
         const theSessionUser = await userData.getUserbyId(req.session.user.id);
         const gyms = await gymData.getAllGyms();
         return res.render('protectedUserHomePage',{title: "Gym Brat", firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, gym: gyms, partial: 'gymDensity'});
@@ -258,17 +245,12 @@ router.route('/signin').post(async (req, res) => {
       try {
         password = isValidPassword(updatePlanInfo.passwordInput);
         plan = isValidMembershipPlanDetails(updatePlanInfo.plan);
-        // console.log("passed all the input validation");
       }catch(e){
-        // console.log("Route updatePlan post input error caught");
         return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: 'updatePlanPartial'});
       };
       try{
-        // console.log("Inside checking credentials");
         const theuser = await userData.getUserbyId(req.session.user.id);
         if(!theuser){return res.status(500).json("Internal Server Error");};
-        // console.log("Route updatePlan /post checking user");
-        // console.log(theuser);
         const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).json("Internal Server Error");};
         if(updatePlanInfo.plan != 'renew') {
@@ -382,7 +364,6 @@ router.route('/signin').post(async (req, res) => {
         lastName = isValidName(updateInfo.lastName, 'Last Name');
         sex = isValidSex(updateInfo.sex);
         dob = isValidDOB(updateInfo.dob);
-        // console.log("checking phoneNumber in routes");
         phoneNumber = isValidPhoneNumber(updateInfo.ph);
         streetName = updateInfo.streetName;
         city = updateInfo.city;

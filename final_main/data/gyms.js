@@ -98,7 +98,6 @@ export const getGymById = async(id) => {
 
     return gym;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
@@ -158,7 +157,6 @@ export const updateGym = async(
 
     return updatedInfo.value;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
@@ -171,7 +169,6 @@ const addClassId = async (gymId, classId) => {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
     if (gym.classIds.includes(classId)) {
-      console.log(`Class with ID ${classId} already exists in gym`);
       return gym;
     }
     const updatedGym = await gyms.findOneAndUpdate(
@@ -182,11 +179,9 @@ const addClassId = async (gymId, classId) => {
     if (!updatedGym) {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
-    console.log(`Added class with ID ${classId} to gym`);
     return updatedGym;
   } 
   catch (error) {
-    console. Error(error);
     throw new Error('Failed to add class ID to gym');
   }
 };
@@ -200,7 +195,6 @@ const addReviewId = async(gymId,reviewId) => {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
     if (gym.reviewIds.includes(reviewId)) {
-      console.log(`Review with ID ${reviewId} already exists in gym`);
       return gym;
     }
     const updatedGym = await gyms.findOneAndUpdate(
@@ -211,11 +205,9 @@ const addReviewId = async(gymId,reviewId) => {
     if (!updatedGym) {
       throw new Error(`Gym with ID ${gymId} not found`);
     }
-    console.log(`Added review with ID ${reviewId} to gym`);
     return updatedGym;
   } 
   catch (error) {
-    console. Error(error);
     throw new Error('Failed to add class ID to gym');
   }
 
