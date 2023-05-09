@@ -12,16 +12,17 @@ $(document).ready(function() {
     };
 
       let username = document.getElementById('username');
-      username = validateUsername(username);
-  
+      username = validateUsername(username.value);
+        console.log(username)
       $.ajax({
         url: '/gym/checkin',
         type: 'POST',
         data: {username: username},
         success: function(response) {
-          $('#current-population').text(response.CurrentCapacity);
+          $('#current-population').text(response.value.currentCapacity);
   
           alert('Check-in successful!');
+          window.location.reload();
         },
         error: function(xhr, status, error) {
           alert('Error: ' + error);
