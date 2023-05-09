@@ -215,6 +215,16 @@ async function main() {
     console.log('Error adding appointment3:', error);
   });
 
+  await classData.updateRegisteredUsers(appointment1.classId.toString(),user1._id.toString(),'add').catch((error) => {
+    console.log('Error adding appointment1:', error);  
+  });
+  await classData.updateRegisteredUsers(appointment2.classId.toString(),user1._id.toString(),'add').catch((error) => {
+    console.log('Error adding appointment2:', error);  
+  });
+  await classData.updateRegisteredUsers(appointment3.classId.toString(),user1._id.toString(),'add').catch((error) => {
+    console.log('Error adding appointment3:', error);  
+  });
+
   let gymreview = undefined;
   try {
     gymreview = await reviewData.addReview(gym._id.toString(), null, 'The gym is not good', 4);

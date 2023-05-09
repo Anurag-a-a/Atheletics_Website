@@ -167,10 +167,11 @@ export const updateRegisteredUsers = async (
     const classCollection = await classes();
     const theClass = await getClassbyId(id);
 
-    let currentRegisteredList = theClass.registeredUsers; // Change this line
-    if (!currentRegisteredList.includes(RegisteredUsersId)) { throw `Error: No such registered for ${theClass.className} ` };
+    let currentRegisteredList = theClass.registeredUsers;
     let newRegisterList = [];
     if (action == 'delete') {
+        if (!currentRegisteredList.includes(RegisteredUsersId)) { throw `Error: No such registered for ${theClass.className} ` };
+
         for (let i = 0; i < currentRegisteredList.length; i++) {
             if (currentRegisteredList[i] != RegisteredUsersId) {
                 newRegisterList.push(currentRegisteredList[i]);
@@ -180,9 +181,9 @@ export const updateRegisteredUsers = async (
         newRegisterList = currentRegisteredList;
         newRegisterList.push(RegisteredUsersId);
     };
-    let registrations = newRegisterList;
+
     let updateClass = {
-        registrations: registrations
+        registeredUsers: newRegisterList // Change this line
     };
 
     const updatedInfo = await classCollection.findOneAndUpdate(
