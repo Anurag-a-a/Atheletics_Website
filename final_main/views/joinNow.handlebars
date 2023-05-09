@@ -3,8 +3,8 @@
     <a class="go_home_link" href="/user">Go to Home Page</a><br>
     <a href="/user/signin">Already a member. Click here to sign In</a><br>
     <a href="/user/membershipPlans">Want to see our exclusive plans. Click here!</a>
-    <p>Fill up the details below to join the gym membership</p>
-    <h1>Sign Up</h1>
+    <p class = "center textCenter">Fill up the details below to join the gym membership</p><br>
+    <h1 class = "center textCenter">Sign Up</h1><br>
      {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -12,6 +12,7 @@
                 </div>
             </div>
     {{/if}}
+    <div class ="class-form class-update-form form-cont center">
     <form id ="joinNow-form" method="POST" action="/user/joinnow">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
@@ -122,6 +123,6 @@
         <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
         <br>    
     </form>
-   
+   </div>
     <hr>
 </main>
