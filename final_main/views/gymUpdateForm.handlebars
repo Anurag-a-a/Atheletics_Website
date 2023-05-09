@@ -1,35 +1,43 @@
+<br><br>
+<div class="navigation">
+    <a class="classes_link" href="/gym/gymDetails">All Gyms</a>
+    <a class="go_home_link" href="/">Go to Home Page</a><br>
+</div>
+
 <div class = "gyms">
+<br><br><br>
+<div class="form-cont">
 <form id="gymUpdation" method="post" class = "classes-form">
-    <label for="branchName">Branch Name:</label><br>
-    <input type="text" id="branchName" name="branchName" value="{{gym.branchName}}" required><br>
+    <label for="branchName">Branch Name:</label>
+    <input type="text" id="branchName" placeholder="Branch Name" name="branchName" value="{{gym.branchName}}" required>
 
-    <label for="website">Website:</label><br>
-    <input type="url" id="website" name="website" value="{{gym.website}}" required><br>
+    <label for="website">Website:</label>
+    <input type="url" id="website" placeholder="https://www.example.com" name="website" value="{{gym.website}}" required>
 
-    <label for="address">Address:</label><br>
+    <label for="address">Address:</label>
 
     <label for="streetName">Street:</label>
-    <textarea id="streetName" name="streetName" placeholder="Enter Street Name" required>{{gym.address.streetName}}</textarea><br>
+    <textarea id="streetName" placeholder="street Name" name="streetName" placeholder="Enter Street Name" required>{{gym.address.streetName}}</textarea>
 
     <label for="city">City:</label>
-    <textarea id="city" name="city" placeholder="Enter City" required>{{gym.address.city}}</textarea><br>
+    <textarea id="city" name="city" placeholder="Enter City" required>{{gym.address.city}}</textarea>
 
     <label for="state">State:</label>
-    <textarea id="state" name="state" placeholder="Enter State" required>{{gym.address.state}}</textarea><br>
+    <textarea id="state" name="state" placeholder="Enter State" required>{{gym.address.state}}</textarea>
 
     <label for="zipCode">Zip Code:</label>
-    <input type="text" id="zipCode" name="zipCode" value="{{gym.address.zip}}" required><br>
+    <input type="text" id="zipCode" placegolder = "00000"name="zipCode" value="{{gym.address.zip}}" required>
 
-    <label for="phoneNumber">Phone Number:</label><br>
-    <input type="tel" id="phoneNumber" name="phoneNumber" value="{{gym.phoneNumber}}" required><br>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="tel" id="phoneNumber" placeholder="0123456789" name="phoneNumber" value="{{gym.phoneNumber}}" required>
 
     <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" value="{{gym.email}}" required><br>
+    <input type="email" id="email" placeholder = "abc@def.ghi" name="email" value="{{gym.email}}" required>
 
-    <label for="maxCapacity">Max Population Density:</label><br>
-    <input type="number" id="maxCapacity" name="maxCapacity" value="{{gym.maxCapacity}}" required><br>
+    <label for="maxCapacity">Max Population Density:</label>
+    <input type="number" id="maxCapacity" placeholder = "0-200" name="maxCapacity" value="{{gym.maxCapacity}}" required>
 
-    <input type="submit" id = "updateB"value="updateGym">
+    <input type="submit" id = "updateB"value="updateGym" class="clickbutton">
             {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -40,10 +48,6 @@
 
 </form>
 </div>
-<div class="navigation">
-    <a class="classes_link" href="/gym/gymDetails">All Gyms</a>
-    <a class="go_home_link" href="/">Go to Home Page</a><br>
 </div>
-
 
 	<script src="/public/js/gymFormValidation.js"></script>

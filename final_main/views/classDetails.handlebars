@@ -3,7 +3,7 @@
     <a class="go_home_link" href="/admin/adminHome">Home Page</a><br>
 </div>
 <div class=" classes">
-
+{{#if classes}}
 {{#each classes}}
 
 <div class="detailscont cls-detail">
@@ -38,5 +38,8 @@
 </div>
     {{/each}}
 
+{{else}}
+NO Classes created yet
+{{/if}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/public/js/updateDeleteClass.js"></script>
