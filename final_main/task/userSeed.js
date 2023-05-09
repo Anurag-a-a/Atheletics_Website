@@ -176,6 +176,15 @@ async function main() {
     console.log(e)
   }
 
+  let class7 = undefined;
+  try {
+    class7 = await classData.createClass('Dancing', { Date: '08/28/2023', timing: '17:00 - 19:00' }, 'Kit hill', 'Teaching you to tennis as a pro', 50);
+    console.log(class7);
+  }
+  catch (e) {
+    console.log(e)
+  }
+
   let appointment1 = undefined;
   try {
     appointment1 = await appointmentData.addAppointment(class1._id.toString(), { Date: '06/13/2023', timing: '10:00 - 12:00' }, false);
