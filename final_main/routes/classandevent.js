@@ -4,7 +4,7 @@ import { classData } from "../data/index.js";
 import { appointmentData, reviewData, gymData } from "../data/index.js";
 import { ensureAuthenticated } from '../middleware.js';
 import { userData } from '../data/index.js';
-
+import xss from 'xss';
 
 router
     .route('/')
