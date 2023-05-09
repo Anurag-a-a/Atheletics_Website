@@ -53,7 +53,7 @@ router
 
       res.render('reviews_add', { branches: allBranches, reviewedGymIds: Array.from(reviewedGymIds) });
     } catch (error) {
-      res.status(500).json({ error: error });
+      res.status(400).render('reviews_add', {error: error});
     }
   })
   .post(middleware.reviewMiddleware, async (req, res) => {
@@ -81,9 +81,9 @@ router
       }
   
       if ((!gymId) || !reviewText || (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5)) {
-        res.status(400).json({ error: 'Missing required fields or invalid rating' });
+        res.status(400).render('reviews_add', {error: 'Missing required fields or invalid rating'});
       } else if (hasReviewedGym) {
-        res.status(400).json({ error: 'You have already reviewed this gym' });
+        res.status(400).render('reviews_add', {error: 'You have already reviewed this gym' });
       } else {
         const ratingNumber = parseFloat(rating);
   

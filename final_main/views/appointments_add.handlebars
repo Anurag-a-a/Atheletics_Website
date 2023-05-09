@@ -3,6 +3,11 @@
 <a class="go_home_link" href="/myAppointments">Back to My Appointments Page</a><br>
 <br>
 <h1>Add Appointment</h1>
+  <if condition="$error">
+    <div id="error" class="error">{{error}}</div>
+    <else/>
+    <div id="error" class="error" hidden></div>
+    </if>
 <form action="/myAppointments/add" method="POST">
   <label for="classId">Class Name:</label>
   <select name="classId" id="classId" required>

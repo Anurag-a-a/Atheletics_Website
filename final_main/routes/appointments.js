@@ -116,7 +116,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
         appointment.selectedTimeSlot.timing === selectedTimeSlotObj.timing &&
         !appointment.cancelledOrNot
       ) {
-        throw new Error('This time slot has already been booked for this class by the user');
+        return res.status(400).render('appointments_add', {error: 'This time slot has already been booked' });
       }
     }
     const newAppointment = await appointmentData.addAppointment(classId, selectedTimeSlotObj, cancelledOrNot);

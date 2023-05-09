@@ -3,6 +3,11 @@
 <br>
 <a class="go_home_link" href="/myReviews">Back to My Reviews Page</a>
 <br>
+  <if condition="$error">
+    <div id="error" class="error">{{error}}</div>
+    <else/>
+    <div id="error" class="error" hidden></div>
+    </if>
 <form action="/myReviews/add" method="POST">
   <label for="gymId">Gym Branch:</label>
   <select name="gymId" id="gymId" required>

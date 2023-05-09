@@ -110,6 +110,7 @@ export const reviewMiddleware  = (req, res, next) => {
   if(req.session.user.role === 'admin') {
     return res.redirect('/user/error')
   };
+  req.user = req.session.user;
   next();
 };
 
