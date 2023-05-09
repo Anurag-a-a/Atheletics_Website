@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import { reviewData, userData, appointmentData, gymData, classData } from '../data/index.js';
 import * as middleware from '../middleware.js';
+import xss from 'xss';
 
 router.route('/').get(middleware.ensureAuthenticated, async (req, res) => {
   try {
@@ -76,7 +77,7 @@ router
       } else {
         const ratingNumber = parseFloat(rating);
   
-        const newReview = await reviewData.addReview(gymId, null, reviewText, ratingNumber);
+        const newReview = await reviewData.addReview(gymId, null, xss(reviewText), xss(ratingNumber));
         await userData.addReviewId(user._id.toString(), newReview._id.toString());
         res.redirect('/myReviews');
       }
@@ -121,7 +122,7 @@ router
           }
         }
   
-        const updatedReview = await reviewData.updateReview(req.params.id, review.gymId, review.classId, reviewText, rating);
+        const updatedReview = await reviewData.updateReview(req.params.id, review.gymId, review.classId, xss(reviewText), xss(rating));
         res.redirect('/myReviews');
       }
     } catch (error) {
