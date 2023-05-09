@@ -7,7 +7,8 @@ import {isValidBranch,
         isValidWebsite,
         isValidRole,
         isValidId,
-        isValidCapacity
+        isValidCapacity,
+        isValidUsername
 } from '../validateData.js';
 
 
@@ -266,15 +267,16 @@ const removeReviewdid = async (gymId,reviewId) => {
     const userCollection = await users();
     const theUser = await userCollection.findOne({username: username});
     if (theUser === null){throw "No user with that id";};
-    theUser._id = theUser._id.toString();
-    gymId = theUser.gym_id;
-    
-    let gymdetails = getGymById(gymId);
-    gymdetails.currentCapacity += 1; 
-    const updatedInfo = await Gym.findOneAndUpdate(
-      { _id: new ObjectId(_id) },
-      { $set: { currentCapacity: gymdetails.currentCapacity } },
-      { new: true }
+    let gymname = theUser.gym;
+
+    let gymCollection = await gyms();
+    let gymdetails = await getGymByBranch(gymname);
+
+    let currentCapacity = parseInt(gymdetails.currentCapacity)+1;
+    currentCapacity = currentCapacity.toString();
+    const updatedInfo = await gymCollection.findOneAndUpdate(
+      { _id: new ObjectId(gymdetails._id) },
+      { $set: { currentCapacity: currentCapacity } },
     );
     if (!updatedInfo) {
       throw 'Failed to update gym';

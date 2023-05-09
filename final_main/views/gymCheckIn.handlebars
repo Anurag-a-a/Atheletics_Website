@@ -1,9 +1,9 @@
 <h1>Check In</h1>
 
-<form id="checkin-form" class=" checkin">
+<form id="checkin-form" class=" checkin" method = "POST">
 Enter userName to Check In
 
-    <input type="text" name="username">
+    <input type="text" id="username" name="username">
 
     <button type="submit">
         checkIn
@@ -11,4 +11,11 @@ Enter userName to Check In
     
 
     <p>Current population: <span id="current-population">{{currentCapacity}}</span></p>
+
+    <div class="navigation">
+        <a class="go_home_link" href="/admin/adminhome">Go to Home Page</a>
+    </div>
+
 </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="/public/js/userCheckIn.js"></script>
