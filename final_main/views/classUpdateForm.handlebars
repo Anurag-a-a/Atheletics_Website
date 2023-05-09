@@ -10,24 +10,24 @@
 <div class="form-cont">
 	<form id="classUpdation" method="POST" class = "classes-form">
 		<label for="className">Class Name:</label>
-		<input type="text" id="className" name="className" required value="{{classDetails.className}}"><br><br>
+		<input type="text" id="className" placeholder="Name of the Class" name="className" required value="{{classDetails.className}}"><br><br>
 
 		<label for="date1">Date 1:</label>
 		<input type="date" id="date1" name="date" required value="{{	classDetails.slots.Date}}" ><br><br>
 
 		<label for="timings1">Timings 1:</label>
-		<input type="text" id="timings1" name="timings" required value = "{{ classDetails.slots.timing }}"><br><br>
+		<input type="text" id="timings1" name="timings" placeholder="HH:MM - HH:MM" required value = "{{ classDetails.slots.timing }}"><br><br>
 
 		<label for="instructor">Instructor:</label>
-		<input type="text" id="instructor" name="instructor" required value = " {{ classDetails.instructor }} "><br><br>
+		<input type="text" id="instructor" name="instructor" placeholder="Name of Instructor" required value = " {{ classDetails.instructor }} "><br><br>
 
 		<label for="description">Description:</label>
-		<input id="description" name="description" required value= " {{ classDetails.description }} "><br><br>
+		<input id="description" name="description" placeholder="Description of Class" required value= " {{ classDetails.description }} "><br><br>
 
 		<label for="maxCapacity">Max Capacity:</label>
-		<input id="maxCapacity" name="maxCapacity" required value= " {{ classDetails.classCapacity }} "><br><br>
+		<input id="maxCapacity" name="maxCapacity" placeholder="0-200" required value= " {{ classDetails.classCapacity }} "><br><br>
 
-		<input type="submit" id = "updateB"value = "updateClass" class="clickbutton">
+		<input type="submit" id = "updateB" value = "updateClass" class="clickbutton">
 	        {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
