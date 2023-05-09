@@ -50,7 +50,7 @@ export const isValidPhoneNumber = (phoneNumber) => {
     if (!(typeof phoneNumber == 'string')) { throw "Error: phoneNumber must be a string"; };
     phoneNumber = phoneNumber.trim();
     if (phoneNumber.length === 0) { throw "Error: phoneNumber cannot be empty"; };
-    if (phoneNumber.length > 10) { throw "Error: phoneNumber cannot be more than 10 digits"; };
+    if (phoneNumber.length > 10 || phoneNumber.length < 9 ) { throw "Error: phoneNumber cannot be more than 10 digits"; };
     let format = /^[0-9]+$/;
     if (!format.test(phoneNumber)) { throw "Error: PhoneNumbers can contain only numbers"; };
     return phoneNumber;

@@ -37,12 +37,12 @@ router.route('/addGym').get(middleware.userRestrictMiddleware,async (req, res) =
 
 router.route('/checkIn').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
-    let branchName = "Hoboken"
+    let branchName = "hoboken";
     let gymDetails = await gymData.getGymByBranch(branchName);
     return res.render('gymCheckIn', { title: 'Gym Brat', currentCapacity : gymDetails.currentCapacity});
   } 
   catch (e) {
-    return res.status(500).json({ error: e.message });
+    return res.render('gymCheckIn', { title: 'Gym Brat'});
   }
 });
 
