@@ -8,6 +8,8 @@
         <li><a id="reviews" href="/myReviews">My Reviews</a></li>
         <li><a id="amenities_link" href="/user/amenities">Amenities</a></li>
         <li><a id="location_link" href="/user/locations">Locations</a></li>
+        <li><a href="/myAppointments/add">Register for class</a></li>
+
         <li><a id="log_out_link" href="/user/logout">Log Out</a></li>
         
     </ol>
@@ -20,13 +22,13 @@
                 <option value="{{this.branchName}}">{{this.branchName}}</option>
             {{/each}}
     </select>
-    <p>Density: <span id="current-density"></span></p>
-    <hr>
+    <p>Density: <span id="current-density">0</span></p>
     <h3>Classes and events</h3>
     <p><a id="class_link" href="/classandevent">Go to class/Event Page</a></p>
     <hr>
     <div id="workout_suggestions">
         <h3>Workout suggestions</h3><br>
+    <hr>
         <h4>Shoulder and back workout</h4>
         <img class="images" alt="Arms only birddog" src="/public/images/Arms_only_birddog.jpg">
         <p>Arms only birddog</p>
