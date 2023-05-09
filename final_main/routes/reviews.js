@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 import { reviewData, userData, appointmentData, gymData, classData } from '../data/index.js';
-import { ensureAuthenticated } from '../middleware.js';
+import * as middleware from '../middleware.js';
 
-router.route('/').get(ensureAuthenticated, async (req, res) => {
+router.route('/').get(middleware.ensureAuthenticated, async (req, res) => {
   try {
     const user = await userData.getUserbyId(req.user.id);
     const userReviews = user.MyReviews;
@@ -31,7 +31,7 @@ router.route('/').get(ensureAuthenticated, async (req, res) => {
 
 router
   .route('/add')
-  .get(ensureAuthenticated, async (req, res) => {
+  .get(middleware.reviewMiddleware, async (req, res) => {
     try {
       const allBranches = await gymData.getAllGyms();
 
@@ -56,7 +56,7 @@ router
       res.status(500).json({ error: error });
     }
   })
-  .post(ensureAuthenticated, async (req, res) => {
+  .post(middleware.reviewMiddleware, async (req, res) => {
     try {
       const { gymId, reviewText, rating } = req.body;
       console.log(gymId);
@@ -98,7 +98,7 @@ router
 
   router
   .route('/update/:id')
-  .get(async (req, res) => {
+  .get(middleware.reviewMiddleware,async (req, res) => {
     try {
       const review = await reviewData.getReviewById(req.params.id);
       const gym = await gymData.getGymById(review.gymId);

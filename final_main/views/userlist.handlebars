@@ -4,17 +4,23 @@
     <h2>Users currently in the system</h2><br><br>
     {{#each user}}
         {{#if (eqUser this.role 'user')}}
+            <br>
+            <hr>
             <h3>{{this.firstName}} {{this.lastName}}</h3>
-            <p>{{this.sex}}</p>
-            <p>{{this.dob}}</p>
-            <p>{{this.email}}</p>
-            <p>{{this.phoneNumber}}</p>
-            <p>{{this.address}}</p>
-            <p>{{this.username}}</p>
-            <p>{{this.emergencyContactName}}</p>
-            <p>{{this.emergencyContactPhoneNumber}}</p>
-            <p>{{this.membershipPlanDetails}}</p>
-            <p>{{this.joinedPlanDate}}</p>
+            <p>Sex: {{this.sex}}</p>
+            <p>Date of Birth: {{this.dob}}</p>
+            <p>Email: {{this.email}}</p>
+            <p>Phone Number: {{this.phoneNumber}}</p>
+            <p>Address:</p>
+            <p>StreetName: {{this.address.StreetName}}</p>
+            <p>City: {{this.address.city}}</p>
+            <p>State: {{this.address.state}}</p>
+            <p>ZipCode: {{this.address.zip}}</p>
+            <p>Username: {{this.username}}</p>
+            <p>Emergency Contact Name: {{this.emergencyContactName}}</p>
+            <p>Emergency Contact PhoneNumber: {{this.emergencyContactPhoneNumber}}</p>
+            <p>Plan: {{this.membershipPlanDetails}}</p>
+            <p>Joined Date: {{this.joinedPlanDate}}</p>
         {{/if}}
     {{/each}}
         
