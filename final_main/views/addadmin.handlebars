@@ -1,6 +1,7 @@
 <main class="main">
     <br>
     <a class="go_home_link" href="/admin/adminhome">Home Page</a><br>
+    <div class=" classes">
     <p>Fill up the details below to add admin user</p>
      {{#if error }}
             <div class="form-group">
@@ -9,6 +10,7 @@
                 </div>
             </div>
     {{/if}}
+    <div class="form-cont">
     <form id ="joinNow-form" method="POST" action="/admin/addadmin">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName"/>
@@ -117,6 +119,6 @@
         <input id="submit" class="clickbutton" type="submit" value="Sign Up"/>
         <br>    
     </form>
-   
-    <hr>
+    </div>
+</div>   
 </main>

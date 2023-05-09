@@ -1,14 +1,15 @@
 <br><br>
 <a class="classes_link" href="/gym/gymDetails">All Gyms</a><br>
-<a class="go_home_link" href="/admin/adminhome">Go to Home Page</a>
-<div class = "gyms">
+<a class="go_home_link" href="/admin/adminhome">Home Page</a>
+<div class = "classes">
 <br><br><br>
+<div class="form-cont">
 <form action="/gym/addGym" id="gymCreation" method="post">
     <label for="branchName">Branch Name:</label><br>
-    <input type="text" id="branchName" name="branchName" required><br>
+    <input type="text" id="branchName" name="branchName" placeholder = "Branch Name" required><br>
 
     <label for="website">Website:</label><br>
-    <input type="url" id="website" name="website" required><br>
+    <input type="url" id="website" name="website" placeholder = "https://www.example.com" required><br>
 
     <label for="address">Address:</label><br>
     
@@ -25,15 +26,15 @@
     <input type="text" id="zipCode" name="zipCode" placeholder="00000" required></input><br>
 
     <label for="phoneNumber">Phone Number:</label><br>
-    <input type="tel" id="phoneNumber" name="phoneNumber" required><br>
+    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder = "0123456789" required><br>
 
     <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br>
+    <input type="email" id="email" name="email" placeholder = "abc@def.ghi" required><br>
 
-    <label for="maxCapacity">Max Population Density:</label><br>
-    <input type="number" id="maxCapacity" name="maxCapacity" required><br>
+    <label for="maxCapacity">Max Capacity:</label><br>
+    <input type="number" id="maxCapacity" placeholder="1-200" name="maxCapacity" required><br>
 
-    <input type="submit" value="createGym">
+    <input type="submit" value="createGym" class="clickbutton">
         {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -43,6 +44,7 @@
         {{/if}}    
 
 </form>
+</div>
 </div>
 <div class="navigation">
     

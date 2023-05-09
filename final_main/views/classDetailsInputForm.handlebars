@@ -1,5 +1,13 @@
+<br><br><br>
+
+<div class="navigation">
+    <a class="classes_link" href="/class/classDetails">All classes</a>
+    <a class="go_home_link" href="/admin/adminHome">Home Page</a><br>
+</div>
+
 <div class = "classes">
 <h1>Create Event</h1>
+<div class = "form-cont"> 
 	<form id="classCreation" method="POST" class="classes-form" action="classCreation">
 		<label for="className">Class Name:</label>
 		<input type="text" id="className" name="className" required></input><br><br>
@@ -7,7 +15,7 @@
 		<label for="date1">Date:</label>
 		<input type="date" id="date1" name="date" required></input><br><br>
 
-		<label for="timings1">1 Time:</label>
+		<label for="timings1">Time:</label>
 		<input type="text" id="timings1" name="timings" required></input><br><br>
 				
 		<label for="instructor">Instructor:</label>
@@ -19,7 +27,7 @@
 		<label for="maxCapacity">Max Capacity:</label>
 		<input id="maxCapacity" name="maxCapacity" required></input><br><br>
 
-		<input type="submit" value="addClass"></input>
+		<input type="submit" value="addClass" class="clickbutton"></input>
 	        {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -30,9 +38,5 @@
 
 	</form>
 </div>
-
-<div class="navigation">
-    <a class="classes_link" href="/class/classDetails">back to all classes</a>
-    <a class="go_home_link" href="/">Go to Home Page</a><br>
 </div>
 	<script src="/public/js/classFormValidation.js"></script>
