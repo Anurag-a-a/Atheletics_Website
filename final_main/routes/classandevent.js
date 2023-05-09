@@ -86,7 +86,6 @@ router
             res.status(500).json({ error: error.toString() });
         }
     });
-
     router.route('/reviews_add').post(ensureAuthenticated, async (req, res) => {
       try {
           const branchName = 'Union City';
@@ -94,34 +93,43 @@ router
           const gymId = gym._id.toString();
 
           const { classId, reviewText, rating } = req.body;
+          console.log(classId)
+          console.log(reviewText)
+          console.log(rating)
           if (!reviewText) {
               throw "You must provide review information";
           }
 
           const user = await userData.getUserbyId(req.user.id);
           const userReviews = user.MyReviews;
+          console.log(userReviews);
   
           let hasReviewed = false;
           for (const reviewId of userReviews) {
               const review = await reviewData.getReviewById(reviewId.toString());
+              console.log(review)
               if (review.gymId.toString() === gymId && review.classId !== null && review.classId.toString() === classId) {
                   hasReviewed = true;
                   break;
               }
           }
   
-          if (hasReviewed) {
-              throw 'You have already reviewed this class';
+          if (hasReviewed === true) {
+            return res.json({ success: false, message: 'You have already reviewed this class' });
           }
   
           const newReview = await reviewData.addReview(gymId, classId, reviewText);
           if (!newReview) {
+              console.error('Error: newReview is null');
               throw 'Failed to create a new review';
           }
+          console.log(newReview);
           await userData.addReviewId(user._id.toString(), newReview._id.toString());
-          return res.json({ added: true });
+        req.session.forceReload = true;
+        res.status(200).json({ success: true, redirect: '/classandevent' });
+
       } catch (error) {
-          res.status(500).json({ error: error.toString() });
+        res.status(500).json({ success: false, message: error.toString() });
       }
   });
 // router.get('/add', ensureAuthenticated, (req, res) => {

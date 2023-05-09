@@ -11,20 +11,20 @@
         <li><a href="/myAppointments/add">Register for class</a></li>
 
         <li><a id="log_out_link" href="/user/logout">Log Out</a></li>
-        
+
     </ol>
     <br><br>
     <h3>Current gym density</h3>
     <label for="location-list">Choose the gym location to see it's current density: </label>
-        <select name="location-list" id="location-list">
-            <option value="choose">Choose location here</option>
-            {{#each gym}}
-                <option value="{{this.branchName}}">{{this.branchName}}</option>
-            {{/each}}
+    <select name="location-list" id="location-list">
+        <option value="choose">Choose location here</option>
+        {{#each gym}}
+        <option value="{{this.branchName}}">{{this.branchName}}</option>
+        {{/each}}
     </select>
     <p>Density: <span id="current-density">0</span></p>
     <h3>Classes and events</h3>
-    <p><a id="class_link" href="/classandevent">Go to class/Event Page</a></p>
+    <p><a id="class_link" href="/classandevent">Go to Class/Event Page</a></p>
     <hr>
     <div id="workout_suggestions">
         <h3>Workout suggestions</h3><br>
