@@ -41,7 +41,7 @@ router.route('/createClass').get(middleware.userRestrictMiddleware, async (req, 
       classData.slots = isValidTimeSlot(slots);
       classData.instructor = isValidName(classData.instructor);
       classData.description = isValidDescription(classData.description);
-      classData.classCapacity = isValidClassCapacity(classData.maxCapacity);
+      classData.maxCapacity = isValidClassCapacity(classData.maxCapacity);
     } catch (e) {
       return res
         .status(400)
@@ -56,7 +56,7 @@ router.route('/createClass').get(middleware.userRestrictMiddleware, async (req, 
         classData.slots,
         classData.instructor,
         classData.description,
-        classData.classCapacity
+        classData.maxCapacity
       );
 
       return res

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.updatebtn').click(function(event) {
+    $('.det-updatebtn').click(function(event) {
         event.preventDefault(); 
       let gymId = $(this).data('gym-id');
       

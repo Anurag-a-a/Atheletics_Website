@@ -118,6 +118,7 @@ export const update = async (
         slots: slots,
         instructor: instructor,
         description: description,
+        classCapacity: classCapacity,
         registeredUsers: existingClass.registeredUsers,
         reviews: existingClass.reviews,
     }
