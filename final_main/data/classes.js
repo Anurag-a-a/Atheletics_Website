@@ -44,6 +44,8 @@ export const createClass = async (
 
     // }
 
+    let registeredUsers = []
+    let reviewIds = []
     let newClass = {
         className: className,
         slots: slots,
