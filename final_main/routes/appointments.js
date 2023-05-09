@@ -121,6 +121,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
     }
     const newAppointment = await appointmentData.addAppointment(classId, selectedTimeSlotObj, cancelledOrNot);
     await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
+    await classData.updateRegisteredUsers(classId, req.user.id, 'add');
     req.session.forceReload = true;
     // res.redirect('/appointments/success');
     res.redirect('/myAppointments');
@@ -142,6 +143,7 @@ router.route('/delete/:id').post(ensureAuthenticated, async (req, res) => {
   try {
     const deletedAppointment = await appointmentData.removeAppointment(req.params.id);
     await userData.updateAppointment(req.user.id, req.params.id, 'delete');
+    await classData.updateRegisteredUsers(deletedAppointment.classId.toString(), req.user.id, 'delete');
     req.session.forceReload = true;
     res.redirect('/myAppointments/deleted');
   } catch (error) {
