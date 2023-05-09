@@ -255,7 +255,7 @@ export const isValidreviewText = (reviewText) => {
 // validate Rating
 export const isValidRating = (rating) => {
     if (!rating) throw 'You must provide a rating';
-    if (typeof rating !== 'number') throw 'yrating must be a number'
+    if (typeof parseInt(rating) !== 'number') throw 'yrating must be a number'
     if (rating < 0 || rating > 5 || (!Number.isInteger(rating * 10) && !Number.isInteger(rating))) {
         throw 'rating must between 0-5 and rating must be integer or one decimal place float';
     }

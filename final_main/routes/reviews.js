@@ -56,7 +56,7 @@ router
   .post(middleware.reviewMiddleware, async (req, res) => {
     try {
       const { gymId, reviewText, rating } = req.body;
-      const parsedRating = parseFloat(rating);
+      let parsedRating = parseFloat(rating);
   
       const user = await userData.getUserbyId(req.user.id);
       const userReviews = user.MyReviews;
@@ -75,7 +75,7 @@ router
       } else if (hasReviewedGym) {
         res.status(400).render('reviews_add', {error: 'You have already reviewed this gym' });
       } else {
-        const ratingNumber = parseFloat(rating);
+        let ratingNumber = parseFloat(rating);
   
         const newReview = await reviewData.addReview(gymId, null, xss(reviewText), xss(ratingNumber));
         await userData.addReviewId(user._id.toString(), newReview._id.toString());
