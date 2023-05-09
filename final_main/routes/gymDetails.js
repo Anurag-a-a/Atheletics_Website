@@ -129,7 +129,7 @@ router.route('/addGym').post(middleware.userRestrictMiddleware,async(req,res) =>
       gymInfo.phoneNumber,
       gymInfo.email,
       gymInfo.maxCapacity,
-      gymInfo.role,        
+      gymInfo.role,
     );
       
     return res

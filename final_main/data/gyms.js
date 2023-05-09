@@ -1,4 +1,6 @@
-import {gyms,users} from '../config/mongoCollections.js';
+import {attendance} from '../config/mongoCollections.js';
+import {gyms}from '../config/mongoCollections.js';
+import {users}from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import {isValidBranch,
         isValidEmail,
@@ -269,6 +271,11 @@ const removeReviewdid = async (gymId,reviewId) => {
     if (theUser === null){throw "No user with that id";};
     let gymname = theUser.gym;
 
+    let userInsertion = await createattendance(username)
+    if(!userInsertion)
+    {
+      throw 'user already present in gym'
+    }
     let gymCollection = await gyms();
     let gymdetails = await getGymByBranch(gymname);
 
@@ -283,8 +290,41 @@ const removeReviewdid = async (gymId,reviewId) => {
     }
     return updatedInfo;
   };
-
-
-
- 
   
+export const createattendance = async(userName)=>  {
+      try {
+        userName = isValidUsername(userName);
+     
+        const userList = await getAllUserName();
+        for (let user of userList) {
+          if (user.userName === userName) {
+            throw new Error(`UserName ${userName} already exists in attendance`);
+          }
+        }
+        
+        const attendanceCollection = await attendance();
+        
+        const newUser = {
+          userName}
+        const insertInfo = await attendanceCollection.insertOne(newUser);
+
+        if (! insertInfo.acknowledged) {
+          throw new Error('Could not add User');
+        }
+      return true;
+    } 
+    catch (err) {
+      throw err; 
+    }
+};
+
+export const getAllUserName = async () => {
+  const attendanceCollection = await attendance();
+  let userList = await attendanceCollection.find({}).toArray();
+  if(userList.length == 0){return userList;};
+  userList = userList.map((element) => {
+    element._id = element._id.toString();
+    return element;
+  });
+  return userList;
+};
