@@ -1,7 +1,7 @@
 <main class="main">
     <br>
     <a class="go_home_link" href="/user">Home Page</a><br>
-    <h1>Update Form</h1>
+    <h1 class = "center textCenter">Update Form</h1><br>
      {{#if error }}
             <div class="form-group">
                 <div class="alert alert-danger">
@@ -9,6 +9,7 @@
                 </div>
             </div>
     {{/if}}
+    <div class ="class-form class-update-form form-cont center">
     <form id ="update-form" method="POST" action="/user/updateinfo">
         <label for="firstName">Enter you first name: </label>
         <input id ="firstName" type="text" name="firstName" value="{{firstName}}", placeholder="{{firstName}}"/>
@@ -97,6 +98,6 @@
         <input id="submit" class="clickbutton" type="submit" value="Update"/>
         <br>    
     </form>
-   
+   </div>
     <hr>
 </main>
