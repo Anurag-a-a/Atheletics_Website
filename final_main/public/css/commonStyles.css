@@ -362,3 +362,11 @@ button:hover {
 .Info{
   opacity: 0.8;
 }
+
+.center {
+  margin: auto;
+  width: 60%;
+}
+.textCenter{
+  text-align: center;
+}

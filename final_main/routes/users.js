@@ -326,6 +326,7 @@ router.route('/signin').post(async (req, res) => {
       lastName: theSessionUser.lastName,
       sex: theSessionUser.sex,
       dob: theSessionUser.dob,
+      email: theSessionUser.email,
       username: theSessionUser.username,
       ph: theSessionUser.phoneNumber,
       streetName: theSessionUser.address.streetName,
