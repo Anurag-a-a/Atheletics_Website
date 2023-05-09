@@ -226,7 +226,7 @@ h1 {
 
 label {
   font-size: 1.2rem;
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-bottom: 0.5rem;
 }
 
@@ -267,6 +267,10 @@ button:hover {
 #access_deniedh1{
   text-align: center;
   color: #8b0000;
+}
+#current-density{
+  font-weight: bold;
+  
 }
 
 

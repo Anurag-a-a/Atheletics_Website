@@ -179,7 +179,8 @@ router.route('/signin').post(async (req, res) => {
         //code here for Getting the main page of the gym
         // console.log(req.session.user);
         const theSessionUser = await userData.getUserbyId(req.session.user.id);
-        return res.render('protectedUserHomePage',{title: "Gym Brat", firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, partial: false});
+        const gyms = await gymData.getAllGyms();
+        return res.render('protectedUserHomePage',{title: "Gym Brat", firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, gym: gyms, partial: 'gymDensity'});
     });
 
     router.route('/userProfile').get(middleware.userProfilePageMiddleware, async (req, res) => {
@@ -459,7 +460,7 @@ router.route('/signin').post(async (req, res) => {
       return res.render('error', { title: 'Gym Brat'});
   });
 
-  router.route('/userlist').get(middleware.userListMiddleware,async (req, res) => {
+  router.route('/userlist').get(middleware.userRestrictMiddleware,async (req, res) => {
     try {
       const userList = await userData.getAllUser();
       return res.render('userlist', { title: 'Gym Brat', user : userList });
@@ -467,6 +468,17 @@ router.route('/signin').post(async (req, res) => {
     catch (e) {
       return res.status(500).json({ error: e.message });
     }
+  });
+
+  router.route('/gymdensity').post(async (req, res) => {
+    try{
+    if(req.body.location == 'choose'){return res.json(' ');}
+    const gym = await gymData.getGymByBranch(req.body.location);
+    const density = gym.currentCapacity;
+    res.json(density.toString());
+  }catch(e){
+    res.status(500).send('Failed to retrieve gym capacity');
+  };
   });
   
 

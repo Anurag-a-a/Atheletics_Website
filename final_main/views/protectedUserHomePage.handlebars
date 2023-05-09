@@ -13,7 +13,14 @@
     </ol>
     <br><br>
     <h3>Current gym density</h3>
-    <p>List location wise gym density. after gym db and management page is complete</p>
+    <label for="location-list">Choose the gym location to see it's current density: </label>
+        <select name="location-list" id="location-list">
+            <option value="choose">Choose location here</option>
+            {{#each gym}}
+                <option value="{{this.branchName}}">{{this.branchName}}</option>
+            {{/each}}
+    </select>
+    <p>Density: <span id="current-density"></span></p>
     <hr>
     <h3>Classes and events</h3>
     <p><a id="class_link" href="/classandevent">Go to class/Event Page</a></p>

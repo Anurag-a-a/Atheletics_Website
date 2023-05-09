@@ -48,8 +48,8 @@ if (req.session.user) {
       return res.redirect('/admin/adminhome');
     } else if (req.session.user.role === 'user') {
       return res.redirect('/user/protectedUserHomePage');
-    }
-}
+    };
+};
 if(req.url === '/') return res.redirect('/user');
 next();
 };
@@ -64,7 +64,8 @@ if(req.session.user.role === 'admin') {
 };
 next();
 };
-export const adminHomePageMiddleware = (req, res, next) => {
+
+export const userRestrictMiddleware  = (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/user/signIn');
   };
@@ -91,7 +92,6 @@ next();
 export const ensureAuthenticated = (req, res, next) => {
 if (req.session.user) {
   req.user = req.session.user;
-  // console.log('Session User:', req.session.user);
   return next();
 }
 res.redirect('/user/signIn');
@@ -103,14 +103,17 @@ if (!req.session.user) {
 };
 next();
 };
-
-export const userListMiddleware  = (req, res, next) => {
+export const reviewMiddleware  = (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/user/signIn');
   };
-  if(req.session.user.role === 'user') {
+  if(req.session.user.role === 'admin') {
     return res.redirect('/user/error')
   };
   next();
 };
+
+
+
+
 

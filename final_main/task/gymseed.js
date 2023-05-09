@@ -3,9 +3,17 @@ import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import * as reviewData from '../data/reviews.js';
 const db = await dbConnection();
 
-let gym = undefined;
+let gym1 = undefined;
+let gym2 = undefined;
 try{
-  gym = await gymData.createGym( 'Union City', 'https://www.union.com',{ streetName: '815 E Hudson st',    city: 'Union City',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, 'admin' ) ;
+  gym1 = await gymData.createGym( 'Union City', 'https://www.union.com',{ streetName: '815 E Hudson st',    city: 'Union City',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, 'admin' ) ;
+  console.log(`${gym.name} successfully created \n`,gym);   
+}
+catch(e){
+   console.log("Sort and filter should not give errorfor any of the three test cases: ",e)
+}
+try{
+  gym2 = await gymData.createGym( 'Hoboken', 'https://www.union.com',{ streetName: '815 E Hudson st',    city: 'Union City',    state: 'New Jersey',    zip: '07305'}, '5513445955', 'anu14298@gmail.com', 70, 'admin' ) ;
   console.log(`${gym.name} successfully created \n`,gym);   
 }
 catch(e){

@@ -2,6 +2,7 @@
 import {Router} from 'express';
 const router = Router();
 import * as classes from '../data/classes.js';
+import * as middleware from '../middleware.js';
 import {
   isValidClassCapacity,
   isValidClassName,
@@ -11,7 +12,7 @@ import {
   isValidId
 } from '../validateData.js';
 
-router.route('/createClass').get(async (req, res) => {
+router.route('/createClass').get(middleware.userRestrictMiddleware, async (req, res) => {
   try {
     return res.render('classDetailsInputForm', { title: 'Create Class'});
   } 
@@ -79,7 +80,7 @@ router.route('/classDetails').get(async (req, res) => {
 });
 
 
-router.route('/updateClass/:id').get(async (req, res) => {
+router.route('/updateClass/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
     let classDetails = await classes.getClassbyId(id);
@@ -96,7 +97,7 @@ router.route('/updateClass/:id').get(async (req, res) => {
   }
 });
 
-router.route('/deleteClass/:id').get(async (req, res) => {
+router.route('/deleteClass/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
     let classDetails = await classes.deleteClassById(id);
