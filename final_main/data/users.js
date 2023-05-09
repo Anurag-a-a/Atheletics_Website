@@ -491,23 +491,11 @@ export const addReviewId = async (userId, reviewId) => {
   return updatedInfo.value;
 };
 
-export const updatePassword = async (cpassword, npassword) => {
-  cpassword = isValidPassword(cpassword);
+export const updatePassword = async (id,npassword) => {
+  id = isValidId(id);
   npassword = isValidPassword(npassword);
   const userCollection = await users();
   const userList = await getAllUser();
-  let comparePassword = false;
-  let id = "";
-  for(let i=0; i<userList.length; i++){
-    try {
-      comparePassword = await bcrypt.compare(cpassword, userList[i]['hashedPassword']);
-      // console.log(comparePassword)
-    }catch(e){
-      throw "Internal Server Error";
-    };
-    if(comparePassword){ id = userList[i]._id.toString(); break;};
-};//close for
-  if(!comparePassword){throw "Error: Current Password entered is wrong. Try Again";};
   const hashedPassword = await bcrypt.hash(npassword, saltRounds);
   const updatePasswordUser = {
   hashedPassword: hashedPassword

@@ -324,7 +324,7 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
       };
       try{
-        const result = userData.updatePassword(password,npassword);
+        const result = userData.updatePassword(req.session.user.id,npassword);
         if(result){
           req.session.destroy();
           return res.status(400).render('signIn', {title: "Gym Brat", partial: 'alertPasswordChange'});
