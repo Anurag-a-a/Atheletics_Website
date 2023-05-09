@@ -15,7 +15,7 @@ import {isValidBranch,
   isValidUsername
 } from '../validateData.js';
 
-router.route('/gymDetails').get(async (req, res) => {
+router.route('/gymDetails').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const gymDetails = await gymData.getAllGyms();
     return res.render('allGyms', { title: 'Gym Brat', gyms : gymDetails });
