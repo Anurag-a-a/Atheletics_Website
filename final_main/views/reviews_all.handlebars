@@ -5,7 +5,9 @@
 <br>
 <a href="/myReviews/add">Add Gym Review</a>
 {{#if reviews}}
+
   {{#each reviews}}
+  <div class="detailscont cls-detail">
     <div class="myReviews">
       {{!-- {{#if this.branchName}}
         <p>Branch Name: {{this.branchName}}</p>
@@ -21,7 +23,9 @@
         <button type="submit">Delete</button>
       </form> --}}
     </div>
+    </div>
   {{/each}}
+  
 {{else}}
   <p>No reviews found</p>
 {{/if}}

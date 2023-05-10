@@ -2,6 +2,9 @@
     <a class="go_home_link" href="/user/protectedUserHomePage">Home Page</a><br>
     <a href='/user/updateinfo' id="update_info" class="Info">Edit Info</a>
     <a href='/user/updatepassword'class = "Info" id="update_password">Change Password</a>
+    {{#if user}}
+        <a href='/user/updateplan' class = "Info">Modify Plan</a>
+    {{/if}}
     <div class="prof">
     <div class="prof-cont">
     <h2>Personal Info</h2>
@@ -29,7 +32,6 @@
         <h2>Gym Membership Plan</h2>
         <p>{{plan}}</p>
         <p>You current plan will expire on: {{expire}}</p>
-        <a href='/user/updateplan'><button id="plan_update_button">Modify Plan</button></a>
     {{/if}}
 </div>   
 
