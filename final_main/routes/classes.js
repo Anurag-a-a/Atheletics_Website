@@ -11,6 +11,7 @@ import {
   isValidName,
   isValidId
 } from '../validateData.js';
+import xss from 'xss';
 
 router.route('/createClass').get(middleware.userRestrictMiddleware, async (req, res) => {
   try {
@@ -83,8 +84,8 @@ router.route('/classDetails').get(async (req, res) => {
 router.route('/updateClass/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
-    let classDetails = await classes.getClassbyId(id);
-    let datefor = new Date(classDetails.slots.Date)
+    let classDetails = await classes.getClassbyId(xss(id));
+    let datefor = new Date(xss(classDetails.slots.Date));
     const year = datefor.getFullYear();
     const month = datefor.getMonth() + 1;
     const day = datefor.getDate();
@@ -100,7 +101,7 @@ router.route('/updateClass/:id').get(middleware.userRestrictMiddleware,async (re
 router.route('/deleteClass/:id').delete(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
-    let classDetails = await classes.deleteClassById(id,'admin');
+    let classDetails = await classes.deleteClassById(xss(id),'admin');
     return res.render('classDetails', { title: 'Class Details',classDetails: classDetails});
   } 
   catch (e) {

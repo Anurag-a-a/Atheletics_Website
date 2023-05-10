@@ -22,7 +22,7 @@ router.route('/').get(middleware.landingPageMiddleware, async (req, res) => {
 });
 
 router.route('/adminhome').get(middleware.userRestrictMiddleware,async (req, res) => {
-    const theSessionUser = await userAdminData.getUserbyId(req.session.user.id);
+    const theSessionUser = await userAdminData.getUserbyId(xss(req.session.user.id));
     return res.render('adminHomePage',{title: "Gym Brat",firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, partial: false});
 });
 
@@ -108,7 +108,7 @@ router.route('/addadmin').post(async (req, res) => {
         xss(plan)
       );
       if(!userReturnObject) {return res.status(500).json({error: "Internal Server Error"});};
-      const theSessionUser = await userAdminData.getUserbyId(req.session.user.id);
+      const theSessionUser = await userAdminData.getUserbyId(xss(req.session.user.id));
        return res.render('adminHomePage',{title: "Gym Brat",firstName: theSessionUser.firstName, lastName: theSessionUser.lastName, partial: 'addAdmin'});
     }catch(e){
       return res.status(400).render('addadmin', {title: "Gym Brat",error: e, partial: 'signUpPartial'});

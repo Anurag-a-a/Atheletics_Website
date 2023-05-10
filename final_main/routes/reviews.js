@@ -6,18 +6,18 @@ import xss from 'xss';
 
 router.route('/').get(middleware.ensureAuthenticated, async (req, res) => {
   try {
-    const user = await userData.getUserbyId(req.user.id);
+    const user = await userData.getUserbyId(xss(req.user.id));
     const userReviews = user.MyReviews;
     const allReviews = await Promise.all(userReviews.map(async (reviewId) => {
-      const review = await reviewData.getReviewById(reviewId);
+      const review = await reviewData.getReviewById(xss(reviewId));
       
       if (review.gymId) {
-        const gym = await gymData.getGymById(review.gymId);
+        const gym = await gymData.getGymById(xss(review.gymId));
         review.branchName = gym.branchName;
       }
       
       if (review.classId) {
-        const classInfo = await classData.getClassbyId(review.classId);
+        const classInfo = await classData.getClassbyId(xss(review.classId));
         review.className = classInfo.className;
       }
       
@@ -37,7 +37,7 @@ router
       const allBranches = await gymData.getAllGyms();
 
       // Get the user's reviews
-      const user = await userData.getUserbyId(req.user.id);
+      const user = await userData.getUserbyId(xss(req.user.id));
       const userReviews = user.MyReviews;
       const reviewedGymIds = new Set();
 
@@ -58,12 +58,12 @@ router
       const { gymId, reviewText, rating } = req.body;
       let parsedRating = parseFloat(rating);
   
-      const user = await userData.getUserbyId(req.user.id);
+      const user = await userData.getUserbyId(xss(req.user.id));
       const userReviews = user.MyReviews;
       let hasReviewedGym = false;
   
       for (const reviewId of userReviews) {
-        const review = await reviewData.getReviewById(reviewId.toString());
+        const review = await reviewData.getReviewById(xss(reviewId.toString()));
         if (review.gymId.toString() === gymId && review.classId === null) {
           hasReviewedGym = true;
           break;
@@ -77,8 +77,8 @@ router
       } else {
         let ratingNumber = parseFloat(rating);
   
-        const newReview = await reviewData.addReview(gymId, null, xss(reviewText), xss(ratingNumber));
-        await userData.addReviewId(user._id.toString(), newReview._id.toString());
+        const newReview = await reviewData.addReview(xss(gymId), null, xss(reviewText), xss(ratingNumber));
+        await userData.addReviewId(xss(user._id.toString()), xss(newReview._id.toString()));
         res.redirect('/myReviews');
       }
     } catch (error) {
@@ -90,13 +90,13 @@ router
   .route('/update/:id')
   .get(middleware.reviewMiddleware,async (req, res) => {
     try {
-      const review = await reviewData.getReviewById(req.params.id);
-      const gym = await gymData.getGymById(review.gymId);
+      const review = await reviewData.getReviewById(xss(req.params.id));
+      const gym = await gymData.getGymById(xss(review.gymId));
       const branchName = gym.branchName;
       let className = null;
 
       if (review.classId) {
-        const classInfo = await classData.getClassbyId(review.classId);
+        const classInfo = await classData.getClassbyId(xss(review.classId));
         className = classInfo.className;
       }
 
@@ -107,7 +107,7 @@ router
   })
   .post(async (req, res) => {
     try {
-      const review = await reviewData.getReviewById(req.params.id);
+      const review = await reviewData.getReviewById(xss(req.params.id));
       const { reviewText } = req.body;
       let rating = null;
   
@@ -122,7 +122,7 @@ router
           }
         }
   
-        const updatedReview = await reviewData.updateReview(req.params.id, review.gymId, review.classId, xss(reviewText), xss(rating));
+        const updatedReview = await reviewData.updateReview(xss(req.params.id), xss(review.gymId), xss(review.classId), xss(reviewText), xss(rating));
         res.redirect('/myReviews');
       }
     } catch (error) {
