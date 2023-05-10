@@ -28,14 +28,10 @@
 		<input id="maxCapacity" name="maxCapacity" placeholder="0-200" required></input><br><br>
 
 		<input type="submit" value="addClass" class="clickbutton"></input>
-	        {{#if error }}
-            <div class="form-group">
-                <div class="alert alert-danger">
-                    <p>{{ error }} </p>
-                </div>
-            </div>
-        {{/if}}    
 
+    <div class="form-group hidden" id="error-container">
+        <div class="alert alert-danger text-goes-here1"></div>
+    </div>
 	</form>
 </div>
 </div>

@@ -44,7 +44,7 @@ function isValidDate(Date1){
   return Date1;
 }
 function isValidTime(timing){
-  const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
+  const timeFormat = /^(\d{2}:\d{2}) - (\d{2}:\d{2})$/;
   const trimmedTiming = timing.trim();
   const match = trimmedTiming.match(timeFormat);
   if (!match) throw 'timing must be in the format HH:mm - HH:mm (24-hour format)';
@@ -74,7 +74,7 @@ if(createForm) {
   let descriptionInput = document.getElementById('description');
   let maxCapacityInput = document.getElementById('maxCapacity');
   let errorContainer = document.getElementById('error-container');
-  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here1')[0];
 
 
   createForm.addEventListener('submit', (event) => {
@@ -111,7 +111,7 @@ if(updateForm) {
   let descriptionInput = document.getElementById('description');
   let maxCapacityInput = document.getElementById('maxCapacity');
   let errorContainer = document.getElementById('error-container');
-  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here')[0];
+  let errorTextElement = errorContainer.getElementsByClassName('text-goes-here1')[0];
 
 
   updateForm.addEventListener('submit', (event) => {

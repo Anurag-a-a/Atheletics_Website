@@ -283,7 +283,7 @@ export const isValidTimeSlot = (selectedTimeSlot) => {
     if (!dateFormat.test(trimmedDate)) throw 'Date must be in the format MM/DD/YYYY';
 
     // Check timing format and constraints
-    const timeFormat = /^(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})$/;
+    const timeFormat = /^(\d{2}:\d{2}) - (\d{2}:\d{2})$/;;
     const trimmedTiming = timing.trim();
     const match = trimmedTiming.match(timeFormat);
     if (!match) throw 'timing must be in the format HH:mm - HH:mm (24-hour format)';
