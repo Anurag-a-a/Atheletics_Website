@@ -1,14 +1,17 @@
 <br>
 <br>
 <br>
-<a class="go_home_link" href="/user/protectedUserHomePage">Home Page</a><br>
-    <a href="/myAppointments/add">Register for classes</a>
-
+<a class="go_home_link" href="/user/protectedUserHomePage">Home Page</a>
+<br>
+<a href="/myAppointments/add">Register for classes</a>
+<br>
+<a id="reviews" href="/myReviews">My Reviews</a></li>
 <br>
 <a href="/myAppointments">Go to My Appointment</a>
 <br>
+<div class = "classes">
 <h2>Class and event</h2>
-<div class="classandevent">
+<div class="form-cont">
     <p></p>
 
     {{#if classes}}
@@ -45,11 +48,12 @@
             </ul>
             {{else}}
             <p>No reviews.</p>
+                        <button class="add_class_review" data-class-id="{{this._id}}">add reviews</button>
             {{/if}}
+            
         </li>
         <if condition="$error">
         <div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
-        <button class="add_class_review" data-class-id="{{this._id}}">add reviews</button>
         {{/each}}
     </ul>
 
@@ -58,5 +62,6 @@
     {{/if}}
 
 
+</div>
 </div>
 <script src="/public/js/addClassReview.js"></script>
