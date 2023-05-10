@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 import { reviewData, userData, gymData} from '../data/index.js';
+import xss from 'xss';
 
 router.get('/', async (req, res) => {
   try {

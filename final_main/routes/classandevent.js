@@ -30,7 +30,7 @@ router
                 let reviews = item.reviewIds;
                 if (reviews.length !== 0) {
                   await Promise.all(reviews.map(async i => {
-                    const text = await reviewData.getReviewById(i);
+                    const text = await reviewData.getReviewById(xss(i));
                     item.reviewsText.push(text.reviewText);
                   }))
                 }
@@ -65,10 +65,10 @@ router
                 timing: timing
             };
 
-            const user = await userData.getUserbyId(req.user.id);
+            const user = await userData.getUserbyId(xss(req.user.id));
             const userAppointments = user.MyAppointments;
             for (const appointmentId of userAppointments) {
-                const appointment = await appointmentData.getAppointmentById(appointmentId);
+                const appointment = await appointmentData.getAppointmentById(xss(appointmentId));
                 if (
                     appointment.classId.toString() === classId &&
                     appointment.selectedTimeSlot.Date === selectedTimeSlotObj.Date &&
@@ -78,8 +78,8 @@ router
                     throw new Error('This time slot has already been booked for this class by the user');
                 }
             }
-            const newAppointment = await appointmentData.addAppointment(classId, selectedTimeSlotObj, cancelledOrNot);
-            await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
+            const newAppointment = await appointmentData.addAppointment(xss(classId), xss(selectedTimeSlotObj), xss(cancelledOrNot));
+            await userData.updateAppointment(xss(req.user.id), xss(newAppointment._id.toString()), 'add');
             req.session.forceReload = true;
             res.redirect('/myAppointments');
         } catch (error) {
@@ -89,7 +89,7 @@ router
     router.route('/reviews_add').post(ensureAuthenticated, async (req, res) => {
       try {
           const branchName = 'Union City';
-          const gym = await gymData.getGymByBranch(branchName);
+          const gym = await gymData.getGymByBranch(xss(branchName));
           const gymId = gym._id.toString();
 
           const { classId, reviewText, rating } = req.body;
@@ -100,13 +100,13 @@ router
               throw "You must provide review information";
           }
 
-          const user = await userData.getUserbyId(req.user.id);
+          const user = await userData.getUserbyId(xss(req.user.id));
           const userReviews = user.MyReviews;
           console.log(userReviews);
   
           let hasReviewed = false;
           for (const reviewId of userReviews) {
-              const review = await reviewData.getReviewById(reviewId.toString());
+              const review = await reviewData.getReviewById(xss(reviewId.toString()));
               console.log(review)
               if (review.gymId.toString() === gymId && review.classId !== null && review.classId.toString() === classId) {
                   hasReviewed = true;
@@ -118,13 +118,13 @@ router
             return res.json({ success: false, message: 'You have already reviewed this class' });
           }
   
-          const newReview = await reviewData.addReview(gymId, classId, xss(reviewText));
+          const newReview = await reviewData.addReview(xss(gymId), xss(classId), xss(reviewText));
           if (!newReview) {
               console.error('Error: newReview is null');
               throw 'Failed to create a new review';
           }
           console.log(newReview);
-          await userData.addReviewId(user._id.toString(), newReview._id.toString());
+          await userData.addReviewId(xss(user._id.toString()), xss(newReview._id.toString()));
         req.session.forceReload = true;
         res.status(200).json({ success: true, redirect: '/classandevent' });
 

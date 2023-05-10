@@ -14,6 +14,7 @@ import {isValidBranch,
   isValidName,
   isValidUsername
 } from '../validateData.js';
+import xss from 'xss';
 
 router.route('/gymDetails').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
@@ -64,7 +65,7 @@ router.route('/checkIn').post(async (req, res) => {
   }
 
   try {
-    userName = isValidUsername(userName);
+    userName = isValidUsername(xss(userName));
   } 
   catch (e) {
     return res
@@ -74,7 +75,7 @@ router.route('/checkIn').post(async (req, res) => {
       });
   }
   try {
-    const gymCheckIn = await gymData.checkIn(userName)
+    const gymCheckIn = await gymData.checkIn(xss(userName))
 
       if(!gymCheckIn)
     {
@@ -145,7 +146,7 @@ router.route('/addGym').post(middleware.userRestrictMiddleware,async(req,res) =>
 router.route('/updateGym/:id').get(middleware.userRestrictMiddleware,async (req, res) => {
   try {
     const {id} = req.params;
-    let gymDetails = await gymData.getGymById(id);
+    let gymDetails = await gymData.getGymById(xss(id));
     return res.render('gymUpdateForm', { title: 'UpdateGym',gym: gymDetails});
   } 
   catch (e) {
@@ -155,7 +156,7 @@ router.route('/updateGym/:id').get(middleware.userRestrictMiddleware,async (req,
 
 router.route('/updateGym/:id').post(async(req,res) => {
   try {
-    req.params.id = isValidId( req.params.id )
+    req.params.id = isValidId( xss(req.params.id ))
   } 
   
   catch (e) {

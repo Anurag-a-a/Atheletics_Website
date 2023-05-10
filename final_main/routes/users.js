@@ -171,7 +171,7 @@ router.route('/signin').post(async (req, res) => {
     });
 
     router.route('/userProfile').get(middleware.userProfilePageMiddleware, async (req, res) => {
-      const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      const theSessionUser = await userData.getUserbyId(xss(req.session.user.id));
       var month = theSessionUser?.joinedPlanDate?.getUTCMonth() + 1; //months from 1-12
       var day = theSessionUser?.joinedPlanDate?.getUTCDate();
       var year = theSessionUser?.joinedPlanDate?.getUTCFullYear() + 1; 
@@ -221,8 +221,8 @@ router.route('/signin').post(async (req, res) => {
 
     router.route('/updateplan').get(middleware.updatePlanMiddleware,async (req, res) => {
       try{
-        const theSessionUser = await userData.getUserbyId(req.session.user.id);
-        const theuser = await userData.getUserbyId(req.session.user.id);
+        const theSessionUser = await userData.getUserbyId(xss(req.session.user.id));
+        const theuser = await userData.getUserbyId(xss(req.session.user.id));
         if(!theuser){return res.status(500).json("Internal Server Error");};
         if(theSessionUser){
           let plan = theuser.membershipPlanDetails;
@@ -249,17 +249,17 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePlan', {title: "Gym Brat", error: e,partial: 'updatePlanPartial'});
       };
       try{
-        const theuser = await userData.getUserbyId(req.session.user.id);
+        const theuser = await userData.getUserbyId(xss(req.session.user.id));
         if(!theuser){return res.status(500).json("Internal Server Error");};
         const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).json("Internal Server Error");};
         if(updatePlanInfo.plan != 'renew') {
-          const updateUser = await userData.updatePlan(theuser._id.toString(),plan);
+          const updateUser = await userData.updatePlan(xss(theuser._id.toString()),xss(plan));
           if(!updateUser){return res.status(400).render('updatePlan', {title: "Gym Brat", error: "couldn't update plan. Try again",partial: 'updatePlanPartial'});}
           return res.redirect('/user/userProfile');
         }
         else{
-          const renewPlan = userData.renewPlan(theuser._id.toString());
+          const renewPlan = userData.renewPlan(xss(theuser._id.toString()));
           return res.redirect('/user/userProfile');
         };
         
@@ -298,7 +298,7 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e,partial: 'updatePassword'});
       };
       try{
-        const theuser = await userData.getUserbyId(req.session.user.id);
+        const theuser = await userData.getUserbyId(xss(req.session.user.id));
         if(!theuser){return res.status(500).json("Internal Server Error");};
         const userObject = await userData.checkUser(xss(theuser.email),xss(password));
         if(!userObject) { return res.status(500).render('updatePassword', {title: "Gym Brat", error: "Internal Server Error",partial: 'updatePassword'});};            
@@ -306,7 +306,7 @@ router.route('/signin').post(async (req, res) => {
         return res.status(400).render('updatePassword', {title: "Gym Brat", error: e, partial: 'updatePassword'});
       };
       try{
-        const result = userData.updatePassword(req.session.user.id,npassword);
+        const result = userData.updatePassword(xss(req.session.user.id),xss(npassword));
         if(result){
           req.session.destroy();
           return res.status(400).render('signIn', {title: "Gym Brat", partial: 'alertPasswordChange'});
@@ -320,7 +320,7 @@ router.route('/signin').post(async (req, res) => {
 
     //updateinfo
     router.route('/updateinfo').get(middleware.updateMiddleware,async (req, res) => {
-      const theSessionUser = await userData.getUserbyId(req.session.user.id);
+      const theSessionUser = await userData.getUserbyId(xss(req.session.user.id));
       return res.render('updateForm',{title: "Gym Brat",
       firstName: theSessionUser.firstName,
       lastName: theSessionUser.lastName,
@@ -339,7 +339,7 @@ router.route('/signin').post(async (req, res) => {
       partial: 'updateForm'});
   });
   router.route('/updateinfo').post(async (req, res) => {
-    const theSessionUser = await userData.getUserbyId(req.session.user.id);
+    const theSessionUser = await userData.getUserbyId(xss(req.session.user.id));
     // return res.render('updateForm',{title: "Gym Brat"});
     let updateInfo = req.body;
     if(!updateInfo){
@@ -442,7 +442,7 @@ router.route('/signin').post(async (req, res) => {
   router.route('/gymdensity').post(async (req, res) => {
     try{
     if(req.body.location == 'choose'){return res.json(' ');}
-    const gym = await gymData.getGymByBranch(req.body.location);
+    const gym = await gymData.getGymByBranch(xss(req.body.location));
     const density = gym.currentCapacity;
     res.json(density.toString());
   }catch(e){

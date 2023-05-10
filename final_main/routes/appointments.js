@@ -4,14 +4,15 @@ import { appointmentData } from '../data/index.js';
 import { classData } from '../data/index.js';
 import { userData } from '../data/index.js';
 import { ensureAuthenticated } from '../middleware.js';
+import xss from 'xss';
 
 router.route('/').get(ensureAuthenticated, async (req, res) => {
   try {
-    const user = await userData.getUserbyId(req.user.id);
+    const user = await userData.getUserbyId(xss(req.user.id));
     const userAppointmentsIds = user.MyAppointments;
     const userAppointments = await Promise.all(
       userAppointmentsIds.map(async appointmentId => {
-        return await appointmentData.getAppointmentById(appointmentId);
+        return await appointmentData.getAppointmentById(xss(appointmentId));
       })
     );
 
@@ -21,7 +22,7 @@ router.route('/').get(ensureAuthenticated, async (req, res) => {
     const currentTime = new Date();
 
     for (const appointment of userAppointments) {
-      const classInfo = await classData.getClassbyId(appointment.classId.toString());
+      const classInfo = await classData.getClassbyId(xss(appointment.classId.toString()));
       appointment.className = classInfo.className;
 
       appointment.selectedTimeSlotString = `${appointment.selectedTimeSlot.Date} ${appointment.selectedTimeSlot.timing}`;
@@ -52,8 +53,8 @@ router.route('/update/:id/cancellation').post(async (req, res) => {
       throw 'Error: no id provided';
     }
 
-    const appointment = await appointmentData.getAppointmentById(appointmentId);
-    const updatedAppointment = await appointmentData.updateAppointmentPut(appointmentId, null, null, cancelledOrNot);
+    const appointment = await appointmentData.getAppointmentById(xss(appointmentId));
+    const updatedAppointment = await appointmentData.updateAppointmentPut(xss(appointmentId), null, null, xss(cancelledOrNot));
 
     res.redirect('/myAppointments');
   } catch (error) {
@@ -105,10 +106,10 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
       timing: timing
     };
 
-    const user = await userData.getUserbyId(req.user.id);
+    const user = await userData.getUserbyId(xss(req.user.id));
     const userAppointments = user.MyAppointments;
     for (const appointmentId of userAppointments) {
-      const appointment = await appointmentData.getAppointmentById(appointmentId);
+      const appointment = await appointmentData.getAppointmentById(xss(appointmentId));
       if (
         appointment.classId.toString() === classId &&
         appointment.selectedTimeSlot.Date === selectedTimeSlotObj.Date &&
@@ -118,9 +119,9 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
         return res.status(400).render('appointments_add', {title: 'Gym Brat',error: 'This time slot has already been booked' });
       }
     }
-    const newAppointment = await appointmentData.addAppointment(req.user.id,classId, selectedTimeSlotObj, cancelledOrNot);
-    await userData.updateAppointment(req.user.id, newAppointment._id.toString(), 'add');
-    await classData.updateRegisteredUsers(classId, req.user.id, 'add');
+    const newAppointment = await appointmentData.addAppointment(xss(req.user.id),xss(classId), selectedTimeSlotObj, xss(cancelledOrNot));
+    await userData.updateAppointment(xss(req.user.id), xss(newAppointment._id.toString()), 'add');
+    await classData.updateRegisteredUsers(xss(classId), xss(req.user.id), 'add');
     req.session.forceReload = true;
     // res.redirect('/appointments/success');
     res.redirect('/myAppointments');
@@ -140,9 +141,9 @@ router.get('/deleted', ensureAuthenticated, (req, res) => {
 
 router.route('/delete/:id').post(ensureAuthenticated, async (req, res) => {
   try {
-    const deletedAppointment = await appointmentData.removeAppointment(req.params.id);
-    await userData.updateAppointment(req.user.id, req.params.id, 'delete');
-    await classData.updateRegisteredUsers(deletedAppointment.classId.toString(), req.user.id, 'delete');
+    const deletedAppointment = await appointmentData.removeAppointment(xss(req.params.id));
+    await userData.updateAppointment(xss(req.user.id), xss(req.params.id), 'delete');
+    await classData.updateRegisteredUsers(xss(deletedAppointment.classId.toString()), xss(req.user.id), 'delete');
     req.session.forceReload = true;
     res.redirect('/myAppointments/deleted');
   } catch (error) {
