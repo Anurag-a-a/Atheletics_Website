@@ -1,13 +1,13 @@
-<main>
+
     <br><br>
     <a class="go_home_link" href="/admin/adminhome">Home Page</a><br>
-    <h2>Users currently in the system</h2><br><br>
+    <h2 class="textCenter">Users currently in the system</h2><br><br>
     <div class=" classes">
         {{#each user}}
         {{#if (eqUser this.role 'user')}}
         <div class="detailscont cls-detail">
             <br>
-            <h3 class="class-name">{{this.firstName}} {{this.lastName}}</h3>
+            <h3 class="class-name textCenter">{{this.firstName}} {{this.lastName}}</h3>
             <p>Sex: {{this.sex}}</p>
             <p>Date of Birth: {{this.dob}}</p>
             <p>Email: {{this.email}}</p>
@@ -27,4 +27,3 @@
     {{/each}}
     </div>
         
-</main>

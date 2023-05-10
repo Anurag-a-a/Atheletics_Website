@@ -5,7 +5,8 @@
 <br>
 <a href="/myAppointments/add">Add Appointment</a>
 <br>
-<h2>Active Appointments</h2>
+<div class="detailscont cls-detail">
+  <h2 class="textCenter">Active Appointments</h2>
 {{#if activeAppointments}}
   {{#each activeAppointments}}
     <div class="myAppointments">
@@ -23,8 +24,9 @@
 {{else}}
   <p>No active appointments found</p>
 {{/if}}
-
-<h2>Cancelled Appointments</h2>
+</div>
+<div class="detailscont cls-detail">
+<h2 class="textCenter">Cancelled Appointments</h2>
 {{#if cancelledAppointments}}
   {{#each cancelledAppointments}}
     <div class="myAppointments">
@@ -42,8 +44,9 @@
 {{else}}
   <p>No cancelled appointments found</p>
 {{/if}}
-
-<h2>Past Appointments</h2>
+</div>
+<div class="detailscont cls-detail">
+<h2 class="textCenter">Past Appointments</h2>
 {{#if pastAppointments}}
   {{#each pastAppointments}}
     <div class="myAppointments">
@@ -54,3 +57,4 @@
 {{else}}
   <p>No past appointments found</p>
 {{/if}}
+</div>

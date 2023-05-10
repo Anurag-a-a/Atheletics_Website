@@ -23,7 +23,7 @@ router.route('/').get(middleware.ensureAuthenticated, async (req, res) => {
       
       return review;
     }));
-    res.render('reviews_all', { reviews: allReviews });
+    res.render('reviews_all', { title: 'Gym Brat', reviews: allReviews });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
@@ -48,9 +48,9 @@ router
         }
       }
 
-      res.render('reviews_add', { branches: allBranches, reviewedGymIds: Array.from(reviewedGymIds) });
+      res.render('reviews_add', { title: 'Gym Brat',branches: allBranches, reviewedGymIds: Array.from(reviewedGymIds) });
     } catch (error) {
-      res.status(400).render('reviews_add', {error: error});
+      res.status(400).render('reviews_add', {title: 'Gym Brat', error: error});
     }
   })
   .post(middleware.reviewMiddleware, async (req, res) => {
@@ -71,9 +71,9 @@ router
       }
   
       if ((!gymId) || !reviewText || (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5)) {
-        res.status(400).render('reviews_add', {error: 'Missing required fields or invalid rating'});
+        res.status(400).render('reviews_add', {title: 'Gym Brat', error: 'Missing required fields or invalid rating'});
       } else if (hasReviewedGym) {
-        res.status(400).render('reviews_add', {error: 'You have already reviewed this gym' });
+        res.status(400).render('reviews_add', {title: 'Gym Brat', error: 'You have already reviewed this gym' });
       } else {
         let ratingNumber = parseFloat(rating);
   
@@ -100,7 +100,7 @@ router
         className = classInfo.className;
       }
 
-      res.render('reviews_update', { review: review, branchName: branchName, className: className });
+      res.render('reviews_update', { title: 'Gym Brat', review: review, branchName: branchName, className: className });
     } catch (error) {
       res.status(404).json({ error: error.toString() });
     }

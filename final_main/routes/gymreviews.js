@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
       };
     });
 
-    res.render('gymreviews', { reviews: reviewDataWithUsernames });
+    res.render('gymreviews', { title: "Gym Brat", reviews: reviewDataWithUsernames });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }

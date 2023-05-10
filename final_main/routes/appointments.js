@@ -36,7 +36,7 @@ router.route('/').get(ensureAuthenticated, async (req, res) => {
         activeAppointments.push(appointment);
       }
     }
-    res.render('appointments_all', { activeAppointments, cancelledAppointments, pastAppointments });
+    res.render('appointments_all', { title: 'Gym Brat', activeAppointments, cancelledAppointments, pastAppointments });
 
   } catch (error) {
     res.status(500).json({ error: error.toString() });
@@ -80,7 +80,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
   try {
     const allClasses = await classData.getAllClass();
     const futureClasses = allClasses.filter(isFutureClass);
-    res.render('appointments_add', { classes: futureClasses });
+    res.render('appointments_add', { title: 'Gym Brat', classes: futureClasses });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -115,7 +115,7 @@ router.route('/add').get(ensureAuthenticated, async (req, res) => {
         appointment.selectedTimeSlot.timing === selectedTimeSlotObj.timing &&
         !appointment.cancelledOrNot
       ) {
-        return res.status(400).render('appointments_add', {error: 'This time slot has already been booked' });
+        return res.status(400).render('appointments_add', {title: 'Gym Brat',error: 'This time slot has already been booked' });
       }
     }
     const newAppointment = await appointmentData.addAppointment(req.user.id,classId, selectedTimeSlotObj, cancelledOrNot);

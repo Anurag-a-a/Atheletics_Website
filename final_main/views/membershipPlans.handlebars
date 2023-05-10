@@ -1,4 +1,4 @@
-<main class="main">
+
     <h1 id="plan_h1">Membership plans</h1>
     <a class="go_home_link" href="/user">Home</a>
     <hr>
@@ -14,10 +14,10 @@
             <li>Free WiFi</li>
             <li>Perks: Partner Rewards & Discounts</li>
             {{!-- <p>some details...</p> --}}
-            {{#if notloogedIn}}
-            <a href='/user/joinnow'><button class="plan_join_button">Join Now</button></a>
-            {{/if}}
             </ul></p>
+             {{#if notloogedIn}}
+            <a href='/user/joinnow' class = "Info_plan">Join Now</a>
+            {{/if}}
         </div>
 
         <div class="plan">
@@ -33,10 +33,10 @@
             <li>Bring a Guest Anytime</li>
             <li>Use of Any Planet Fitness Worldwide</li>
             <li>Use of Tanning</li>
-            {{#if notloogedIn}}
-            <a href='/user/joinnow'><button class="plan_join_button">Join Now</button></a>
-            {{/if}}
             </ul></p>
+             {{#if notloogedIn}}
+                <a href='/user/joinnow' class = "Info_plan">Join Now</a>
+            {{/if}}
         </div>
 
         <div class="plan">
@@ -55,12 +55,10 @@
             <li>Use of Massage Chairs</li>
             <li>50% Off Select Drinks</li>
             <li>Premium Perks: Partner Rewards & Discounts</li>
-
-            {{#if notloogedIn}}
-            <a href='/user/joinnow'><button class="plan_join_button">Join Now</button></a>
-            {{/if}}
             </ul></p>
+            {{#if notloogedIn}}
+            <a href='/user/joinnow' class = "Info_plan">Join Now</a>
+            {{/if}}
         </div>
 
     </div>
-</main>
